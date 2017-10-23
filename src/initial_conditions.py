@@ -63,7 +63,7 @@ def initialconditions_spike(nx, nt, xmin = 0, xmax = 1, plot = True):
         plt.rcParams['axes.titlepad'] = 20 
         fig1.show()
         
-    return initialu, initialh, midpoint, x
+    return initialu, initialh, x
 
 
 
@@ -77,7 +77,6 @@ def initialconditions_cosbell(nx, nt, xmin = 0, xmax = 1, plot = True):
     """
     x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
     
-    midpoint = math.floor(math.floor(len(x)/2)/2)*2 # calculate midpoint to be used for the forcing term
     
     # initialize initial u and initial h
     initialu = np.zeros(len(x)).astype(float)
@@ -101,6 +100,41 @@ def initialconditions_cosbell(nx, nt, xmin = 0, xmax = 1, plot = True):
         # add space between the title and the plot
         plt.rcParams['axes.titlepad'] = 20 
         fig1.show()
-    return initialu, initialh, midpoint, x
+    return initialu, initialh, x
+
+def initialconditions_cos(nx, nt, xmin = 0, xmax = 1, plot = True):
+    """
+    xmin: minimum value of x on grid
+    xmax: maximum value of x on grid
+    nx: number of space steps
+    nt: number of time steps
+    plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
+    """
+    x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
+    
+    
+    # initialize initial u and initial h
+    initialu = np.zeros(len(x)).astype(float)
+    initialh = np.zeros(len(x)).astype(float)
+    
+    # set the initial conditions such that u is zero everywhere and h is cos(x)
+    for i in range(len(x)):
+        initialu[i] = flat_u(i)
+        initialh[i] = math.cos(x[i])
+        
+    # plot these initial conditions
+    if plot == True:
+        fig1, ax1 = plt.subplots()
+        
+        ax1.plot(x, initialh, 'g-', label = 'Initial h conditions')
+        ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
+        ax1.legend(loc = 'best')
+        ax1.set_xlabel("x")
+        ax1.set_title("Initital Condition where u is 0 everywhere and h is " r"$\cos(x)$")
+        
+        # add space between the title and the plot
+        plt.rcParams['axes.titlepad'] = 20 
+        fig1.show()
+    return initialu, initialh, x
 
 

@@ -62,14 +62,13 @@ def main():
     colorrange_multic = mymap(np.r_[np.array([0.3, 0.55, 1]), np.array([0.3, 0.55, 1])])
     
     # plotting for different courant numbers we see this solution is very unstable
-    crange_A = np.linspace(0,0.75,4)
-    ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.A_grid_explicit, crange_A, colorrange_multic)
+    crange = np.linspace(0,3,4)
+    ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
     ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
     ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
 
     # Therefore we try an implict method on a colocated grid which is stable everywhere
-    crange_implicit = np.linspace(0,3,4)
-    ax1_implicit_multiplec, ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.implicit_method, crange_implicit, colorrange_multic)
+    ax1_implicit_multiplec, ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.implicit_method, crange, colorrange_multic)
     ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers \n calculated using the colocated implicit scheme \n and initial condition of a cos bell curve")
     ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers \n calculated using the colocated implicit scheme \n and initial condition of a cos bell curve")
     
@@ -111,7 +110,7 @@ def main():
     
     # plot solution at various time iterations for an explicit method on a staggered grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, plotparameterrange)
+    ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, plotparameterrange, staggered = True)
     ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")
     ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme")
     
@@ -119,13 +118,70 @@ def main():
     
     # plot solution at various time iterations for a semi-implicit method on a staggered grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_semi_implicit, ax2_semi_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.semi_implicit_method, plotparameterrange)
+    ax1_semi_implicit, ax2_semi_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.semi_implicit_method, plotparameterrange, staggered = True)
     ax1_semi_implicit.set_title("Velocity, u, calculated using the staggered semi-implicit scheme")
     ax2_semi_implicit.set_title("Height, h, calculated using the staggered semi-implicit scheme")
     
-    # Finally we present the following results - all 4 schemes for the two initial conditions discussed and a further third initial condition
+    # Finally we examine the error in the numerical method
+    # For the initial solutions used so far it is difficult to find the exact solution.
+    # Therefore we use the following initial condition
     
-    ##### CODE MISSING OF FINAL 4 GRAPHS!!!
+    xmin = -math.pi
+    xmax = math.pi
+    
+    # plot initial condition where u is zero everywhere and h is cos(x)
+    ic.initialconditions_cos(nx, nt, xmin, xmax)
+ 
+    # set parameters and number of timesteps and space steps on grid
+
+    nx_1 = 100
+    nt_1 = 400
+    
+    H = 1
+    g = 1
+    c = 0.1
+    
+    # results of all 4 methods
+    
+    ax1_exact, ax2_exact, x1 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin, xmax, H, g, c)
+
+    # calculate width of spacestep and timestep
+    dx = (xmax - xmin)/nx_1
+    dt = (c*dx)/math.sqrt(g*H)
+
+    # constructing exact solution
+
+    u = np.zeros_like(x1)
+    h = np.zeros_like(x1)
+
+    # u = sin(x)sin(t)
+    for i in range(len(x1)):
+        u[i] = math.sin(x1[i])*math.sin(dt*nt_1)
+    
+    # h = cos(x)cos(t)
+    for i in range(len(x1)):
+        h[i] = math.cos(x1[i])*math.cos(dt*nt_1)
+
+    # plot exact solution on plot as well
+    ax1_exact.plot(x1, u, c = 'black', linestyle = ':', label = "exact solution")
+    ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax1_exact.legend(loc = 'best')
+
+    ax2_exact.plot(x1, h, c = 'black', linestyle = ':', label = "exact solution")
+    ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax2_exact.legend(loc = 'best')
+    
+    # This does not provide much clarity as all the solutions are very close together
+    
+    # therefore instead look at the error between the exact solution and the numerical method
+    
+    ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
+
+    ax1_error.set_title("Error in velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax1_error.legend(loc = 'best')
+
+    ax2_error.set_title("Error in height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax2_error.legend(loc = 'best')
     
 main()
 
