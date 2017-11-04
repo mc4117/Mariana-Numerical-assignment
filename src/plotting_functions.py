@@ -58,7 +58,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     ax2.legend(loc = 'best') 
 
     # add space between the title and the plot
-    plt.rcParams['axes.titlepad'] = 20 
+    #plt.rcParams['axes.titlepad'] = 20 
     # increase the font size
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
@@ -96,7 +96,7 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
         ax2.legend(loc = 'best')
 
     # add space between the title and the plot
-    plt.rcParams['axes.titlepad'] = 20 
+    #plt.rcParams['axes.titlepad'] = 20 
     # increase the font size
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
@@ -183,10 +183,10 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     
         
     # find error between exact solution and solution found by numerical method
-    error_A_grid_u = u_A_grid - u_A_grid_explicit
-    error_C_grid_u = u_C_grid - u_C_grid_explicit[:-1]
-    error_implicit_u = u_A_grid - u_implicit
-    error_semi_implicit_u = u_C_grid - u_semi_implicit[:-1]
+    error_A_grid_u = (u_A_grid - u_A_grid_explicit)**2
+    error_C_grid_u = (u_C_grid - u_C_grid_explicit[:-1])**2
+    error_implicit_u = (u_A_grid - u_implicit)**2
+    error_semi_implicit_u = (u_C_grid - u_semi_implicit[:-1])**2
     
     # plot error in u from 4 different methods
     fig1, ax1 = plt.subplots()
@@ -198,10 +198,10 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
     
-    error_A_grid_h = h - h_A_grid_explicit
-    error_C_grid_h = h - h_C_grid_explicit
-    error_implicit_h = h - h_implicit
-    error_semi_implicit_h = h - h_semi_implicit
+    error_A_grid_h = (h - h_A_grid_explicit)**2
+    error_C_grid_h = (h - h_C_grid_explicit)**2
+    error_implicit_h = (h - h_implicit)**2
+    error_semi_implicit_h = (h - h_semi_implicit)**2
 
     # plot error in h from 4 different methods
     fig2, ax2 = plt.subplots()

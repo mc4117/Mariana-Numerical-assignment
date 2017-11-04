@@ -128,6 +128,9 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
         matrix[i, (i-2)%nx] = -(c**2)/4
         matrix[i, (i+2)%nx] = -(c**2)/4
     
+    # find inverse of this matrix
+    inverse = np.linalg.inv(matrix)
+    
     # loop over timesteps
     for it in range(int(nt)):      
         
@@ -136,14 +139,14 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
             uvector[i] = math.sqrt(H/g)*(c/2)*(uOld[(i+1)%nx] - uOld[(i-1)%nx])
             
         # solve matrix equation to find h
-        h = np.linalg.solve(matrix, hOld - uvector)
+        h = np.dot(inverse, (hOld - uvector))
     
         hvector = np.zeros_like(hOld)
         for i in range(nx+1):
             hvector[i] = math.sqrt(g/H)*(c/2)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
 
         # solve matrix equation to find u
-        u = np.linalg.solve(matrix, uOld - hvector)
+        u = np.dot(inverse, (uOld - hvector))
         
         # copy u and h for next iteration
         hOld = h.copy()

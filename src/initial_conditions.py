@@ -57,10 +57,10 @@ def initialconditions_spike(nx, nt, xmin = 0, xmax = 1, plot = True):
         ax.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax.legend(loc = 'best')
         ax.set_xlabel("x")
-        ax.set_title("Initial Condition where u is 0 everywhere and \n and h is zero everywhere apart from one point at the centre where it is one")
+        ax.set_title("Initial Condition where u is 0 everywhere and \n and h is zero everywhere apart from one point at the centre where it is one \n")
         
         # add space between the title and the plot
-        plt.rcParams['axes.titlepad'] = 20 
+        #plt.rcParams['axes.titlepad'] = 20 
         fig1.show()
         
     return initialu, initialh, x
@@ -95,10 +95,10 @@ def initialconditions_cosbell(nx, nt, xmin = 0, xmax = 1, plot = True):
         ax.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax.legend(loc = 'best')
         ax.set_xlabel("x")
-        ax.set_title("Initial Condition where u is 0 everywhere and \n h has a bump in the centre and is surrounded by 0 either side")
+        ax.set_title("Initial Condition where u is 0 everywhere and \n h has a bump in the centre and is surrounded by 0 either side \n")
     
         # add space between the title and the plot
-        plt.rcParams['axes.titlepad'] = 20 
+        #plt.rcParams['axes.titlepad'] = 20 
         fig1.show()
     return initialu, initialh, x
 
@@ -125,16 +125,16 @@ def initialconditions_cos(nx, nt, xmin = 0, xmax = 1, plot = True):
     # plot these initial conditions
     if plot == True:
         fig1, ax1 = plt.subplots()
-        
         ax1.plot(x, initialh, 'g-', label = 'Initial h conditions')
         ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax1.legend(loc = 'best')
         ax1.set_xlabel("x")
-        ax1.set_title("Initital Condition where u is 0 everywhere and h is " r"$\cos(x)$")
+        ax1.set_title("Initital Condition where u is 0 everywhere and h is " r"$\cos(x)$" "\n")
         
         # add space between the title and the plot
-        plt.rcParams['axes.titlepad'] = 20 
+        #plt.rcParams['axes.titlepad'] = 20 
         fig1.show()
     return initialu, initialh, x
+
 
 

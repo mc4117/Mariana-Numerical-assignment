@@ -6,12 +6,13 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+%matplotlib inline
 import math
 import initial_conditions as ic
 import numerical_methods as nm
 import plotting_functions as pltfns
 
-
+plt.rcParams.update({'figure.max_open_warning': 0})
 
 def main():
     
@@ -40,7 +41,7 @@ def main():
         
     
     # add space between the title and the plot
-    plt.rcParams['axes.titlepad'] = 20 
+    #plt.rcParams['axes.titlepad'] = 20 
     # increase the font size
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
@@ -177,10 +178,10 @@ def main():
     
     ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
 
-    ax1_error.set_title("Error in velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax1_error.set_title("Squared error in velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
     ax1_error.legend(loc = 'best')
 
-    ax2_error.set_title("Error in height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax2_error.set_title("Squared error in height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
     ax2_error.legend(loc = 'best')
     
 main()
