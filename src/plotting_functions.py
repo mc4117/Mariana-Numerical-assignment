@@ -143,7 +143,7 @@ def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
 
-    return ax1, ax2, x1
+    return fig1, fig2, ax1, ax2, x1
 
 def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     """This function compares the solutions of the 4 numerical methods studied for the initial condition that u = 0 everywhere 
@@ -213,4 +213,4 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
     
-    return ax1, ax2
+    return fig1, fig2, ax1, ax2

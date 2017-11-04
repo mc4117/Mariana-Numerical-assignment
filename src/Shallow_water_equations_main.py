@@ -6,7 +6,6 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
 import math
 import initial_conditions as ic
 import numerical_methods as nm
@@ -15,7 +14,7 @@ import plotting_functions as pltfns
 plt.rcParams.update({'figure.max_open_warning': 0})
 
 def main():
-    
+
     # defining the grid and mesh we are working on
     nx = 60  # number of points from x = xmin to x = xmax
     xmin = 0 # minimum value of x on grid
@@ -144,7 +143,7 @@ def main():
     
     # results of all 4 methods
     
-    ax1_exact, ax2_exact, x1 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin, xmax, H, g, c)
+    fig1_exact, fig2_exact, ax1_exact, ax2_exact, x1 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin, xmax, H, g, c)
 
     # calculate width of spacestep and timestep
     dx = (xmax - xmin)/nx_1
@@ -172,17 +171,22 @@ def main():
     ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
     ax2_exact.legend(loc = 'best')
     
+    
+    
     # This does not provide much clarity as all the solutions are very close together
     
     # therefore instead look at the error between the exact solution and the numerical method
     
-    ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
+    fig1_error, fig2_error, ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
 
-    ax1_error.set_title("Squared error in velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is " r"$\cos(x)$" )
     ax1_error.legend(loc = 'best')
 
-    ax2_error.set_title("Squared error in height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    ax2_error.set_title("Squared error in height, h, for the initial condition \n where u is 0 everywhere and h is " r"$\cos(x)$" )
     ax2_error.legend(loc = 'best')
+    
+    fig1_error.savefig("Error in u.png")
+    fig2_error.savefig("Error in h.png")
     
 main()
 
