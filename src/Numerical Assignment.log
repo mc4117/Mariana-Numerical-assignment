@@ -1,0 +1,585 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.19)  6 NOV 2017 16:42
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**"Numerical Assignment.tex"
+(./Numerical Assignment.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count87
+\Gm@cntv=\count88
+\c@Gm@tempcnt=\count89
+\Gm@bindingoffset=\dimen103
+\Gm@wd@mp=\dimen104
+\Gm@odd@mp=\dimen105
+\Gm@even@mp=\dimen106
+\Gm@layoutwidth=\dimen107
+\Gm@layoutheight=\dimen108
+\Gm@layouthoffset=\dimen109
+\Gm@layoutvoffset=\dimen110
+\Gm@dimlist=\toks15
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count90
+\lst@gtempboxa=\box26
+\lst@token=\toks16
+\lst@length=\count91
+\lst@currlwidth=\dimen111
+\lst@column=\count92
+\lst@pos=\count93
+\lst@lostspace=\dimen112
+\lst@width=\dimen113
+\lst@newlines=\count94
+\lst@lineno=\count95
+\lst@maxwidth=\dimen114
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count96
+\lst@skipnumbers=\count97
+\lst@framebox=\box27
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2001/04/09 non-zero parskip adjustments
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2016/11/05 v2.16a AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen115
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen116
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count98
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count99
+\leftroot@=\count100
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count101
+\DOTSCASE@=\count102
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box28
+\strutbox@=\box29
+\big@size=\dimen117
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count103
+\c@MaxMatrixCols=\count104
+\dotsspace@=\muskip10
+\c@parentequation=\count105
+\dspbrk@lvl=\count106
+\tag@help=\toks18
+\row@=\count107
+\column@=\count108
+\maxfields@=\count109
+\andhelp@=\toks19
+\eqnshift@=\dimen118
+\alignsep@=\dimen119
+\tagshift@=\dimen120
+\tagwidth@=\dimen121
+\totwidth@=\dimen122
+\lineht@=\dimen123
+\@envbody=\toks20
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count110
+))
+\Gin@req@height=\dimen124
+\Gin@req@width=\dimen125
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen126
+\captionmargin@=\dimen127
+\captionwidth=\dimen128
+\caption@tempdima=\dimen129
+\caption@indent=\dimen130
+\caption@parindent=\dimen131
+\caption@hangindent=\dimen132
+)
+\c@ContinuedFloat=\count111
+Package caption Info: listings package is loaded.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf.sty
+Package: epstopdf 2016/05/15 v2.6 Conversion with epstopdf on the fly (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+)))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/chngcntr/chngcntr.sty
+Package: chngcntr 2009/09/02 v1.0a change counter resetting
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/titling/titling.sty
+Package: titling 2009/09/04 v2.1d maketitle typesetting
+\thanksmarkwidth=\skip46
+\thanksmargin=\skip47
+\droptitle=\skip48
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count112
+\float@exts=\toks22
+\float@box=\box30
+\@float@everytoks=\toks23
+\@floatcapt=\box31
+)
+(./Numerical Assignment.aux)
+\openout1 = `"Numerical Assignment.aux"'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-38.1381pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\c@lstlisting=\count113
+(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count114
+\scratchdimen=\dimen133
+\scratchbox=\box32
+\nofMPsegments=\count115
+\nofMParguments=\count116
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count117
+\MPscratchDim=\dimen134
+\MPnumerator=\count118
+\makeMPintoPDFobject=\count119
+\everyMPtoPDFconversion=\toks25
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 26.
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 26.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+ [4]
+Overfull \hbox (24.13013pt too wide) detected at line 224
+\OML/cmm/m/it/12 u[] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 u[] \OMS/cmsy/m/n/12 ^^
+F [][] \OT1/cmr/m/n/12 + ^^A\OML/cmm/m/it/12 t[] \OT1/cmr/m/n/12 + [][] \OMS/cm
+sy/m/n/12 ^^F [][] \OT1/cmr/m/n/12 + [][] + \OML/cmm/m/it/12 O\OT1/cmr/m/n/12 (
+(^^A\OML/cmm/m/it/12 x\OT1/cmr/m/n/12 )[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 (^^
+A\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )[])
+ []
+
+[5] [6] <dispersion_relations.png, id=32, 433.62pt x 289.08pt>
+File: dispersion_relations.png Graphic file (type png)
+
+<use dispersion_relations.png>
+Package pdftex.def Info: dispersion_relations.png used on input line 336.
+(pdftex.def)             Requested size: 318.66948pt x 212.4558pt.
+
+<initial_condition_cosbell.png, id=34, 433.62pt x 289.08pt>
+File: initial_condition_cosbell.png Graphic file (type png)
+
+<use initial_condition_cosbell.png>
+Package pdftex.def Info: initial_condition_cosbell.png used on input line 350.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<initial_condition_spike.png, id=35, 433.62pt x 289.08pt>
+File: initial_condition_spike.png Graphic file (type png)
+
+<use initial_condition_spike.png>
+Package pdftex.def Info: initial_condition_spike.png used on input line 358.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 345--361
+[]$[]$ $[]$ 
+ []
+
+<initial_condition_cos.png, id=36, 433.62pt x 289.08pt>
+File: initial_condition_cos.png Graphic file (type png)
+
+<use initial_condition_cos.png>
+Package pdftex.def Info: initial_condition_cos.png used on input line 367.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+ [7] [8 <./dispersion_relations.png>] [9 <./initial_condition_cosbell.png> <./i
+nitial_condition_spike.png> <./initial_condition_cos.png>]
+<velocity_colocated_explicit_cosbell.png, id=51, 433.62pt x 289.08pt>
+File: velocity_colocated_explicit_cosbell.png Graphic file (type png)
+
+<use velocity_colocated_explicit_cosbell.png>
+Package pdftex.def Info: velocity_colocated_explicit_cosbell.png used on input 
+line 408.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_colocated_explicit_cosbell.png, id=52, 433.62pt x 289.08pt>
+File: height_colocated_explicit_cosbell.png Graphic file (type png)
+
+<use height_colocated_explicit_cosbell.png>
+Package pdftex.def Info: height_colocated_explicit_cosbell.png used on input li
+ne 416.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 403--419
+[]$[]$ $[]$ 
+ []
+
+[10] <velocity_varying_courant_explicit.png, id=56, 433.62pt x 289.08pt>
+File: velocity_varying_courant_explicit.png Graphic file (type png)
+
+<use velocity_varying_courant_explicit.png>
+Package pdftex.def Info: velocity_varying_courant_explicit.png used on input li
+ne 429.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_varying_courant_explicit.png, id=57, 433.62pt x 289.08pt>
+File: height_varying_courant_explicit.png Graphic file (type png)
+
+<use height_varying_courant_explicit.png>
+Package pdftex.def Info: height_varying_courant_explicit.png used on input line
+ 437.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 424--440
+[]$[]$ $[]$ 
+ []
+
+<velocity_varying_courant_implicit.png, id=58, 433.62pt x 289.08pt>
+File: velocity_varying_courant_implicit.png Graphic file (type png)
+
+<use velocity_varying_courant_implicit.png>
+Package pdftex.def Info: velocity_varying_courant_implicit.png used on input li
+ne 450.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_varying_courant_implicit.png, id=59, 433.62pt x 289.08pt>
+File: height_varying_courant_implicit.png Graphic file (type png)
+
+<use height_varying_courant_implicit.png>
+Package pdftex.def Info: height_varying_courant_implicit.png used on input line
+ 458.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 445--461
+[]$[]$ $[]$ 
+ []
+
+[11 <./velocity_colocated_explicit_cosbell.png> <./height_colocated_explicit_co
+sbell.png> <./velocity_varying_courant_explicit.png> <./height_varying_courant_
+explicit.png>]
+<velocity_colocated_explicit_spike.png, id=67, 433.62pt x 289.08pt>
+File: velocity_colocated_explicit_spike.png Graphic file (type png)
+
+<use velocity_colocated_explicit_spike.png>
+Package pdftex.def Info: velocity_colocated_explicit_spike.png used on input li
+ne 471.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_colocated_explicit_spike.png, id=68, 433.62pt x 289.08pt>
+File: height_colocated_explicit_spike.png Graphic file (type png)
+
+<use height_colocated_explicit_spike.png>
+Package pdftex.def Info: height_colocated_explicit_spike.png used on input line
+ 479.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 466--482
+[]$[]$ $[]$ 
+ []
+
+<velocity_colocated_implicit_spike.png, id=69, 433.62pt x 289.08pt>
+File: velocity_colocated_implicit_spike.png Graphic file (type png)
+
+<use velocity_colocated_implicit_spike.png>
+Package pdftex.def Info: velocity_colocated_implicit_spike.png used on input li
+ne 490.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_colocated_implicit_spike.png, id=70, 433.62pt x 289.08pt>
+File: height_colocated_implicit_spike.png Graphic file (type png)
+
+<use height_colocated_implicit_spike.png>
+Package pdftex.def Info: height_colocated_implicit_spike.png used on input line
+ 498.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 485--501
+[]$[]$ $[]$ 
+ []
+
+<velocity_staggered_explicit_spike.png, id=71, 433.62pt x 289.08pt>
+File: velocity_staggered_explicit_spike.png Graphic file (type png)
+
+<use velocity_staggered_explicit_spike.png>
+Package pdftex.def Info: velocity_staggered_explicit_spike.png used on input li
+ne 511.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_staggered_explicit_spike.png, id=72, 433.62pt x 289.08pt>
+File: height_staggered_explicit_spike.png Graphic file (type png)
+
+<use height_staggered_explicit_spike.png>
+Package pdftex.def Info: height_staggered_explicit_spike.png used on input line
+ 519.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 506--522
+[]$[]$ $[]$ 
+ []
+
+[12 <./velocity_varying_courant_implicit.png> <./height_varying_courant_implici
+t.png> <./velocity_colocated_explicit_spike.png> <./height_colocated_explicit_s
+pike.png> <./velocity_colocated_implicit_spike.png> <./height_colocated_implici
+t_spike.png>] <comparison_with_exact_u.png, id=82, 433.62pt x 289.08pt>
+File: comparison_with_exact_u.png Graphic file (type png)
+
+<use comparison_with_exact_u.png>
+Package pdftex.def Info: comparison_with_exact_u.png used on input line 531.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<comparison_with_exact_h.png, id=83, 433.62pt x 289.08pt>
+File: comparison_with_exact_h.png Graphic file (type png)
+
+<use comparison_with_exact_h.png>
+Package pdftex.def Info: comparison_with_exact_h.png used on input line 539.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 526--542
+[]$[]$ $[]$ 
+ []
+
+<error_in_u.png, id=84, 433.62pt x 289.08pt>
+File: error_in_u.png Graphic file (type png)
+ <use error_in_u.png>
+Package pdftex.def Info: error_in_u.png used on input line 550.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<error_in_h.png, id=85, 433.62pt x 289.08pt>
+File: error_in_h.png Graphic file (type png)
+ <use error_in_h.png>
+Package pdftex.def Info: error_in_h.png used on input line 558.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 545--561
+[]$[]$ $[]$ 
+ []
+
+[13 <./velocity_staggered_explicit_spike.png> <./height_staggered_explicit_spik
+e.png> <./comparison_with_exact_u.png> <./comparison_with_exact_h.png> <./error
+_in_u.png> <./error_in_h.png>] [14] (./Numerical Assignment.aux) ) 
+Here is how much of TeX's memory you used:
+ 5655 strings out of 492995
+ 86618 string characters out of 6132704
+ 163454 words of memory out of 5000000
+ 9107 multiletter control sequences out of 15000+600000
+ 13371 words of font info for 51 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 42i,14n,39p,488b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/te
+xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texl
+ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/20
+17/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2017/texmf-d
+ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on "Numerical Assignment.pdf" (14 pages, 472242 bytes).
+PDF statistics:
+ 139 PDF objects out of 1000 (max. 8388607)
+ 70 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -63,7 +63,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
         
-    return ax1, ax2
+    return fig1, fig2, ax1, ax2
 
 def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 60, nt = 100, xmin = 0, xmax = 1):
     """This function plots the solution of the numerical method for various different courant numbers
@@ -101,7 +101,7 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
         
-    return ax1, ax2
+    return fig1, fig2, ax1, ax2
 
 def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
     """This function compares the solutions of the 4 numerical methods studied for a given initial condition

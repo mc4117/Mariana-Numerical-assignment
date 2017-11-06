@@ -38,23 +38,25 @@ def main():
         ax1.plot(x, u, label = 'u after ' + str(int(i*nt)) + ' timesteps')
         ax2.plot(x, h, label = 'h after ' + str(int(i*nt)) + ' timesteps')
         
-    
+
     # add space between the title and the plot
     #plt.rcParams['axes.titlepad'] = 20 
     # increase the font size
     for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, ax2.xaxis.label, ax2.yaxis.label]):
         item.set_fontsize(15)
     
-    ax1.legend(loc = 'best')
+    ax1.legend(loc = 'best', fontsize = 'medium')
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
-    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
+    #ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
 
-    ax2.legend(loc = 'best')
+    ax2.legend(loc = 'best', fontsize = 'medium')
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
-    ax2.set_title("Height, h, calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
+    #ax2.set_title("Height, h, calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
     
+    fig1.savefig("velocity_colocated_explicit_cosbell.png")
+    fig2.savefig("height_colocated_explicit_cosbell.png")
     
     # This seems to work well but through von-neumann stability analysis we find that this is unstable for c>2
     
@@ -63,14 +65,20 @@ def main():
     
     # plotting for different courant numbers we see this solution is very unstable
     crange = np.linspace(0,3,4)
-    ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
-    ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
-    ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated explicit scheme \n and initial condition of a cos bell curve")
+    fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
+    #ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers for colocated explicit scheme \n with initial condition of a cos bell curve")
+    #ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated explicit scheme \n with initial condition of a cos bell curve")
 
+    fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
+    fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
+    
     # Therefore we try an implict method on a colocated grid which is stable everywhere
-    ax1_implicit_multiplec, ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.implicit_method, crange, colorrange_multic)
-    ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers \n calculated using the colocated implicit scheme \n and initial condition of a cos bell curve")
-    ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers \n calculated using the colocated implicit scheme \n and initial condition of a cos bell curve")
+    fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, nm.implicit_method, crange, colorrange_multic)
+    #ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers for colocated implicit scheme \n with initial condition of a cos bell curve")
+    #ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers for colocated implicit scheme \n with initial condition of cos bell curve")
+    
+    fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
+    fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
     
     # by taking a differnt initial condition it is clear to see that the colocated grid gives unphysical 
     # results for both implicit and explicit methods
@@ -96,31 +104,44 @@ def main():
 
     # plot solution at various time iterations for an explicit method on a colocated grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_A_grid, ax2_A_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, plotparameterrange)
-    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme")
-    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme")
+    fig1_A_grid, fig2_A_grid, ax1_A_grid, ax2_A_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, plotparameterrange)
+    #ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme")
+    #ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme")
+    
+    fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
+    fig2_A_grid.savefig("height_colocated_explicit_spike.png")
+
     
     # plot solution at various time iterations for an implicit method on a colocated grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_implicit, ax2_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.implicit_method, plotparameterrange)
-    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme")
-    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme")
+    fig1_implicit, fig2_implicit, ax1_implicit, ax2_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.implicit_method, plotparameterrange)
+    #ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme")
+    #ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme")
+    
+    fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
+    fig2_implicit.savefig("height_colocated_implicit_spike.png")
     
     # Therefore instead we use a staggered grid
     
     # plot solution at various time iterations for an explicit method on a staggered grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, plotparameterrange, staggered = True)
-    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")
-    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme")
+    fig1_C_grid, fig2_C_grid, ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, plotparameterrange, staggered = True)
+    #ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")
+    #ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme")
+    
+    fig1_C_grid.savefig("velocity_staggered_explicit_spike.png")
+    fig2_C_grid.savefig("height_staggered_explicit_spike.png")
     
     # However a von-neumann stability analysis shows this is unstable for c > 1 therefore try the following semi-implicit method
     
     # plot solution at various time iterations for a semi-implicit method on a staggered grid for the initial condition where u is zero everywhere 
     # and h is zero everywhere apart from one point at the centre where it is one
-    ax1_semi_implicit, ax2_semi_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.semi_implicit_method, plotparameterrange, staggered = True)
-    ax1_semi_implicit.set_title("Velocity, u, calculated using the staggered semi-implicit scheme")
-    ax2_semi_implicit.set_title("Height, h, calculated using the staggered semi-implicit scheme")
+    fig1_semi_implicit, fig2_semi_implicit, ax1_semi_implicit, ax2_semi_implicit = pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.semi_implicit_method, plotparameterrange, staggered = True)
+    #ax1_semi_implicit.set_title("Velocity, u, calculated using the staggered semi-implicit scheme")
+    #ax2_semi_implicit.set_title("Height, h, calculated using the staggered semi-implicit scheme")
+    
+    fig1_semi_implicit.savefig("velocity_staggered_implicit_spike.png")
+    fig2_semi_implicit.savefig("height_staggered_implicit_spike.png")
     
     # Finally we examine the error in the numerical method
     # For the initial solutions used so far it is difficult to find the exact solution.
@@ -164,14 +185,15 @@ def main():
 
     # plot exact solution on plot as well
     ax1_exact.plot(x1, u, c = 'black', linestyle = ':', label = "exact solution")
-    ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
+    #ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n and h is cos(x)")
     ax1_exact.legend(loc = 'best')
 
     ax2_exact.plot(x1, h, c = 'black', linestyle = ':', label = "exact solution")
-    ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere and h is " r"$\cos(x)$" )
-    ax2_exact.legend(loc = 'best')
+    #ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere\n and h is cos(x)")
+    ax2_exact.legend(loc = 'best', fontsize = 'small')
     
-    
+    fig1_exact.savefig("comparison_with_exact_u.png")
+    fig2_exact.savefig("comparison_with_exact_h.png")
     
     # This does not provide much clarity as all the solutions are very close together
     
@@ -179,14 +201,16 @@ def main():
     
     fig1_error, fig2_error, ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
 
-    ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is " r"$\cos(x)$" )
-    ax1_error.legend(loc = 'best')
+    #ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is cos(x)" )
+    ax1_error.legend(loc=9, fontsize = 'small')
 
-    ax2_error.set_title("Squared error in height, h, for the initial condition \n where u is 0 everywhere and h is " r"$\cos(x)$" )
-    ax2_error.legend(loc = 'best')
+    #ax2_error.set_title("Squared error in height, h, for the initial condition \n where u is 0 everywhere and h is cos(x)" )
+    ax2_error.legend(loc = 1, fontsize = 'small')
     
-    fig1_error.savefig("Error in u.png")
-    fig2_error.savefig("Error in h.png")
+    fig1_error.savefig("error_in_u.png")
+    fig2_error.savefig("error_in_h.png")
+    
+    plt.show()
     
 main()
 

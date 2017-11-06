@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt, notitlepage]{report}
+\documentclass[a4paper,12pt, notitlepage]{article}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{listings}
 \usepackage[parfill]{parskip}
@@ -25,7 +25,7 @@
 	
 \maketitle
 \thispagestyle{empty}
-\section*{Defining Shallow Water Equations}
+\section{Defining Shallow Water Equations}
 The shallow water equations are
 \begin{equation}\label{momentumsw}
 \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u} = - 2\Omega \times\mathbf{u} - g\nabla (h + h_{0})
@@ -58,9 +58,9 @@ These equations can be simplified further by assuming there is no rotation and t
 \begin{equation}\label{linearisedsw2}
 \frac{\partial h}{\partial t} = - H \frac{\partial u}{\partial x}.
 \end{equation}
-This report will seek to solve these one-dimensional lineriased shallow water equations numerically.
+This report will seek to solve these one-dimensional lineriased shallow water equations numerically. Note that throughout this report we will assume for simplicity that $u$ and $h$ have periodic boundary conditions.
 
-\section*{Numerical Methods}
+\section{Numerical Methods}
 
 The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple colocated forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location in space on the meshgrid and these schemes are also referred to as A-grid or unstaggered schemes.
 
@@ -136,21 +136,21 @@ A = \left (
 \begin{array}{ccc}
 \begin{array}{ccccc}
 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4} & 0 & 0\\
-0 & 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4} & 0\\
--\frac{c^{2}}{4}& 0 & 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4} 
+0& 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4} & 0\\
+-\frac{c^{2}}{4} & 0& 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4}\\
+\vdots & & \vdots & & \vdots\\
+- \frac{c^{2}}{4} & 0 & 0 & 0 & 0\\
+0 & - \frac{c^{2}}{4} & 0 & 0 & 0\\
 \end{array}
-& \cdots & 
-\begin{array}{l}
-a+b+c+d+e+f+g+h\\
-+i+j+k+l+m+n+o 
-\end{array} \\
-\vdots & \ddots & \vdots\\
-\begin{array}{l}
-a+b+c+d+e+f+g+h\\
-+i+j+k+l+m+n+o 
-\end{array} &
-\cdots & 
+\begin{array}{c}
+\vdots\\ 
+\ddots\\
+\vdots
+\end{array}
 \begin{array}{ccccc}
+0 & 0 & 0 & - \frac{c^{2}}{4} & 0\\
+0 & 0 & 0 & 0 & - \frac{c^{2}}{4}\\
+\vdots & & \vdots & & \vdots\\
 -\frac{c^{2}}{4}& 0 & 1 + \frac{c^{2}}{2} & 0 & -\frac{c^{2}}{4} \\
 0 & -\frac{c^{2}}{4} & 0 & 1 + \frac{c^{2}}{2} & 0\\
 0 & 0 & -\frac{c^{2}}{4}& 0 & 1 + \frac{c^{2}}{2}
@@ -158,7 +158,12 @@ a+b+c+d+e+f+g+h\\
 \end{array}
 \right )
 \]
-where $c$ is the courant number as before. We then rewrite the scheme (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
+
+where $c$ is the courant number as before. 
+
+Note that here and throughout this report we are assuming periodic boundary conditions and hence that $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N X N$. 
+
+We then rewrite the scheme (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
 \begin{equation}
 x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = h_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{H}{g}}(u_{j+1}^{(n)} - u_{j-1}^{(n)})
 \end{equation}
@@ -168,7 +173,6 @@ x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac
 \end{equation}
 if solving for $u$.
 
-Note that here and throughout this report we are assuming periodic boundary conditions and hence that $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{ujn+1}) and
 \begin{equation}
@@ -266,20 +270,20 @@ A = \left (
 \begin{array}{ccc}
 \begin{array}{ccc}
 1 + \frac{c^{2}}{2} & -\frac{c^{2}}{4} & 0\\
--\frac{c^{2}}{4}& 1 + \frac{c^{2}}{2} & -\frac{c^{2}}{4} 
+-\frac{c^{2}}{4}& 1 + \frac{c^{2}}{2} & -\frac{c^{2}}{4} \\
+\vdots & \vdots & \vdots\\
+0 & 0  & 0 \\
+- \frac{c^{2}}{4}  & 0  & 0 
 \end{array}
-& \cdots & 
-\begin{array}{l}
-a+b+c+d+e+f+g+h\\
-+i+j+k+l+m+n+o 
-\end{array} \\
-\vdots & \ddots & \vdots\\
-\begin{array}{l}
-a+b+c+d+e+f+g+h\\
-+i+j+k+l+m+n+o 
-\end{array} &
-\cdots & 
+\begin{array}{c}
+\vdots\\ 
+\ddots\\
+\vdots
+\end{array}
 \begin{array}{ccc}
+0  & 0  &  - \frac{c^{2}}{4}\\
+0  & 0& 0\\
+\vdots & \vdots & \vdots\\
 -\frac{c^{2}}{4}& 1 + \frac{c^{2}}{2} & -\frac{c^{2}}{4} \\
 0 & -\frac{c^{2}}{4} & 1 + \frac{c^{2}}{2}
 \end{array}
@@ -287,6 +291,8 @@ a+b+c+d+e+f+g+h\\
 \right )
 \]
 where $c$ is the courant number as before. 
+
+(Note as before we are assuming periodic boundary conditions and hence that $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N X N$.)
 
 We then rewrite the scheme (\ref{semiimplicit1}) and (\ref{semiimplicit2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
 \begin{equation}
@@ -327,57 +333,59 @@ As with the previous staggered grid scheme, this solution is still dispersive. T
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\textwidth]{dispersion_graph.png}
+	\includegraphics[width=0.7\textwidth]{dispersion_relations.png}
 	\caption{Postive branch of dispersion relation $\omega$ for analytic solution and numerical schemes. Note that as in \cite{MPE textbook}, we have used $c=0.4$ and $\sqrt{gH} = 1$.} \label{dispersionfigure}
 \end{figure}
 
-\section*{Methodology to test Numerical Methods}
-
+\section{Methodology to test Numerical Methods}
 In order to test the properties of the Numerical methods outlined in the above section we have devised a series of tests.
 
-To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the colocated forward-backward explicit scheme.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{initial_condition_cosbell.png}
-	\caption{Initial condition such that $u$ is zero everywhere and $h$ has a bump in the centre and is surrounded by zero either side} \label{initialconditioncosbell}
-\end{figure}
-
-\subsection*{Test 1}
-Test to see if at courant numbers higher than 2 this colocated forward-backward explicit scheme is indeed unstable as the Von-Neumann stability analysis suggests.
-
-\subsection* {Test 2}
-Test to see if by comparison for high courant numbers the colocated forward-backward implicit scheme is in fact stable, as the Von-Neumann stability analysis suggests.
-
-
+\renewcommand\theContinuedFloat{\alph{ContinuedFloat}}
 \begin{figure}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat*
-		\centering
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{initial_condition_cosbell.png}
+		\caption{\label{initialconditioncosbell}Initial condition such that $u$ is zero everywhere and $h$ has a bump in the centre and is surrounded by zero either side} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{initial_condition_spike.png}
 		\caption{\label{initialconditionspike}Initial condition such that $u$ is zero everywhere and $h$ is zero everywhere apart from one point at the centre where it is one} 
 	\end{minipage}
-	\begin{minipage}{.5\textwidth}
-		\ContinuedFloat*
-		\centering
-		\captionsetup{width=0.9\textwidth}
-		\captionsetup{justification=centering}
-		\includegraphics[width=\textwidth]{initial_condition_cos.png}
-		\caption{\label{initialconditioncos}Initial condition such that $u$ is zero everywhere and $h$ is $\cos(x)$}
-	\end{minipage}
+	\begin{center}
+		\begin{minipage}{.5\textwidth}
+			\ContinuedFloat
+			%\centering
+			\captionsetup{width=0.9\textwidth}
+			\captionsetup{justification=centering}
+			\includegraphics[width=\textwidth]{initial_condition_cos.png}
+			\caption{\label{initialconditioncos}Initial condition such that $u$ is zero everywhere and $h$ is $\cos(x)$}
+		\end{minipage}
+	\end{center}
 \end{figure}
 
+\subsection{Test 1}
+To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the colocated forward-backward explicit scheme.
 
+\subsection{Test 2}
+We found using Von-Neumann stability analysis the colocated forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we test to see if this is in fact the case.
 
-\subsection*{Test 3}
-When looking at the dispersion relation for the colocated grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the colocated forward-backward explicit scheme.
+\subsection{Test 3}
+We found using Von-Neumann stability analysis the colocated forward-backward implicit scheme is stable for all courant numbers. Therefore we test to see if this is in fact the case.
 
-\subsection*{Test 4}
+\subsection{Test 4}
+When looking at the dispersion relation for the colocated grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the colocated forward-backward explicit scheme and the colocated forward-backward implicit scheme.
+
+\subsection{Test 5}
 Our analysis of the dispersion relations suggests that on a staggered grid the solutions for $u$ and $h$ should be more physical. Therefore we repeat test 3 with the same initial conditions (shown in Figure \ref{initialconditionspike}), but instead using the staggered explicit scheme.
 
-\subsection*{Test 5}
+\subsection{Test 6}
 So far all the comparisons have been about the properties of the schemes themselves. If the initial condition shown in Figure \ref{initialconditioncos} is chosen it is possible to find an analytic solution of the shallow water equations
 \begin{equation}
 u = \sin(x)\sin(t)
@@ -389,8 +397,170 @@ If we choose the interval $[-\pi, \pi]$ then these solutions are periodic.
 
 This last test will look at the error between the solutions produced by the numerical scheme and the analytic solution. It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
 
-\section*{Results}
-\section*{Conclusions}
+\section{Results}
+\subsection{Test 1}
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_colocated_explicit_cosbell.png}
+		\caption{\label{velocity_colocated_explicit_cosbell} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_colocated_explicit_cosbell.png}
+		\caption{\label{height_colocated_explicit_cosbell} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\subsection{Test 2}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_varying_courant_explicit.png}
+		\caption{\label{velocity_varying_courant_explicit} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_varying_courant_explicit.png}
+		\caption{\label{height_varying_courant_explicit} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\subsection{Test 3}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_varying_courant_implicit.png}
+		\caption{\label{velocity_varying_courant_implicit} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_varying_courant_implicit.png}
+		\caption{\label{height_varying_courant_implicit} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\subsection{Test 4}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_colocated_explicit_spike.png}
+		\caption{\label{velocity_colocated_explicit_spike} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_colocated_explicit_spike.png}
+		\caption{\label{height_colocated_explicit_spike} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_colocated_implicit_spike.png}
+		\caption{\label{velocity_colocated_implicit_spike} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_colocated_implicit_spike.png}
+		\caption{\label{height_colocated_implicit_spike} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\subsection{Test 5}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_staggered_explicit_spike.png}
+		\caption{\label{velocity_staggered_explicit_spike} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_staggered_explicit_spike.png}
+		\caption{\label{height_staggered_explicit_spike} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\subsection{Test 6}
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{comparison_with_exact_u.png}
+		\caption{\label{exact velocity} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{comparison_with_exact_h.png}
+		\caption{\label{exact height} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{error_in_u.png}
+		\caption{\label{error_velocity} CAPTION} 
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{error_in_h.png}
+		\caption{\label{error_height} CAPTION} 
+	\end{minipage}
+\end{figure}
+
+\section{Conclusions}
 
 \begin{thebibliography}{9}
 	\addcontentsline{toc}{part}{Bibliography}
