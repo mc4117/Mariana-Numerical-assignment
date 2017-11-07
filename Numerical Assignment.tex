@@ -160,11 +160,11 @@ a+b+c+d+e+f+g+h\\
 \]
 where $c$ is the courant number as before. We then rewrite the scheme (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
 \begin{equation}
-x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = h_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{H}{g}}(u_{j+1}^{(n)} - u_{j-1}^{(n)})
+x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = h_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{H}{g}}(u_{j+1}^{(n)} - u_{j-1}^{(n)})  \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $h$ and
 \begin{equation}
-x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{g}{H}}(h_{j+1}^{(n)} - h_{j-1}^{(n)})
+x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{g}{H}}(h_{j+1}^{(n)} - h_{j-1}^{(n)})  \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $u$.
 

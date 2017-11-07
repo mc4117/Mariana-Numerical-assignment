@@ -121,6 +121,9 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
 
     # construct matrix to solve implicit method matrix equation
     # as matrix constructed is not dependent on time, only needs to be constructed once
+    
+    # for plotting reasons we have chosen to include the point at xmax in the matrix and in the system
+    # hence why the matrix has the following dimensions 
     matrix = np.zeros((nx+1,nx+1))
     
     for i in range(nx+1):    

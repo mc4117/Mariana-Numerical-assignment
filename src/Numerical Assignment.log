@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.19)  6 NOV 2017 16:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.19)  7 NOV 2017 11:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -359,45 +359,67 @@ sy/m/n/12 ^^F [][] \OT1/cmr/m/n/12 + [][] + \OML/cmm/m/it/12 O\OT1/cmr/m/n/12 (
 A\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )[])
  []
 
-[5] [6] <dispersion_relations.png, id=32, 433.62pt x 289.08pt>
+[5]
+Overfull \hbox (4.39891pt too wide) detected at line 298
+\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 h[][]b[] \OT1/cmr/m/n/1
+2 = \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 c[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 h
+[] \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 ) + []\OML/cmm/m/it
+/12 u[] \OT1/cmr/m/n/12 + (1 \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 )\OML/cmm/m
+/it/12 u[] \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 u[]| \OMS/cmsy/m/n/12 8\OML/cmm
+/m/it/12 j \OMS/cmsy/m/n/12 2 \OT1/cmr/m/n/12 [0\OML/cmm/m/it/12 ; N \OMS/cmsy/
+m/n/12 ^^@ \OT1/cmr/m/n/12 1]
+ []
+
+[6]
+Overfull \hbox (9.19357pt too wide) detected at line 302
+\OML/cmm/m/it/12 x[] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 u[][]b[] \OT1/cmr/m/n/1
+2 = \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 c[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 u
+[] \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 u[]\OT1/cmr/m/n/12 ) + []\OML/cmm/m/it
+/12 h[] \OT1/cmr/m/n/12 + (1 \OMS/cmsy/m/n/12 ^^@ []\OT1/cmr/m/n/12 )\OML/cmm/m
+/it/12 h[] \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 h[]| \OMS/cmsy/m/n/12 8\OML/cmm
+/m/it/12 j \OMS/cmsy/m/n/12 2 \OT1/cmr/m/n/12 [0\OML/cmm/m/it/12 ; N \OMS/cmsy/
+m/n/12 ^^@ \OT1/cmr/m/n/12 1]
+ []
+
+[7] <dispersion_relations.png, id=36, 433.62pt x 289.08pt>
 File: dispersion_relations.png Graphic file (type png)
 
 <use dispersion_relations.png>
-Package pdftex.def Info: dispersion_relations.png used on input line 336.
+Package pdftex.def Info: dispersion_relations.png used on input line 338.
 (pdftex.def)             Requested size: 318.66948pt x 212.4558pt.
 
-<initial_condition_cosbell.png, id=34, 433.62pt x 289.08pt>
+<initial_condition_cosbell.png, id=38, 433.62pt x 289.08pt>
 File: initial_condition_cosbell.png Graphic file (type png)
 
 <use initial_condition_cosbell.png>
-Package pdftex.def Info: initial_condition_cosbell.png used on input line 350.
+Package pdftex.def Info: initial_condition_cosbell.png used on input line 352.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-<initial_condition_spike.png, id=35, 433.62pt x 289.08pt>
+<initial_condition_spike.png, id=39, 433.62pt x 289.08pt>
 File: initial_condition_spike.png Graphic file (type png)
 
 <use initial_condition_spike.png>
-Package pdftex.def Info: initial_condition_spike.png used on input line 358.
+Package pdftex.def Info: initial_condition_spike.png used on input line 360.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 345--361
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 347--363
 []$[]$ $[]$ 
  []
 
-<initial_condition_cos.png, id=36, 433.62pt x 289.08pt>
+<initial_condition_cos.png, id=40, 433.62pt x 289.08pt>
 File: initial_condition_cos.png Graphic file (type png)
 
 <use initial_condition_cos.png>
-Package pdftex.def Info: initial_condition_cos.png used on input line 367.
+Package pdftex.def Info: initial_condition_cos.png used on input line 369.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
- [7] [8 <./dispersion_relations.png>] [9 <./initial_condition_cosbell.png> <./i
-nitial_condition_spike.png> <./initial_condition_cos.png>]
-<velocity_colocated_explicit_cosbell.png, id=51, 433.62pt x 289.08pt>
+ [8 <./dispersion_relations.png>] [9 <./initial_condition_cosbell.png> <./initi
+al_condition_spike.png> <./initial_condition_cos.png>] <velocity_colocated_expl
+icit_cosbell.png, id=51, 433.62pt x 289.08pt>
 File: velocity_colocated_explicit_cosbell.png Graphic file (type png)
 
 <use velocity_colocated_explicit_cosbell.png>
 Package pdftex.def Info: velocity_colocated_explicit_cosbell.png used on input 
-line 408.
+line 410.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_colocated_explicit_cosbell.png, id=52, 433.62pt x 289.08pt>
@@ -405,10 +427,10 @@ File: height_colocated_explicit_cosbell.png Graphic file (type png)
 
 <use height_colocated_explicit_cosbell.png>
 Package pdftex.def Info: height_colocated_explicit_cosbell.png used on input li
-ne 416.
+ne 418.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 403--419
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 405--421
 []$[]$ $[]$ 
  []
 
@@ -417,7 +439,7 @@ File: velocity_varying_courant_explicit.png Graphic file (type png)
 
 <use velocity_varying_courant_explicit.png>
 Package pdftex.def Info: velocity_varying_courant_explicit.png used on input li
-ne 429.
+ne 431.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_varying_courant_explicit.png, id=57, 433.62pt x 289.08pt>
@@ -425,10 +447,10 @@ File: height_varying_courant_explicit.png Graphic file (type png)
 
 <use height_varying_courant_explicit.png>
 Package pdftex.def Info: height_varying_courant_explicit.png used on input line
- 437.
+ 439.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 424--440
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 426--442
 []$[]$ $[]$ 
  []
 
@@ -437,7 +459,7 @@ File: velocity_varying_courant_implicit.png Graphic file (type png)
 
 <use velocity_varying_courant_implicit.png>
 Package pdftex.def Info: velocity_varying_courant_implicit.png used on input li
-ne 450.
+ne 452.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_varying_courant_implicit.png, id=59, 433.62pt x 289.08pt>
@@ -445,10 +467,10 @@ File: height_varying_courant_implicit.png Graphic file (type png)
 
 <use height_varying_courant_implicit.png>
 Package pdftex.def Info: height_varying_courant_implicit.png used on input line
- 458.
+ 460.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 445--461
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 447--463
 []$[]$ $[]$ 
  []
 
@@ -460,7 +482,7 @@ File: velocity_colocated_explicit_spike.png Graphic file (type png)
 
 <use velocity_colocated_explicit_spike.png>
 Package pdftex.def Info: velocity_colocated_explicit_spike.png used on input li
-ne 471.
+ne 473.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_colocated_explicit_spike.png, id=68, 433.62pt x 289.08pt>
@@ -468,10 +490,10 @@ File: height_colocated_explicit_spike.png Graphic file (type png)
 
 <use height_colocated_explicit_spike.png>
 Package pdftex.def Info: height_colocated_explicit_spike.png used on input line
- 479.
+ 481.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 466--482
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 468--484
 []$[]$ $[]$ 
  []
 
@@ -480,7 +502,7 @@ File: velocity_colocated_implicit_spike.png Graphic file (type png)
 
 <use velocity_colocated_implicit_spike.png>
 Package pdftex.def Info: velocity_colocated_implicit_spike.png used on input li
-ne 490.
+ne 492.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_colocated_implicit_spike.png, id=70, 433.62pt x 289.08pt>
@@ -488,10 +510,10 @@ File: height_colocated_implicit_spike.png Graphic file (type png)
 
 <use height_colocated_implicit_spike.png>
 Package pdftex.def Info: height_colocated_implicit_spike.png used on input line
- 498.
+ 500.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 485--501
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 487--503
 []$[]$ $[]$ 
  []
 
@@ -500,7 +522,7 @@ File: velocity_staggered_explicit_spike.png Graphic file (type png)
 
 <use velocity_staggered_explicit_spike.png>
 Package pdftex.def Info: velocity_staggered_explicit_spike.png used on input li
-ne 511.
+ne 513.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_staggered_explicit_spike.png, id=72, 433.62pt x 289.08pt>
@@ -508,10 +530,10 @@ File: height_staggered_explicit_spike.png Graphic file (type png)
 
 <use height_staggered_explicit_spike.png>
 Package pdftex.def Info: height_staggered_explicit_spike.png used on input line
- 519.
+ 521.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 506--522
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 508--524
 []$[]$ $[]$ 
  []
 
@@ -522,33 +544,33 @@ t_spike.png>] <comparison_with_exact_u.png, id=82, 433.62pt x 289.08pt>
 File: comparison_with_exact_u.png Graphic file (type png)
 
 <use comparison_with_exact_u.png>
-Package pdftex.def Info: comparison_with_exact_u.png used on input line 531.
+Package pdftex.def Info: comparison_with_exact_u.png used on input line 533.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <comparison_with_exact_h.png, id=83, 433.62pt x 289.08pt>
 File: comparison_with_exact_h.png Graphic file (type png)
 
 <use comparison_with_exact_h.png>
-Package pdftex.def Info: comparison_with_exact_h.png used on input line 539.
+Package pdftex.def Info: comparison_with_exact_h.png used on input line 541.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 526--542
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 528--544
 []$[]$ $[]$ 
  []
 
 <error_in_u.png, id=84, 433.62pt x 289.08pt>
 File: error_in_u.png Graphic file (type png)
  <use error_in_u.png>
-Package pdftex.def Info: error_in_u.png used on input line 550.
+Package pdftex.def Info: error_in_u.png used on input line 552.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <error_in_h.png, id=85, 433.62pt x 289.08pt>
 File: error_in_h.png Graphic file (type png)
  <use error_in_h.png>
-Package pdftex.def Info: error_in_h.png used on input line 558.
+Package pdftex.def Info: error_in_h.png used on input line 560.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 545--561
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 547--563
 []$[]$ $[]$ 
  []
 
@@ -576,7 +598,7 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2017/texmf-d
 ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "Numerical Assignment.pdf" (14 pages, 472242 bytes).
+Output written on "Numerical Assignment.pdf" (14 pages, 472189 bytes).
 PDF statistics:
  139 PDF objects out of 1000 (max. 8388607)
  70 compressed objects within 1 object stream

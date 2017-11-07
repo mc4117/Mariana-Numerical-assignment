@@ -161,17 +161,19 @@ A = \left (
 
 where $c$ is the courant number as before. 
 
-Note that here and throughout this report we are assuming periodic boundary conditions and hence that $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N X N$. 
-
 We then rewrite the scheme (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
 \begin{equation}
-x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = h_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{H}{g}}(u_{j+1}^{(n)} - u_{j-1}^{(n)})
+x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = h_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{H}{g}}(u_{j+1}^{(n)} - u_{j-1}^{(n)}) \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $h$ and
 \begin{equation}
-x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{g}{H}}(h_{j+1}^{(n)} - h_{j-1}^{(n)})
+x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac{g}{H}}(h_{j+1}^{(n)} - h_{j-1}^{(n)}) \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $u$.
+
+Note that the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$. 
+
+Furthermore, here and throughout this report we are assuming periodic boundary conditions and hence that $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$. 
 
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{ujn+1}) and
@@ -292,17 +294,19 @@ A = \left (
 \]
 where $c$ is the courant number as before. 
 
-(Note as before we are assuming periodic boundary conditions and hence that $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N X N$.)
-
-We then rewrite the scheme (\ref{semiimplicit1}) and (\ref{semiimplicit2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$ where 
+We then rewrite the scheme (\ref{semiimplicit1}) and (\ref{semiimplicit2}) as the matrix equation $A \mathbf{x} = \mathbf{b}$.
 \begin{equation}
-x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{g}{H}(h_{j + 1}^{(n)} - h_{j}^{n}) + \frac{c^{2}}{4} u_{j + \frac{3}{2}}^{(n)} + (1 - \frac{c^{2}}{2})u_{j + \frac{1}{2}}^{(n)} + \frac{c^{2}}{4} u_{j - \frac{1}{2}}^{(n)}
+x_{j} = h_{j}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{g}{H}(h_{j + 1}^{(n)} - h_{j}^{n}) + \frac{c^{2}}{4} u_{j + \frac{3}{2}}^{(n)} + (1 - \frac{c^{2}}{2})u_{j + \frac{1}{2}}^{(n)} + \frac{c^{2}}{4} u_{j - \frac{1}{2}}^{(n)} \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $h$ and
 \begin{equation}
-x_{j} = u_{j+ \frac{1}{2}}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{H}{g}(u_{j + \frac{1}{2}}^{(n)} - u_{j - \frac{1}{2}}^{n}) + \frac{c^{2}}{4} h_{j + 1}^{(n)} + (1 - \frac{c^{2}}{2})h_{j}^{(n)} + \frac{c^{2}}{4} h_{j - 1}^{(n)}
+x_{j} = u_{j+ \frac{1}{2}}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{H}{g}(u_{j + \frac{1}{2}}^{(n)} - u_{j - \frac{1}{2}}^{n}) + \frac{c^{2}}{4} h_{j + 1}^{(n)} + (1 - \frac{c^{2}}{2})h_{j}^{(n)} + \frac{c^{2}}{4} h_{j - 1}^{(n)} \tab[1cm] \forall j \in [0, N-1]
 \end{equation}
 if solving for $u$.
+
+Note that the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$.
+
+Furthermore as before we have assumed periodic boundary conditions and hence that $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. 
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{uj+1/2n}) and (\ref{uj+1/2n+1}) and
 \begin{equation}
