@@ -30,12 +30,11 @@ def h_cosbell(j):
     return y
 
 
-def initialconditions_spike(nx, nt, xmin = 0, xmax = 1, plot = True):
+def initialconditions_spike(nx, xmin = 0, xmax = 1, plot = True):
     """
     xmin: minimum value of x on grid
     xmax: maximum value of x on grid
     nx: number of space steps
-    nt: number of time steps
     plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
     """
     x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary for plot but in reality h[0] and h[nx] are equal
@@ -70,12 +69,11 @@ def initialconditions_spike(nx, nt, xmin = 0, xmax = 1, plot = True):
 
 
 
-def initialconditions_cosbell(nx, nt, xmin = 0, xmax = 1, plot = True):
+def initialconditions_cosbell(nx, xmin = 0, xmax = 1, plot = True):
     """
     xmin: minimum value of x on grid
     xmax: maximum value of x on grid
     nx: number of space steps
-    nt: number of time steps
     plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
     """
     x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
@@ -108,12 +106,11 @@ def initialconditions_cosbell(nx, nt, xmin = 0, xmax = 1, plot = True):
         fig1.show()
     return initialu, initialh, x
 
-def initialconditions_cos(nx, nt, xmin = 0, xmax = 1, plot = True):
+def initialconditions_cos(nx, xmin = 0, xmax = 1, plot = True):
     """
     xmin: minimum value of x on grid
     xmax: maximum value of x on grid
     nx: number of space steps
-    nt: number of time steps
     plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
     """
     x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
@@ -137,7 +134,7 @@ def initialconditions_cos(nx, nt, xmin = 0, xmax = 1, plot = True):
         ax1.set_xlabel("x")
         #ax1.set_title("Initital Condition where h is cos(x)")
         ax1.set_xlim = ([xmin, xmax])
-        ax1.set_ylim([-0.1, 1.1])
+        ax1.set_ylim([-1.1, 1.1])
         
         # add space between the title and the plot
         #plt.rcParams['axes.titlepad'] = 20 

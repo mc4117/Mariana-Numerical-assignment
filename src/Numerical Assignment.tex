@@ -62,7 +62,7 @@ This report will seek to solve these one-dimensional lineriased shallow water eq
 
 \section{Numerical Methods}
 
-The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple colocated forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location in space on the meshgrid and these schemes are also referred to as A-grid or unstaggered schemes.
+The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple co-located forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location in space on the meshgrid and these schemes are also referred to as A-grid or unstaggered schemes.
 
 This scheme can be written as 
 \begin{equation} \label{FTCSAgrid}
@@ -121,7 +121,7 @@ Using the result from \cite{MPE textbook},
 assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is plotted in Figure \ref{dispersionfigure} and compared with the dispersion relation of the analytical solution. (The dispersion relation of the analytical solution $\omega = k\sqrt{gH}$ is found by substituting the wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}) into (\ref{linearisedsw1}) and (\ref{linearisedsw2})).
 
 
-However, we would like to have a method that was stable for all courant numbers. Therefore another method we can use is an implicit method on a colocated grid. As in \cite{MPE textbook}, we look at the forward in time for both $u$ and $h$ and centred in space colocated scheme:
+However, we would like to have a method that was stable for all courant numbers. Therefore another method we can use is an implicit method on a co-located grid. As in \cite{MPE textbook}, we look at the forward in time for both $u$ and $h$ and centred in space co-located scheme:
 \begin{equation} \label{FTimplicitAgrid1}
 \frac{u_{j}^{(n+1)} - u_{j}^{(n)}}{\Delta t} = -g \frac{h_{j+1}^{(n+1)} - h_{j-1}^{(n+1)}}{2\Delta x}
 \end{equation}
@@ -184,7 +184,7 @@ Substituting this into equation (\ref{FTimplicitAgrid1}) we find that
 \begin{equation}
 \frac{\partial u_{j}^{(n)}}{\partial t} + O(\Delta t) = - g \frac{\partial h_{j}^{(n)}}{\partial x} + O((\Delta x)^{2}).
 \end{equation}
-Therefore the scheme is first order accurate in time and second order accurate in space as with the explicit method on the colocated grid. (As before a similar result can be obtained by substituting in to (\ref{FTimplicitAgrid2})).
+Therefore the scheme is first order accurate in time and second order accurate in space as with the explicit method on the co-located grid. (As before a similar result can be obtained by substituting in to (\ref{FTimplicitAgrid2})).
 
 In order to find where this method is stable, we use von-neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) we find
 \begin{equation}
@@ -333,7 +333,7 @@ Using (\ref{frequency}) we can find the dispersion relation
 \end{equation}
 assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. 
 
-As with the previous staggered grid scheme, this solution is still dispersive. The dispersion relation for the semi-implicit staggered scheme diverges more from the analytic solution than the explicit staggered scheme but it is still significantly better than either of the colocated schemes. 
+As with the previous staggered grid scheme, this solution is still dispersive. The dispersion relation for the semi-implicit staggered scheme diverges more from the analytic solution than the explicit staggered scheme but it is still significantly better than either of the co-located schemes. 
 
 \begin{figure}
 	\centering
@@ -352,7 +352,7 @@ In order to test the properties of the Numerical methods outlined in the above s
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{initial_condition_cosbell.png}
-		\caption{\label{initialconditioncosbell}Initial condition such that $u$ is zero everywhere and $h$ has a bump in the centre and is surrounded by zero either side} 
+		\caption{\label{initialconditioncosbell}Initial condition such that $u$ is zero everywhere and $h$ has a bump in the centre with zero either side (hereafter referred to as cosbell)} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -375,16 +375,16 @@ In order to test the properties of the Numerical methods outlined in the above s
 \end{figure}
 
 \subsection{Test 1}
-To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the colocated forward-backward explicit scheme.
+To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the co-located forward-backward explicit scheme.
 
 \subsection{Test 2}
-We found using Von-Neumann stability analysis the colocated forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we test to see if this is in fact the case.
+We found using Von-Neumann stability analysis the co-located forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we test to see if this is in fact the case.
 
 \subsection{Test 3}
-We found using Von-Neumann stability analysis the colocated forward-backward implicit scheme is stable for all courant numbers. Therefore we test to see if this is in fact the case.
+We found using Von-Neumann stability analysis the co-located forward-backward implicit scheme is stable for all courant numbers. Therefore we test to see if this is in fact the case.
 
 \subsection{Test 4}
-When looking at the dispersion relation for the colocated grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the colocated forward-backward explicit scheme and the colocated forward-backward implicit scheme.
+When looking at the dispersion relation for the co-located grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the co-located forward-backward explicit scheme and the co-located forward-backward implicit scheme.
 
 \subsection{Test 5}
 Our analysis of the dispersion relations suggests that on a staggered grid the solutions for $u$ and $h$ should be more physical. Therefore we repeat test 3 with the same initial conditions (shown in Figure \ref{initialconditionspike}), but instead using the staggered explicit scheme.
@@ -399,9 +399,22 @@ h = \cos(x)\cos(t).
 \end{equation}
 If we choose the interval $[-\pi, \pi]$ then these solutions are periodic.
 
-This last test will look at the error between the solutions produced by the numerical scheme and the analytic solution. It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
+This test will look at the error between the solutions produced by the numerical scheme and the analytic solution. It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
+
+\subsection{Test 7}
+Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
 
 \section{Results}
+For all the following results, unless otherwise explicitily stated, assume the domain used was $0 \leq x \leq 1$ and that the following parameters were used:
+
+\begin{eqnarray}
+c & = & 0.1\\
+H & = & 1\\
+g & = & 1\\
+nx & = & 60\\
+nt & = & 100
+\end{eqnarray}
+where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the gravitational acceleration constant, $nx$ is the number of space-steps in the meshgrid and $nt$ is the number of time-steps.
 \subsection{Test 1}
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
@@ -410,7 +423,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_explicit_cosbell.png}
-		\caption{\label{velocity_colocated_explicit_cosbell} CAPTION} 
+		\caption{\label{velocity_colocated_explicit_cosbell} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}). Here $c$ = } 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -418,7 +431,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_colocated_explicit_cosbell.png}
-		\caption{\label{height_colocated_explicit_cosbell} CAPTION} 
+		\caption{\label{height_colocated_explicit_cosbell}    Height at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}).} 
 	\end{minipage}
 \end{figure}
 
@@ -431,7 +444,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_varying_courant_explicit.png}
-		\caption{\label{velocity_varying_courant_explicit} CAPTION} 
+		\caption{\label{velocity_varying_courant_explicit} Velocity for varying courant numbers for the co-located explicit method} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -439,7 +452,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_varying_courant_explicit.png}
-		\caption{\label{height_varying_courant_explicit} CAPTION} 
+		\caption{\label{height_varying_courant_explicit} Height for varying courant numbers for the co-located explicit method} 
 	\end{minipage}
 \end{figure}
 
@@ -452,7 +465,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_varying_courant_implicit.png}
-		\caption{\label{velocity_varying_courant_implicit} CAPTION} 
+		\caption{\label{velocity_varying_courant_implicit} Velocity for varying courant numbers for the co-located implicit method} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -460,7 +473,7 @@ This last test will look at the error between the solutions produced by the nume
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_varying_courant_implicit.png}
-		\caption{\label{height_varying_courant_implicit} CAPTION} 
+		\caption{\label{height_varying_courant_implicit} Height for varying courant numbers for the co-located implicit method} 
 	\end{minipage}
 \end{figure}
 
@@ -563,6 +576,27 @@ This last test will look at the error between the solutions produced by the nume
 		\caption{\label{error_height} CAPTION} 
 	\end{minipage}
 \end{figure}
+
+\subsection{Test 7}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c | c|} 
+		\hline
+		\textbf{Numerical Scheme} & \textbf{Time (3sf)}  \\
+		\hline
+		Co-located Explicit & 2.48 s \\ 
+		\hline
+	    Staggered Explicit & 2.52 s \\
+		\hline
+		Co-located  Implicit & 5.06 s \\
+		\hline
+		Staggered Semi-implicit & 57.9 s \\
+		\hline
+	\end{tabular}
+\caption{Time taken for each numerical scheme to run for the initial condition that $h$ is $\cos(x)$ and $u$ is $0$ (as shown in Figure \ref{initialconditioncos}) and the number of space steps is 1000 and number of time steps is 1000.}
+\label{timingtable}
+\end{table}
 
 \section{Conclusions}
 

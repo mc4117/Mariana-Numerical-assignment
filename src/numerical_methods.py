@@ -23,7 +23,7 @@ def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     
     
     # set initial conditions
-    initialu, initialh, x = initialconditions(nx,nt, xmin, xmax, plot = False)
+    initialu, initialh, x = initialconditions(nx, xmin, xmax, plot = False)
     
     # initialize the system
     uOld = initialu.copy()
@@ -36,14 +36,14 @@ def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     for it in range(int(nt)): 
         for y in range(nx):
             # forward in time and centred in space
-            u[y%nx] = uOld[y%nx] - (c*math.sqrt(g/H)/2)*(hOld[(y+1)%nx] - hOld[(y-1)%nx])
+            u[y] = uOld[y] - (c*math.sqrt(g/H)/2)*(hOld[(y+1)%nx] - hOld[(y-1)%nx])
         for y in range(nx):    
             # backward in time and centred in space
-            h[y%nx] = hOld[y%nx] - (c*math.sqrt(H/g)/2)*(u[(y+1)%nx] - u[(y-1)%nx]) # backward in time and centred in space
-            
+            h[y] = hOld[y] - (c*math.sqrt(H/g)/2)*(u[(y+1)%nx] - u[(y-1)%nx]) # backward in time and centred in space 
+        
         # as would like to plot from 0 to 1 set the value of u and h at end point using periodic boundary conditions
-        u[nx] = u[0].copy()
-        h[nx] = h[0].copy()
+        u[nx] = u[0]
+        h[nx] = h[0]
         
         # copy u and h for next iteration
         hOld = h.copy()
@@ -63,7 +63,7 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     c:                  courant number (c = root(gH)dt/dx)
     """
     # set initial conditions
-    initialu, initialh, x = initialconditions(nx,nt, xmin, xmax, plot = False)
+    initialu, initialh, x = initialconditions(nx, xmin, xmax, plot = False)
     
     
     uhalf = np.zeros(len(initialu))
@@ -84,16 +84,14 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     for it in range(int(nt)): 
         for y in range(nx):
             # forward in time and centred in space
-            uhalf[(y)%nx] = uOld[y%nx] - (c*math.sqrt(g/H))*(hOld[(y + 1)%nx] - hOld[y%nx]) 
+            uhalf[y] = uOld[y] - (c*math.sqrt(g/H))*(hOld[(y + 1)%nx] - hOld[y%nx]) 
             # backward in time and centred in space
+            h_cgrid[y] = hOld[y] - (c*math.sqrt(g/H))*(uhalf[y%nx] - uhalf[(y-1)%nx]) 
 
-            h_cgrid[y%nx] = hOld[y%nx] - (c*math.sqrt(g/H))*(uhalf[y%nx] - uhalf[(y-1)%nx]) 
-
-        
         # as would like to plot from 0 to 1 set the value of u and h at end point using periodic boundary conditions
         # however as the grid is staggered uhalf[nx] = u_{nx + 1/2}. Therefore when plot uhalf need to remove last point
-        uhalf[nx] = uhalf[0].copy()
-        h_cgrid[nx] = h_cgrid[0].copy()
+        uhalf[nx] = uhalf[0]
+        h_cgrid[nx] = h_cgrid[0]
         
         # copy u and h for next iteration
         hOld = h_cgrid.copy()
@@ -115,17 +113,18 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     """
     
     # set initial conditions
-    initialu, initialh, x = initialconditions(nx, nt, xmin, xmax, plot = False)
+    initialu, initialh, x = initialconditions(nx, xmin, xmax, plot = False)
     uOld = initialu.copy()
     hOld = initialh.copy()
 
     # construct matrix to solve implicit method matrix equation
     # as matrix constructed is not dependent on time, only needs to be constructed once
     
-    # for plotting reasons we have chosen to include the point at xmax in the matrix and in the system
-    # hence why the matrix has the following dimensions 
-    matrix = np.zeros((nx+1,nx+1))
+    # for plotting reasons we have chosen to include the end point in the scheme
+    # hence the matrix has the following dimensions: 
+    matrix = np.zeros((nx+ 1,nx + 1))
     
+    # because of the way the matrix has been constructed with a modulus operator we still have periodic boundaries:
     for i in range(nx+1):    
         matrix[i,i] = 1 + c**2/2
         matrix[i, (i-2)%nx] = -(c**2)/4
@@ -140,13 +139,15 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
         uvector = np.zeros_like(uOld)
         for i in range(nx+1):
             uvector[i] = math.sqrt(H/g)*(c/2)*(uOld[(i+1)%nx] - uOld[(i-1)%nx])
+        # note here that uvector[nx] = uvector[0] because of modulus operator so periodic boundaries are still kept   
             
         # solve matrix equation to find h
         h = np.dot(inverse, (hOld - uvector))
     
         hvector = np.zeros_like(hOld)
-        for i in range(nx+1):
+        for i in range(nx):
             hvector[i] = math.sqrt(g/H)*(c/2)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
+        # note here that hvector[nx] = hvector[0] because of modulus operator so periodic boundaries are still kept   
 
         # solve matrix equation to find u
         u = np.dot(inverse, (uOld - hvector))
@@ -171,7 +172,7 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
     """    
     
     # set initial conditions
-    initialu, initialh, x = initialconditions(nx,nt, xmin, xmax, plot = False)
+    initialu, initialh, x = initialconditions(nx, xmin, xmax, plot = False)
     
     uhalf = np.zeros(len(initialu))
     
@@ -187,9 +188,11 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
     uOld = uhalf.copy()
     hOld = initialh.copy()
     
-    # construct matrix to solve implicit method matrix equation
-    # as matrix constructed is not dependent on time, only needs to be constructed once
-    matrix = np.zeros((nx+1,nx+1))
+    # for plotting reasons we have chosen to include the end point in the scheme
+    # hence the matrix has the following dimensions: 
+    matrix = np.zeros((nx+ 1,nx + 1))
+    
+    # because of the way the matrix has been constructed with a modulus operator we still have periodic boundaries:
 
     for i in range(nx+1):    
         matrix[i,i] = 1 + c**2/2
@@ -202,6 +205,7 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
         semi_implicit_uvector = np.zeros_like(uOld)
         for i in range(nx + 1):
             semi_implicit_uvector[i] = -math.sqrt(g/H)*c*(hOld[(i + 1)%nx] - hOld[i%nx]) + ((c**2)/4)*uOld[(i+1)%nx] + (1-(c**2)/2)*uOld[i%nx] + ((c**2)/4)*uOld[(i-1)%nx]
+        # note here that semi_implicit_uvector[nx] = semi_implicit_uvector[0] because of modulus operator so periodic boundaries are still kept
         
         # solve matrix equation to find u
         u_semi_implicit = np.linalg.solve(matrix, semi_implicit_uvector)
@@ -209,6 +213,7 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
         semi_implicit_hvector = np.zeros_like(hOld)
         for i in range(nx + 1):
             semi_implicit_hvector[i] = -math.sqrt(H/g)*c*(uOld[i%nx] - uOld[(i-1)%nx]) + ((c**2)/4)*hOld[(i+1)%nx] + (1-(c**2)/2)*hOld[(i)%nx] + ((c**2)/4)*hOld[(i-1)%nx]
+        # note here that semi_implicit_hvector[nx] = semi_implicit_hvector[0] because of modulus operator so periodic boundaries are still kept
         
         # solve matrix equation to find h
         h_semi_implicit = np.linalg.solve(matrix, semi_implicit_hvector)

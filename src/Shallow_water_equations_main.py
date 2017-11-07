@@ -19,12 +19,12 @@ def main():
     nx = 60  # number of points from x = xmin to x = xmax
     xmin = 0 # minimum value of x on grid
     xmax = 1 # maximum value of x on grid
-    nt = 100 # number of time steps in 1 second
+    nt = 100 # number of time steps
     
     # First we attempt a simple initial condition with a colocated forward-backward scheme
     
     # plot initial conditions where u is zero everywhere and h has a bump in the centre and is surrounded by zero either side
-    ic.initialconditions_cosbell(nx,nt, xmin, xmax, plot = True)
+    initialu, initialh, initialx = ic.initialconditions_cosbell(nx, xmin, xmax, plot = True)
 
     # plot solution at various time iterations for an explicit method on a colocated grid for the initial condition where u is zero everywhere 
     # and h has a bump in the centre and is surrounded by zero either side
@@ -32,9 +32,13 @@ def main():
     fig1, ax1 = plt.subplots()
     fig2, ax2 = plt.subplots()
     
+    # first plot initial conditions
+    ax1.plot(initialx, initialu, label = 'initial u')
+    ax2.plot(initialx, initialh, label = 'initial h')
+    
     timerange = np.linspace(0, 2, 4)
-    for i in timerange:
-        u, h, x = nm.A_grid_explicit(ic.initialconditions_cosbell, nx, i*nt)
+    for i in timerange[1:]:
+        u, h, x = nm.A_grid_explicit(ic.initialconditions_cosbell, nx, i*nt,  H = 1, g = 1, c = 0.1)
         ax1.plot(x, u, label = 'u after ' + str(int(i*nt)) + ' timesteps')
         ax2.plot(x, h, label = 'h after ' + str(int(i*nt)) + ' timesteps')
         
@@ -85,7 +89,7 @@ def main():
 
     # plot initial conditions where u is zero everywhere and h is zero everywhere apart from one point at the centre where it is one
     
-    ic.initialconditions_spike(nx, nt)
+    ic.initialconditions_spike(nx)
     
     # In order to see the phenomenon more clearly we use a slightly coarser grid than before
     
@@ -147,16 +151,16 @@ def main():
     # For the initial solutions used so far it is difficult to find the exact solution.
     # Therefore we use the following initial condition
     
-    xmin = -math.pi
-    xmax = math.pi
+    xmin_1 = -math.pi
+    xmax_1 = math.pi
     
     # plot initial condition where u is zero everywhere and h is cos(x)
-    ic.initialconditions_cos(nx, nt, xmin, xmax)
+    ic.initialconditions_cos(nx, xmin_1, xmax_1)
  
     # set parameters and number of timesteps and space steps on grid
 
-    nx_1 = 100
-    nt_1 = 400
+    nx_1 = 1000
+    nt_1 = 1000
     
     H = 1
     g = 1
@@ -164,10 +168,10 @@ def main():
     
     # results of all 4 methods
     
-    fig1_exact, fig2_exact, ax1_exact, ax2_exact, x1 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin, xmax, H, g, c)
+    fig1_exact, fig2_exact, ax1_exact, ax2_exact, x1 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     # calculate width of spacestep and timestep
-    dx = (xmax - xmin)/nx_1
+    dx = (xmax_1 - xmin_1)/nx_1
     dt = (c*dx)/math.sqrt(g*H)
 
     # constructing exact solution
@@ -199,7 +203,7 @@ def main():
     
     # therefore instead look at the error between the exact solution and the numerical method
     
-    fig1_error, fig2_error, ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin, xmax, H, g, c)
+    fig1_error, fig2_error, ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     #ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
@@ -211,6 +215,15 @@ def main():
     fig2_error.savefig("error_in_h.png")
     
     plt.show()
+    
+    # Finally we would like to compare the computational cost of each scheme by comparing how long each takes to run
+    t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
+
+
+    print('A-grid explicit: ', t1 - t0, 'seconds')
+    print('C-grid explicit: ', t2 - t1, 'seconds')
+    print('A-grid implicit: ', t3 - t2, 'seconds')
+    print('C-grid semi-implicit: ', t4 - t3, 'seconds')
     
 main()
 

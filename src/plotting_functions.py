@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numerical_methods as nm
 import initial_conditions as ic
 import math
-
+import time
 
 
 def plot_multiple_iterations(initialconditions, nx, number_iterations, number_plotted, numerical_method, plotparameterrange, xmin = 0, xmax = 1, staggered = False):
@@ -103,7 +103,7 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
         
     return fig1, fig2, ax1, ax2
 
-def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
+def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1, timing = False):
     """This function compares the solutions of the 4 numerical methods studied for a given initial condition
     Note this function can be used with any initial condition
     initial conditions: function which specifies the initial conditions for the system 
@@ -114,15 +114,22 @@ def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     H:                  mean fluid depth set to 1 unless otherwise specified
     g:                  acceleration due to gravity scaled to 1
     c:                  courant number (c = root(gH)dt/dx)
+    timing:             if this is true then instead of returning the graph 
+                        the function will return the running time for each scheme
     """
     
     
-    # find u and h for each numerical method
+    # find u and h for each numerical method and time how long it takes to solve the scheme
+    t0 = time.time()
     u_A_grid, h_A_grid, x1 = nm.A_grid_explicit(initialconditions, nx, nt, xmin, xmax, H, g, c)
+    t1 = time.time()
     u_C_grid, h_C_grid, x2 = nm.C_grid_explicit(initialconditions, nx, nt, xmin, xmax, H, g, c)
+    t2 = time.time()
     u_implicit, h_implicit, x3 = nm.implicit_method(initialconditions, nx, nt, xmin, xmax, H, g, c)
+    t3 = time.time()
     u_semi_implicit, h_semi_implicit, x4 = nm.semi_implicit_method(initialconditions, nx, nt, xmin, xmax, H, g, c)
-
+    t4 = time.time()
+    
     # plot u found by 4 different methods
     fig1, ax1 = plt.subplots()
     ax1.plot(x1, u_A_grid, c = 'blue', label = "A-grid explicit")
@@ -143,7 +150,10 @@ def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
 
-    return fig1, fig2, ax1, ax2, x1
+    if timing == True:
+        return t0, t1, t2, t3, t4
+    else:
+        return fig1, fig2, ax1, ax2, x1
 
 def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     """This function compares the solutions of the 4 numerical methods studied for the initial condition that u = 0 everywhere 
