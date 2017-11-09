@@ -404,7 +404,7 @@ This test will look at the error between the solutions produced by the numerical
 \subsection{Test 7}
 Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
 
-\section{Results}
+\section{Results}\label{results section}
 For all the following results, unless otherwise explicitily stated, assume the domain used was $0 \leq x \leq 1$ and that the following parameters were used:
 
 \begin{eqnarray}
@@ -423,7 +423,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_explicit_cosbell.png}
-		\caption{\label{velocity_colocated_explicit_cosbell} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}). Here $c$ = } 
+		\caption{\label{velocity_colocated_explicit_cosbell} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}).} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -434,8 +434,9 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\caption{\label{height_colocated_explicit_cosbell}    Height at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}).} 
 	\end{minipage}
 \end{figure}
+In this test we have successfully shown that we can use the co-located explicit schemes to solve the shallow water equations. These solutions seem to make physical sense as in Figure \ref{height_colocated_explicit_cosbell} we can see fluid falling from a peak and then breaking apart over time as we would expect.
 
-\subsection{Test 2}
+\subsection{Test 2}\label{sectiontest2}
 
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
@@ -455,6 +456,8 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\caption{\label{height_varying_courant_explicit} Height for varying courant numbers for the co-located explicit method} 
 	\end{minipage}
 \end{figure}
+
+Figure \ref{velocity_varying_courant_explicit} and Figure \ref{height_varying_courant_explicit} show that for large courant numbers, $u$ and $h$ are very unstable as we expected from the von neumann stability analysis, reaching values of an order of magnitude of $10^{80}$.
 
 \subsection{Test 3}
 
@@ -477,7 +480,9 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 	\end{minipage}
 \end{figure}
 
-\subsection{Test 4}
+By contrast with the co-located explicit method tested in section \ref{sectiontest2}, Figure \ref{velocity_varying_courant_implicit} and Figure \ref{height_varying_courant_implicit} show that for large courant numbers, $u$ and $h$ remain stable as we expected from the von neumann stability analysis.
+
+\subsection{Test 4}\label{subsectiontest4}
 
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
@@ -486,7 +491,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_explicit_spike.png}
-		\caption{\label{velocity_colocated_explicit_spike} CAPTION} 
+		\caption{\label{velocity_colocated_explicit_spike} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -494,7 +499,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_colocated_explicit_spike.png}
-		\caption{\label{height_colocated_explicit_spike} CAPTION} 
+		\caption{\label{height_colocated_explicit_spike} Height at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 \end{figure}
 
@@ -505,7 +510,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_implicit_spike.png}
-		\caption{\label{velocity_colocated_implicit_spike} CAPTION} 
+		\caption{\label{velocity_colocated_implicit_spike} Velocity at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -513,9 +518,13 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_colocated_implicit_spike.png}
-		\caption{\label{height_colocated_implicit_spike} CAPTION} 
+		\caption{\label{height_colocated_implicit_spike} Height at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 \end{figure}
+
+As expected the results shown in Figures \ref{velocity_colocated_explicit_spike}, \ref{height_colocated_explicit_spike}, \ref{velocity_colocated_implicit_spike} and \ref{height_colocated_implicit_spike} are unphysical. The fluid does spread out but it does not go to the next meshpoint, instead skipping this meshpoint out and moving to the next meshpoint along. In Figure \ref{height_colocated_explicit_spike} and {\ref{height_colocated_implicit_spike}, we see that the two points around the central grid point (hereafter referred to as $x_{m}$) never have any height so the fluid passes from $x_{m}$ to $x_{m-2}$ and $x_{m+ 2}$ without passing through $x_{m-1}$ and $x_{m+1}$ which is clearly unphysical. Similarly in Figure \ref{velocity_colocated_explicit_spike} and \ref{velocity_colocated_implicit_spike} there is never any velocity at the gridpoints $x_{m-2}$ and $x_{m+2}$ which is again unphysical. 
+	
+Therefore our hypothesis that the results may be unphysical is true.
 
 \subsection{Test 5}
 
@@ -526,7 +535,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_staggered_explicit_spike.png}
-		\caption{\label{velocity_staggered_explicit_spike} CAPTION} 
+		\caption{\label{velocity_staggered_explicit_spike} Velocity at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -534,9 +543,11 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_staggered_explicit_spike.png}
-		\caption{\label{height_staggered_explicit_spike} CAPTION} 
+		\caption{\label{height_staggered_explicit_spike} Height at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
 	\end{minipage}
 \end{figure}
+
+As expected in contrast to the results in the previous test (\ref{subsectiontest4}), the staggered scheme produces physical results for this initial condition. Figure \ref{height_staggered_explicit_spike} shows that the height spreads out evenly using all grid points. Figure \ref{velocity_staggered_explicit_spike} shows further that the velocity is non-zero at the gridpoints where the wave has so far propagated as we would expect in a physically realistic system.
 
 \subsection{Test 6}
 \begin{figure} [H]
@@ -546,7 +557,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{comparison_with_exact_u.png}
-		\caption{\label{exact velocity} CAPTION} 
+		\caption{\label{exact velocity} Velocity, $u$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -554,7 +565,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{comparison_with_exact_h.png}
-		\caption{\label{exact height} CAPTION} 
+		\caption{\label{exact height} Height, $h$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
 	\end{minipage}
 \end{figure}
 
@@ -565,7 +576,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{error_in_u.png}
-		\caption{\label{error_velocity} CAPTION} 
+		\caption{\label{error_velocity} Error in velocity, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -573,9 +584,11 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{error_in_h.png}
-		\caption{\label{error_height} CAPTION} 
+		\caption{\label{error_height} Error in height, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
 	\end{minipage}
 \end{figure}
+
+
 
 \subsection{Test 7}
 
@@ -599,6 +612,15 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 \end{table}
 
 \section{Conclusions}
+
+From the results listed in Section \ref{results section}, we can conclude the following:
+
+\begin{itemize}
+	\item Staggered grids produce more physically realistic results than co-located grids for certain initial conditions (from Test 4 and Test 5)
+	\item When working with high courant numbers (e.g. if the meshgrid spacing is very fine so $\Delta x$ is small or if $H$ or $\Delta t$ are very large), it is better to choose implicit methods as they are stable for all courant numbers whereas explicit methods can have large instabilities (from Test 2 and Test 3)
+	\item SOME COMMENT ABOUT ERRORS
+	\item When working with small courant numbers, it is better to choose explicit methods as they are much less computationally expensive than implicit methods (from Test 7)
+\end{itemize}
 
 \begin{thebibliography}{9}
 	\addcontentsline{toc}{part}{Bibliography}
