@@ -399,7 +399,9 @@ h = \cos(x)\cos(t).
 \end{equation}
 If we choose the interval $[-\pi, \pi]$ then these solutions are periodic.
 
-This test will look at the error between the solutions produced by the numerical scheme and the analytic solution. It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
+This test will look at the solution errors between the solutions produced by the numerical scheme and the analytic solution. Note these are not the same as the errors calculated before, which are truncation errors. 
+
+%It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
 
 \subsection{Test 7}
 Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
@@ -588,7 +590,24 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 	\end{minipage}
 \end{figure}
 
-
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c | c| c|} 
+		\hline
+		\textbf{Numerical Scheme} & \textbf{Error in u} & \textbf{Error in h}  \\
+		\hline
+		Co-located Explicit & $7.4 \times 10^{-5}$ & 0.0041\\ 
+		\hline
+		Staggered Explicit &  $2.0 \times 10^{-5}$ & 0.0041\\
+		\hline
+		Co-located  Implicit & 0.0027 & 0.0035 \\
+		\hline
+		Staggered Semi-implicit & $1.9 \times 10^{-5}$ & $1.39\times 10 ^{-5}$ \\
+		\hline
+	\end{tabular}
+	\caption{}
+	\label{errortable}
+\end{table}
 
 \subsection{Test 7}
 
@@ -598,13 +617,13 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 		\hline
 		\textbf{Numerical Scheme} & \textbf{Time (3sf)}  \\
 		\hline
-		Co-located Explicit & 2.48 s \\ 
+		Co-located Explicit & 2.07 s \\ 
 		\hline
-	    Staggered Explicit & 2.52 s \\
+	    Staggered Explicit & 1.96 s \\
 		\hline
-		Co-located  Implicit & 5.06 s \\
+		Co-located  Implicit & 3.23 s \\
 		\hline
-		Staggered Semi-implicit & 57.9 s \\
+		Staggered Semi-implicit & 84.5 s \\
 		\hline
 	\end{tabular}
 \caption{Time taken for each numerical scheme to run for the initial condition that $h$ is $\cos(x)$ and $u$ is $0$ (as shown in Figure \ref{initialconditioncos}) and the number of space steps is 1000 and number of time steps is 1000.}

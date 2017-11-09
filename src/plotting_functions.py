@@ -41,7 +41,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         u, h, x = numerical_method(initialconditions, nx, nt = timerange[1+i])
         ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'h after ' + str(int(timerange[1+i])) + ' timesteps')
         if staggered == True:
-            ax1.plot((x + 1/(2*nx))[:-1], u[:-1], c = colorrange[i], ls = linestylerange[i], label = 'u after ' + str(int(timerange[1+i])) + ' timesteps')  
+            ax1.plot((x + (xmax-xmin)/(2*nx))[:-1], u[:-1], c = colorrange[i], ls = linestylerange[i], label = 'u after ' + str(int(timerange[1+i])) + ' timesteps')  
         else:
             ax1.plot(x, u, c = colorrange[i], ls = linestylerange[i], label = 'u after ' + str(int(timerange[1+i])) + ' timesteps')  
     
@@ -65,7 +65,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         
     return fig1, fig2, ax1, ax2
 
-def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 60, nt = 100, xmin = 0, xmax = 1):
+def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 60, nt = 100, xmin = 0, xmax = 1, staggered = False):
     """This function plots the solution of the numerical method for various different courant numbers
 
     initial conditions: function which specifies the initial conditions for the system 
@@ -76,19 +76,28 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
     nt:                 number of time steps
     xmin:               minimum value of x on grid
     xmax:               maximum value of x on grid
+    staggered:          if this value is true then u is plotted on a staggered grid
     """
     # initialize plots
     fig1, ax1 = plt.subplots()
     fig2, ax2 = plt.subplots()
     
+    dx = (xmax - xmin)/nx
+    
         # iterate through different courant numbers and plot results
     for i in range(len(crange[1:])):
         u, h, x = numerical_method(initialconditions, nx, nt, c = crange[i + 1])
-
-        ax1.plot(x, u, c = colorrange[i], label = 'c=' + str(crange[i+1]))
-        ax1.set_xlim([xmin,xmax])
-        ax1.set_xlabel("x")
-        ax1.legend(loc = 'best')
+        
+        if staggered == True:
+            ax1.plot(x + dx/2, u, c = colorrange[i], label = 'c=' + str(crange[i+1]))
+            ax1.set_xlim([xmin,xmax])
+            ax1.set_xlabel("x")
+            ax1.legend(loc = 'best')
+        else:
+            ax1.plot(x, u, c = colorrange[i], label = 'c=' + str(crange[i+1]))
+            ax1.set_xlim([xmin,xmax])
+            ax1.set_xlabel("x")
+            ax1.legend(loc = 'best')
     
         ax2.plot(x, h, c = colorrange[i], label = 'c=' + str(crange[i + 1]))
         ax2.set_xlim([xmin,xmax])
@@ -134,8 +143,8 @@ def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     fig1, ax1 = plt.subplots()
     ax1.plot(x1, u_A_grid, c = 'blue', label = "A-grid explicit")
     ax1.plot(x2, u_C_grid, c = 'green', label = "C-grid explicit")
-    ax1.plot((x3 + 1/(2*nx))[:-1], u_implicit[:-1], c = 'red', label = "A-grid implicit")
-    ax1.plot((x4 + 1/(2*nx))[:-1], u_semi_implicit[:-1], c ='orange', label = "C-grid semi-implicit")
+    ax1.plot((x3 + (xmax - xmin)/(2*nx))[:-1], u_implicit[:-1], c = 'red', label = "A-grid implicit")
+    ax1.plot((x4 + (xmax - xmin)/(2*nx))[:-1], u_semi_implicit[:-1], c ='orange', label = "C-grid semi-implicit")
     
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
@@ -181,29 +190,27 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     
     # construct exact solution on both colocated and staggered grid
     u_A_grid = np.zeros_like(x1)
-    u_C_grid = np.zeros_like(x1[1:])
+    u_C_grid = np.zeros_like(x1)
     h = np.zeros_like(x1)
     
     for i in range(len(x1)):
         u_A_grid[i] = math.sin(x1[i])*math.sin(dt*nt)
         h[i] = math.cos(x1[i])*math.cos(dt*nt)
-        
-    for i in range(len(x1) - 1):
         u_C_grid[i] = math.sin(x1[i]+ dx/2)*math.sin(dt*nt)
     
         
     # find error between exact solution and solution found by numerical method
     error_A_grid_u = (u_A_grid - u_A_grid_explicit)**2
-    error_C_grid_u = (u_C_grid - u_C_grid_explicit[:-1])**2
+    error_C_grid_u = (u_C_grid - u_C_grid_explicit)**2
     error_implicit_u = (u_A_grid - u_implicit)**2
-    error_semi_implicit_u = (u_C_grid - u_semi_implicit[:-1])**2
+    error_semi_implicit_u = (u_C_grid - u_semi_implicit)**2
     
     # plot error in u from 4 different methods
     fig1, ax1 = plt.subplots()
     ax1.plot(x1, error_A_grid_u, c = 'blue', label = "A-grid explicit")
-    ax1.plot(x2[:-1], error_C_grid_u, c = 'green', label = "C-grid explicit")
+    ax1.plot(x2 + dx/2, error_C_grid_u, c = 'green', label = "C-grid explicit")
     ax1.plot(x3, error_implicit_u, c = 'red', label = "A-grid implicit")
-    ax1.plot(x4[:-1], error_semi_implicit_u, c ='orange', label = "C-grid semi-implicit")
+    ax1.plot(x4 + dx/2, error_semi_implicit_u, c ='orange', label = "C-grid semi-implicit")
     
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
@@ -223,4 +230,9 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
     
-    return fig1, fig2, ax1, ax2
+    error_norms_u = [np.linalg.norm(u_A_grid - u_A_grid_explicit), np.linalg.norm(u_C_grid - u_C_grid_explicit), np.linalg.norm(u_A_grid - u_implicit), np.linalg.norm(u_C_grid - u_semi_implicit)]
+
+    error_norms_h = [np.linalg.norm(h - h_A_grid_explicit), np.linalg.norm(h - h_C_grid_explicit), np.linalg.norm(h - h_implicit), np.linalg.norm(h - h_semi_implicit)]
+    
+    return fig1, fig2, ax1, ax2, error_norms_u, error_norms_h
+

@@ -203,7 +203,7 @@ def main():
     
     # therefore instead look at the error between the exact solution and the numerical method
     
-    fig1_error, fig2_error, ax1_error, ax2_error = pltfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
+    fig1_error, fig2_error, ax1_error, ax2_error, error_norms_u, error_norms_h = pltfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     #ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
@@ -215,6 +215,9 @@ def main():
     fig2_error.savefig("error_in_h.png")
     
     plt.show()
+    
+    print(error_norms_u)
+    print(error_norms_h)
     
     # Finally we would like to compare the computational cost of each scheme by comparing how long each takes to run
     t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
