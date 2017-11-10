@@ -406,6 +406,8 @@ This test will look at the solution errors between the solutions produced by the
 \subsection{Test 7}
 Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
 
+We would expect the co-located explicit and co-located staggered schemes to take the same amount of time as the number of floating point operations per iteration of each scheme is the same. The co-located implicit scheme has a higher computational cost than the explicit schemes because it involves one inversion of a matrix which has O($n^{3}$) floating point operations for an $n \times n$ matrix and at each iteration to find $u$ or $h$ a matrix-vector multiplications which has O($n^{2}$) floating point operations for an $n \times n$ matrix. The staggered semi-implicit scheme also involves one matrix inversion and one matrix-vector multiplications at each iteration to find $u$ or $h$, but has the highest computational cost, as constructing $b_{i}$ in the $A_{ij}x_{j} = b_{i}$ matrix equation involves nine floating point operations compared to three floating point operations to construct $b_{i}$ in the co-located implicit scheme.
+
 \section{Results}\label{results section}
 For all the following results, unless otherwise explicitily stated, assume the domain used was $0 \leq x \leq 1$ and that the following parameters were used:
 
@@ -590,6 +592,8 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 	\end{minipage}
 \end{figure}
 
+
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c | c| c|} 
@@ -629,6 +633,8 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 \caption{Time taken for each numerical scheme to run for the initial condition that $h$ is $\cos(x)$ and $u$ is $0$ (as shown in Figure \ref{initialconditioncos}) and the number of space steps is 1000 and number of time steps is 1000.}
 \label{timingtable}
 \end{table}
+
+Table \ref{timingtable} shows as expected that the staggered semi-implict scheme takes the largest amount of time of the four schemes. The co-located explicit and staggered explicit schemes take a similar amount of time as expected as the number of floating point operations per iteration is the same for both schemes. Again as expected he co-located implicit scheme takes slightly longer than the explicit schemes but not as long as the staggered semi-implicit scheme because the construction of the vector $b$ in the matrix equation is simpler for the co-located implicit scheme.
 
 \section{Conclusions}
 
