@@ -21,7 +21,8 @@ c = 0.1
 xmin = -math.pi
 xmax = math.pi
     
-nx_range2 = [20, 40, 60, 80]
+#nx_range2 = [20, 40, 60, 80]
+nx_range2 = [20, 40, 50,52,60,68,70, 80, 100]
 nt_range2 = np.zeros_like(nx_range2).astype('float')
 dx_list = np.zeros_like(nx_range2).astype('float')
 
@@ -36,6 +37,7 @@ for j in range(len(nx_range2)):
 # therefore 
 print(nt_range2)
 nt_range2 = nt_range2.astype('int')    
+print(nt_range2)
 
 
 
