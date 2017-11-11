@@ -5,8 +5,8 @@
 """
 
 import numpy as np
-import math
 from initial_conditions import flat_u 
+from math import sqrt
 
 def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
     """This function simulates the shallow water equations using an explicit method on the colocated scheme
@@ -33,13 +33,13 @@ def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
 
 
     # loop over time steps
-    for it in range(int(nt)): 
+    for it in range(nt): 
         for y in range(nx):
             # forward in time and centred in space
-            u[y] = uOld[y] - (c*math.sqrt(g/H)/2)*(hOld[(y+1)%nx] - hOld[(y-1)%nx])
+            u[y] = uOld[y] - 0.5*c*sqrt(g/H)*(hOld[(y+1)%nx] - hOld[(y-1)%nx])
         for y in range(nx):    
             # backward in time and centred in space
-            h[y] = hOld[y] - (c*math.sqrt(H/g)/2)*(u[(y+1)%nx] - u[(y-1)%nx]) # backward in time and centred in space 
+            h[y] = hOld[y] - 0.5*c*sqrt(H/g)*(u[(y+1)%nx] - u[(y-1)%nx]) # backward in time and centred in space 
         
         # as would like to plot from 0 to 1 set the value of u and h at end point using periodic boundary conditions
         u[nx] = u[0]
@@ -69,8 +69,8 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     uhalf = np.zeros(len(initialu))
     
     # for a c-grid the velocity u is stagerred in the x-direction by half
-    for i in range(0, len(initialu)):
-        uhalf[i] = flat_u(i+1/2)
+    for i in range(nx + 1):
+        uhalf[i] = (initialu[i] + initialu[(i+1)%nx])/2
         # therefore uhalf[i] = u_{i + 1/2}
     
     # initialize the system
@@ -81,12 +81,13 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
 
     
     # loop over time steps
-    for it in range(int(nt)): 
+    for it in range(nt): 
         for y in range(nx):
             # forward in time and centred in space
-            uhalf[y] = uOld[y] - (c*math.sqrt(g/H))*(hOld[(y + 1)%nx] - hOld[y%nx]) 
-            # backward in time and centred in space
-            h_cgrid[y] = hOld[y] - (c*math.sqrt(g/H))*(uhalf[y%nx] - uhalf[(y-1)%nx]) 
+            uhalf[y] = uOld[y] - (c*sqrt(g/H))*(hOld[(y + 1)%nx] - hOld[y%nx]) 
+        for y in range(nx):
+        #backward in time and centred in space
+            h_cgrid[y] = hOld[y] - (c*sqrt(H/g))*(uhalf[y%nx] - uhalf[(y-1)%nx]) 
 
         # as would like to plot from 0 to 1 set the value of u and h at end point using periodic boundary conditions
         # however as the grid is staggered uhalf[nx] = u_{nx + 1/2}. Therefore when plot uhalf need to remove last point
@@ -134,23 +135,25 @@ def implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     inverse = np.linalg.inv(matrix)
     
     # loop over timesteps
-    for it in range(int(nt)):      
+    for it in range(nt):      
         
         uvector = np.zeros_like(uOld)
         for i in range(nx+1):
-            uvector[i] = math.sqrt(H/g)*(c/2)*(uOld[(i+1)%nx] - uOld[(i-1)%nx])
+            uvector[i] = sqrt(H/g)*(c/2)*(uOld[(i+1)%nx] - uOld[(i-1)%nx])
         # note here that uvector[nx] = uvector[0] because of modulus operator so periodic boundaries are still kept   
             
         # solve matrix equation to find h
         h = np.dot(inverse, (hOld - uvector))
+        h[nx] = h[0]
     
         hvector = np.zeros_like(hOld)
         for i in range(nx):
-            hvector[i] = math.sqrt(g/H)*(c/2)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
+            hvector[i] = sqrt(g/H)*(c/2)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
         # note here that hvector[nx] = hvector[0] because of modulus operator so periodic boundaries are still kept   
 
         # solve matrix equation to find u
         u = np.dot(inverse, (uOld - hvector))
+        u[nx] = u[0]
         
         # copy u and h for next iteration
         hOld = h.copy()
@@ -177,8 +180,8 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
     uhalf = np.zeros(len(initialu))
     
     # for a c-grid the velocity u is stagerred in the x-direction by half
-    for i in range(0, len(initialu)):
-        uhalf[i] = flat_u(i+1/2)
+    for i in range(nx + 1):
+        uhalf[i] = (initialu[i] + initialu[(i+1)%nx])/2
     # therefore uhalf[i] = u_{i + 1/2}
     
     # initialize the system
@@ -200,11 +203,11 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
         matrix[i, (i+1)%nx] = -(c**2)/4
     
     # loop over timesteps
-    for it in range(int(nt)):
+    for it in range(nt):
         
         semi_implicit_uvector = np.zeros_like(uOld)
         for i in range(nx + 1):
-            semi_implicit_uvector[i] = -math.sqrt(g/H)*c*(hOld[(i + 1)%nx] - hOld[i%nx]) + ((c**2)/4)*uOld[(i+1)%nx] + (1-(c**2)/2)*uOld[i%nx] + ((c**2)/4)*uOld[(i-1)%nx]
+            semi_implicit_uvector[i] = -sqrt(g/H)*c*(hOld[(i + 1)%nx] - hOld[i%nx]) + ((c**2)/4)*uOld[(i+1)%nx] + (1-(c**2)/2)*uOld[i%nx] + ((c**2)/4)*uOld[(i-1)%nx]
         # note here that semi_implicit_uvector[nx] = semi_implicit_uvector[0] because of modulus operator so periodic boundaries are still kept
         
         # solve matrix equation to find u
@@ -212,7 +215,7 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
 
         semi_implicit_hvector = np.zeros_like(hOld)
         for i in range(nx + 1):
-            semi_implicit_hvector[i] = -math.sqrt(H/g)*c*(uOld[i%nx] - uOld[(i-1)%nx]) + ((c**2)/4)*hOld[(i+1)%nx] + (1-(c**2)/2)*hOld[(i)%nx] + ((c**2)/4)*hOld[(i-1)%nx]
+            semi_implicit_hvector[i] = -sqrt(H/g)*c*(uOld[i%nx] - uOld[(i-1)%nx]) + ((c**2)/4)*hOld[(i+1)%nx] + (1-(c**2)/2)*hOld[(i)%nx] + ((c**2)/4)*hOld[(i-1)%nx]
         # note here that semi_implicit_hvector[nx] = semi_implicit_hvector[0] because of modulus operator so periodic boundaries are still kept
         
         # solve matrix equation to find h

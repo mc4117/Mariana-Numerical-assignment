@@ -21,10 +21,12 @@ c = 0.1
 xmin = -math.pi
 xmax = math.pi
     
-nx_range2 = [20, 40, 60, 80]
+#nx_range2 = [100, 250, 400]
+nx_range2 = [160, 180, 200, 220, 240, 260]
+
 nt_range2 = np.zeros_like(nx_range2).astype('float')
 dx_list = np.zeros_like(nx_range2).astype('float')
-
+#dt_list = np.zeros_like(nx_range2).astype('float')
 
 for j in range(len(nx_range2)):
     nx = nx_range2[j]
@@ -140,26 +142,26 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
         norm_implicit_listh[j] = np.linalg.norm((h - h_implicit))
         norm_semi_implicit_listh[j] = np.linalg.norm((h - h_semi_implicit))
         
-    plt.plot(np.log(dx_list), np.log(norm_A_grid_listu), label = 'u')
-    plt.plot(np.log(dx_list), np.log(norm_A_grid_listh), label = 'h')
+    plt.plot((dx_list), (norm_A_grid_listu), label = 'u')
+    plt.plot((dx_list), (norm_A_grid_listh), label = 'h')
     plt.legend(loc = 'best')
     plt.title('Agrid')
     plt.show()
     
-    plt.plot(np.log(dx_list), np.log(norm_C_grid_listu), label = 'u')
-    plt.plot(np.log(dx_list), np.log(norm_C_grid_listh), label = 'h')
+    plt.plot((dx_list), (norm_C_grid_listu), label = 'u')
+    plt.plot((dx_list), (norm_C_grid_listh), label = 'h')
     plt.legend(loc = 'best')
     plt.title('Cgrid')
     plt.show()
     
-    plt.plot(np.log(dx_list), np.log(norm_implicit_listu), label = 'u')
-    plt.plot(np.log(dx_list), np.log(norm_implicit_listh), label = 'h')
+    plt.plot((dx_list), (norm_implicit_listu), label = 'u')
+    plt.plot((dx_list), (norm_implicit_listh), label = 'h')
     plt.legend(loc = 'best')
     plt.title('implicit')
     plt.show()
     
-    plt.plot(np.log(dx_list), np.log(norm_semi_implicit_listu), label = 'u')
-    plt.plot(np.log(dx_list), np.log(norm_semi_implicit_listh), label = 'h')
+    plt.plot((dx_list), (norm_semi_implicit_listu), label = 'u')
+    plt.plot((dx_list), (norm_semi_implicit_listh), label = 'h')
     plt.legend(loc = 'best')
     plt.title('semi-implicit')
     plt.show()

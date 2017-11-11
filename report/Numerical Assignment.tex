@@ -25,7 +25,7 @@
 	
 \maketitle
 \thispagestyle{empty}
-\section{Defining Shallow Water Equations}
+\section{Defining the Shallow Water Equations}
 The shallow water equations are
 \begin{equation}\label{momentumsw}
 \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u} = - 2\Omega \times\mathbf{u} - g\nabla (h + h_{0})
@@ -37,7 +37,7 @@ where $\mathbf{u}$ is the velocity of the flow, $\Omega$ is the angular velocity
 
 The first equation (\ref{momentumsw}) represents the conservation of momentum and the second equation (\ref{masssw}) represents the conservation of mass. Both equations have a $u\cdot\nabla$ which represents advection.
 
-In order to solve these equations numerically, they first need to be linearised about the state $u = 0$ and $h = H$ ie.
+In order to solve these equations numerically, we will first linearise them about the state $u = 0$ and $h = H$ ie.
 \begin{eqnarray}\nonumber
 \mathbf{u} =  & \mathbf{\hat{u}}
  \\   \nonumber
@@ -51,7 +51,7 @@ where $H$ is the average fluid depth. If we further assume that $h_{0}$ is const
 \frac{\partial \hat{h}}{\partial t} = - H \nabla \cdot \mathbf{\hat{u}}
 \end{equation}
 
-These equations can be simplified further by assuming there is no rotation and taking the one-dimensional form. Dropping the $\hat{}$ notation this gives
+These equations can be simplified further by assuming that the frame is not rotating and taking the one-dimensional form. Dropping the $\hat{}$ notation this gives
 \begin{equation}\label{linearisedsw1}
 \frac{\partial u}{\partial t} = - g \frac{\partial h}{\partial x}
 \end{equation}
@@ -62,7 +62,8 @@ This report will seek to solve these one-dimensional lineriased shallow water eq
 
 \section{Numerical Methods}
 
-The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple co-located forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location in space on the meshgrid and these schemes are also referred to as A-grid or unstaggered schemes.
+\subsection {Co-located Explicit}
+The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple co-located forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location on the meshgrid. Co-located schemes are also referred to as A-grid or unstaggered schemes.
 
 This scheme can be written as 
 \begin{equation} \label{FTCSAgrid}
@@ -87,9 +88,9 @@ Substuting these expansions into the scheme (\ref{FTCSAgrid}), we find that
 \begin{equation}
 \frac{\partial u_{j}^{(n)}}{\partial t} + O(\Delta t) =  -g \frac{\partial h_{j}^{(n)}}{\partial x} + O((\Delta x)^{2})
 \end{equation} 
-and therefore the scheme is first order accurate in time and second order accurate in space. (Note the same order of accuracy is obtained by performing the same analysis with (\ref{BTCSAgrid})).
+and therefore the scheme is first order accurate in time and second order accurate in space. (Note the same order of accuracy is obtained by performing the same analysis with equation (\ref{BTCSAgrid})).
 
-In order to find when this scheme is stable, we use a von-neumann stability analysis. As in \cite{MPE textbook}, we assume that $u$ and $h$ have wave-like solutions with an amplification factor $A$ and wavenumber $k$:
+In order to find when this scheme is stable, we use a Von-neumann stability analysis. As in \cite{MPE textbook}, we assume that $u$ and $h$ have wave-like solutions with an amplification factor $A$ and wavenumber $k$:
 \begin{equation} \label{wavelikeu}
 u  =  \mathbb{U}  A^{n} e^{ikj\Delta x}
 \end{equation}
@@ -118,10 +119,10 @@ Using the result from \cite{MPE textbook},
 \begin{equation}
 \omega_{n}\Delta x = \pm \frac{2}{c} \sin^{-1} \bigg(\frac{c}{2}\sin(k\Delta x)\bigg)
 \end{equation}
-assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is plotted in Figure \ref{dispersionfigure} and compared with the dispersion relation of the analytical solution. (The dispersion relation of the analytical solution $\omega = k\sqrt{gH}$ is found by substituting the wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}) into (\ref{linearisedsw1}) and (\ref{linearisedsw2})).
+assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is plotted in Figure \ref{dispersionfigure} and compared with the dispersion relation of the analytical solution. (The dispersion relation of the analytical solution $\omega = k\sqrt{gH}$ is found by substituting the wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}) into (\ref{linearisedsw1}) and (\ref{linearisedsw2})). This shows that the analytic solution and numerical solution do not propagate at the same rate. The numerical solution disperses too slowly and in fact for $k = \pi$, the wave is stationary.
 
-
-However, we would like to have a method that was stable for all courant numbers. Therefore another method we can use is an implicit method on a co-located grid. As in \cite{MPE textbook}, we look at the forward in time for both $u$ and $h$ and centred in space co-located scheme:
+\subsection{Co-located Implicit}
+We would like to have a method that was stable for all courant numbers. Therefore another method we can use is an implicit method on a co-located grid. As in \cite{MPE textbook}, we will consider the backward in time for both $u$ and $h$ and centred in space co-located scheme:
 \begin{equation} \label{FTimplicitAgrid1}
 \frac{u_{j}^{(n+1)} - u_{j}^{(n)}}{\Delta t} = -g \frac{h_{j+1}^{(n+1)} - h_{j-1}^{(n+1)}}{2\Delta x}
 \end{equation}
@@ -171,9 +172,7 @@ x_{j} = u_{j}^{(n+1)} \text { and } b_{j} = u_{j}^{(n)} - \frac{c}{2}\sqrt{\frac
 \end{equation}
 if solving for $u$.
 
-Note that the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$. 
-
-Furthermore, here and throughout this report we are assuming periodic boundary conditions and hence that $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$. 
+Furthermore, as throughout this report we are assuming periodic boundary conditions, $u_{0}^{(n)} = u_{N}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$. 
 
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{ujn+1}) and
@@ -184,9 +183,9 @@ Substituting this into equation (\ref{FTimplicitAgrid1}) we find that
 \begin{equation}
 \frac{\partial u_{j}^{(n)}}{\partial t} + O(\Delta t) = - g \frac{\partial h_{j}^{(n)}}{\partial x} + O((\Delta x)^{2}).
 \end{equation}
-Therefore the scheme is first order accurate in time and second order accurate in space as with the explicit method on the co-located grid. (As before a similar result can be obtained by substituting in to (\ref{FTimplicitAgrid2})).
+Therefore the scheme is first order accurate in time and second order accurate in space which is the same as the co-located explicit method. (As before a similar result can be obtained by substituting in to equation (\ref{FTimplicitAgrid2})).
 
-In order to find where this method is stable, we use von-neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) we find
+In order to find where this method is stable, we use Von-Neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{FTimplicitAgrid1}) and (\ref{FTimplicitAgrid2}) we find
 \begin{equation}
 A = \frac{1 \pm i c\sin(k\Delta x)}{1 + c^{2}\sin^{2}(k\Delta x)}
 \end{equation}
@@ -200,11 +199,10 @@ Using (\ref{frequency}) we can find the dispersion relation
 \begin{equation}
 \omega_{n} \Delta x = \pm\frac{\Delta x}{\Delta t} \arctan(c\sin(k\Delta x)) = \frac{1}{c}  \arctan(c\sin(k\Delta x))
 \end{equation}
-assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}.
+assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. Again as with the explicit method, the numeric solution disperses too slowly and in fact at $k = \pi$, the wave is stationary. 
 
-We can see from this Figure \ref{dispersionfigure} that the analytic solution and numerical solution do not propagate at the same rate. The numeric solution disperses too slowly and in fact at $k = \pi$, the wave is stationary. 
-
-Therefore we seek a scheme which propagates at a more similar speed to the analytic solution. Following \cite{MPE textbook}, we use a staggered grid (sometimes known as a C-grid) instead of a co-located grid. For a staggered grid, we shift $u$ so that it is defined at $x_{j} + \frac{\Delta x}{2}$ and $h$ remains defined at $x_{j}$ (where $x_{j} = j \Delta x$) ie. where $u$ and $h$ are defined alternates in space.
+\subsection{Staggered Explicit}
+Next we seek a scheme which propagates at a more similar speed to the analytic solution. Following \cite{MPE textbook}, we use a staggered grid (sometimes known as a C-grid) instead of a co-located grid. For a staggered grid, we shift $u$ so that it is defined at $x_{j} + \frac{\Delta x}{2}$ and $h$ remains defined at $x_{j}$ (where $x_{j} = j \Delta x$) ie. where $u$ and $h$ are defined alternately in space.
 
 As in \cite{MPE textbook}, we take again the forward-backward in time and centred in space scheme where the scheme is forward in $u$ and backward in $h$, but this time on a staggered grid. This gives us the following scheme:
 
@@ -229,9 +227,9 @@ Substituting these into (\ref{FTCSCgrid}), we find that
 \begin{equation}
 \frac{\partial u_{j}^{(n)}}{\partial t} + O(\Delta t) =  -g \frac{\partial h_{j}^{(n)}}{\partial x} + O((\Delta x)^{2})
 \end{equation} 
-and therefore the scheme is first order accurate in time and second order accurate in space. (Note as before the same order of accuracy is obtained by performing the same analysis with (\ref{BTCSCgrid})).
+and therefore the scheme is first order accurate in time and second order accurate in space. (Note as before the same order of accuracy is obtained by performing the same analysis with equation (\ref{BTCSCgrid})).
 
-In order to find where this method is stable, we use von-neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{FTCSCgrid}) and (\ref{BTCSCgrid}) we find
+In order to find where this method is stable, we use Von-Neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{FTCSCgrid}) and (\ref{BTCSCgrid}) we find
 \begin{equation}
 A = 1 - 2c^{2}\sin^{2}\bigg(\frac{k\Delta x}{2}\bigg) \pm 2ic\sin\bigg(\frac{k\Delta x}{2}\bigg) \sqrt{1 - c^{2}\sin^{2}(\frac{k\Delta x}{2}\bigg)}
 \end{equation}
@@ -241,11 +239,10 @@ Using (\ref{frequency}) we can find the dispersion relation
 \begin{equation}
 	\omega_{n} \Delta x = \pm\frac{2\Delta x}{\Delta t} \arcsin\bigg(c\sin\bigg(\frac{k\Delta x}{2}\bigg)\bigg) = \frac{2}{c} \arcsin\bigg(c\sin\bigg(\frac{k\Delta x}{2}\bigg)\bigg) 
 \end{equation}
-assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. 
+assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. Although this solution is still dispersive we can see from the Figure that $\omega$ of this numeric scheme is much closer to $\omega$ of the analytic solution.
 
-Although this solution is still dispersive we can see from the Figure that $\omega$ of this numeric scheme is much closer to $\omega$ of the analytic solution.
-
-However we again have the problem that the solution is unstable. Therefore the final numerical scheme we will look at is the semi-implicit scheme on a staggered grid outlined in \cite{semi-implicit}.
+\subsection{Staggered Semi-Implicit}
+With the staggered explicit method, we again have the problem that the solution is unstable. Therefore the final numerical scheme we will look at is the semi-implicit scheme on a staggered grid outlined in \cite{semi-implicit}.
 
 The scheme used in \cite{semi-implicit} is the theta-method:
 
@@ -304,9 +301,7 @@ x_{j} = u_{j+ \frac{1}{2}}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{H}{g}(u_{j
 \end{equation}
 if solving for $u$.
 
-Note that the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$.
-
-Furthermore as before we have assumed periodic boundary conditions and hence that $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. 
+As throughout this report we have assumed periodic boundary conditions, $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$.
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{uj+1/2n}) and (\ref{uj+1/2n+1}) and
 \begin{equation}
@@ -317,9 +312,9 @@ Substituting these into (\ref{semiimplicit2}) we find that
 \begin{equation}
 \frac{\partial h_{j}^{(n)}}{\partial t} + O((\Delta t)^{2}) = - H \frac{\partial u_{j}^{(n)}}{\partial x} + O((\Delta x)^{2}) 
 \end{equation}
-and therefore the scheme is second order accurate in time and second order accurate in space which is better than any of the other schemes we have looked at so far. (Note as before the same order of accuracy is obtained by performing the same analysis with (\ref{semiimplicit1})).
+and therefore the scheme is second order accurate in time and second order accurate in space which is better than any of the other schemes we have looked at so far. (Note as before the same order of accuracy is obtained by performing the same analysis with equation (\ref{semiimplicit1})).
 
-As before in order to find where this method is stable, we use von-neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{semiimplicit1}) and (\ref{semiimplicit2}) we find:
+As before in order to find where this method is stable, we use Von-Neumann stability analysis and assume $u$ and $h$ have wave-like solutions (\ref{wavelikeu}) and (\ref{wavelikeh}). Substituting these solutions into (\ref{semiimplicit1}) and (\ref{semiimplicit2}) we find:
 
 \begin{equation}
 A = \frac{2 - 2c^{2}\sin^{2}(\frac{k\Delta x}{2}) \pm 4ic\sin(\frac{k\Delta x}{2})}{2 + 2 c^{2}\sin^{2}(\frac{k\Delta x}{2})}
@@ -342,7 +337,7 @@ As with the previous staggered grid scheme, this solution is still dispersive. T
 \end{figure}
 
 \section{Methodology to test Numerical Methods}
-In order to test the properties of the Numerical methods outlined in the above section we have devised a series of tests.
+In order to test the properties of the numerical methods outlined in the above section we have devised a series of tests.
 
 \renewcommand\theContinuedFloat{\alph{ContinuedFloat}}
 \begin{figure}
@@ -378,10 +373,10 @@ In order to test the properties of the Numerical methods outlined in the above s
 To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the co-located forward-backward explicit scheme.
 
 \subsection{Test 2}
-We found using Von-Neumann stability analysis the co-located forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we test to see if this is in fact the case.
+We found using Von-Neumann stability analysis that the co-located forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we this test will determine if this is in fact the case.
 
 \subsection{Test 3}
-We found using Von-Neumann stability analysis the co-located forward-backward implicit scheme is stable for all courant numbers. Therefore we test to see if this is in fact the case.
+We found using Von-Neumann stability analysis that the co-located forward-backward implicit scheme is stable for all courant numbers. Therefore this test will determine if this is in fact the case.
 
 \subsection{Test 4}
 When looking at the dispersion relation for the co-located grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the co-located forward-backward explicit scheme and the co-located forward-backward implicit scheme.
@@ -390,7 +385,7 @@ When looking at the dispersion relation for the co-located grid it seems that th
 Our analysis of the dispersion relations suggests that on a staggered grid the solutions for $u$ and $h$ should be more physical. Therefore we repeat test 3 with the same initial conditions (shown in Figure \ref{initialconditionspike}), but instead using the staggered explicit scheme.
 
 \subsection{Test 6}
-So far all the comparisons have been about the properties of the schemes themselves. If the initial condition shown in Figure \ref{initialconditioncos} is chosen it is possible to find an analytic solution of the shallow water equations
+In the previous tests, the comparisons have been about the properties of the schemes themselves. If the initial condition shown in Figure \ref{initialconditioncos} is chosen it is possible to find an analytic solution of the shallow water equations
 \begin{equation}
 u = \sin(x)\sin(t)
 \end{equation}
@@ -406,7 +401,11 @@ This test will look at the solution errors between the solutions produced by the
 \subsection{Test 7}
 Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
 
-We would expect the co-located explicit and co-located staggered schemes to take the same amount of time as the number of floating point operations per iteration of each scheme is the same. The co-located implicit scheme has a higher computational cost than the explicit schemes because it involves one inversion of a matrix which has O($n^{3}$) floating point operations for an $n \times n$ matrix and at each iteration to find $u$ or $h$ a matrix-vector multiplications which has O($n^{2}$) floating point operations for an $n \times n$ matrix. The staggered semi-implicit scheme also involves one matrix inversion and one matrix-vector multiplications at each iteration to find $u$ or $h$, but has the highest computational cost, as constructing $b_{i}$ in the $A_{ij}x_{j} = b_{i}$ matrix equation involves nine floating point operations compared to three floating point operations to construct $b_{i}$ in the co-located implicit scheme.
+We would expect the co-located explicit and the staggered explicit schemes to take the same amount of time as the number of floating point operations per iteration of each scheme is the same. 
+
+The implicit schemes have a higher computational cost than the explicit schemes as they involve one inversion of a matrix (O($n^{3}$) floating point operations for an $n \times n$ matrix) and at each iteration to find $u^{m}$ or $h^{m}$ a matrix-vector multiplication (O($n^{2}$) floating point operations for an $n \times n$ matrix). 
+
+The staggered semi-implicit scheme has the highest computational cost, as constructing $b_{i}$ in the $A_{ij}x_{j} = b_{i}$ matrix equation involves nine floating point operations compared to three floating point operations to construct $b_{i}$ in the co-located implicit scheme.
 
 \section{Results}\label{results section}
 For all the following results, unless otherwise explicitily stated, assume the domain used was $0 \leq x \leq 1$ and that the following parameters were used:
@@ -438,7 +437,7 @@ where $c$ is the courant number, $H$ is the average fluid depth, $g$ is the grav
 		\caption{\label{height_colocated_explicit_cosbell}    Height at different timesteps using the co-located explicit method using the initial condition $u$ equals $0$ and $h$ is a cosbell (as shown in Figure \ref{initialconditioncosbell}).} 
 	\end{minipage}
 \end{figure}
-In this test we have successfully shown that we can use the co-located explicit schemes to solve the shallow water equations. These solutions seem to make physical sense as in Figure \ref{height_colocated_explicit_cosbell} we can see fluid falling from a peak and then breaking apart over time as we would expect.
+In this test we have successfully shown that we can use the co-located explicit schemes to solve the shallow water equations. These solutions seem to make physical sense as in Figure \ref{height_colocated_explicit_cosbell} we can see fluid falling from a peak and then separating over time as we would expect.
 
 \subsection{Test 2}\label{sectiontest2}
 
@@ -461,7 +460,7 @@ In this test we have successfully shown that we can use the co-located explicit 
 	\end{minipage}
 \end{figure}
 
-Figure \ref{velocity_varying_courant_explicit} and Figure \ref{height_varying_courant_explicit} show that for large courant numbers, $u$ and $h$ are very unstable as we expected from the von neumann stability analysis, reaching values of an order of magnitude of $10^{80}$.
+Figure \ref{velocity_varying_courant_explicit} and Figure \ref{height_varying_courant_explicit} show that for large courant numbers, $u$ and $h$ are very unstable reaching values of an order of magnitude of $10^{80}$. This is as we expected from the Von-Neumann stability analysis.
 
 \subsection{Test 3}
 
@@ -484,7 +483,7 @@ Figure \ref{velocity_varying_courant_explicit} and Figure \ref{height_varying_co
 	\end{minipage}
 \end{figure}
 
-By contrast with the co-located explicit method tested in section \ref{sectiontest2}, Figure \ref{velocity_varying_courant_implicit} and Figure \ref{height_varying_courant_implicit} show that for large courant numbers, $u$ and $h$ remain stable as we expected from the von neumann stability analysis.
+By contrast with the co-located explicit method tested in test 2 (\ref{sectiontest2}), when using the co-located implicit method, Figure \ref{velocity_varying_courant_implicit} and Figure \ref{height_varying_courant_implicit} show that for large courant numbers, $u$ and $h$ remain stable. This is as we expected from the Von-Neumann stability analysis.
 
 \subsection{Test 4}\label{subsectiontest4}
 
@@ -528,7 +527,7 @@ By contrast with the co-located explicit method tested in section \ref{sectionte
 
 As expected the results shown in Figures \ref{velocity_colocated_explicit_spike}, \ref{height_colocated_explicit_spike}, \ref{velocity_colocated_implicit_spike} and \ref{height_colocated_implicit_spike} are unphysical. The fluid does spread out but it does not go to the next meshpoint, instead skipping this meshpoint out and moving to the next meshpoint along. In Figure \ref{height_colocated_explicit_spike} and {\ref{height_colocated_implicit_spike}, we see that the two points around the central grid point (hereafter referred to as $x_{m}$) never have any height so the fluid passes from $x_{m}$ to $x_{m-2}$ and $x_{m+ 2}$ without passing through $x_{m-1}$ and $x_{m+1}$ which is clearly unphysical. Similarly in Figure \ref{velocity_colocated_explicit_spike} and \ref{velocity_colocated_implicit_spike} there is never any velocity at the gridpoints $x_{m-2}$ and $x_{m+2}$ which is again unphysical. 
 	
-Therefore our hypothesis that the results may be unphysical is true.
+Therefore our hypothesis that the results are unphysical is true.
 
 \subsection{Test 5}
 
@@ -634,7 +633,7 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 \label{timingtable}
 \end{table}
 
-Table \ref{timingtable} shows as expected that the staggered semi-implict scheme takes the largest amount of time of the four schemes. The co-located explicit and staggered explicit schemes take a similar amount of time as expected as the number of floating point operations per iteration is the same for both schemes. Again as expected he co-located implicit scheme takes slightly longer than the explicit schemes but not as long as the staggered semi-implicit scheme because the construction of the vector $b$ in the matrix equation is simpler for the co-located implicit scheme.
+Table \ref{timingtable} shows as expected that the staggered semi-implict scheme takes longest of the four schemes. The co-located explicit and staggered explicit schemes take a similar amount of time as expected as the number of floating point operations per iteration is the same for both schemes. Again as expected he co-located implicit scheme takes slightly longer than the explicit schemes but not as long as the staggered semi-implicit scheme. This is because the construction of the vector $b$ in the matrix equation is simpler for the co-located implicit scheme than for the staggered semi-implicit scheme.
 
 \section{Conclusions}
 
@@ -646,6 +645,8 @@ From the results listed in Section \ref{results section}, we can conclude the fo
 	\item SOME COMMENT ABOUT ERRORS
 	\item When working with small courant numbers, it is better to choose explicit methods as they are much less computationally expensive than implicit methods (from Test 7)
 \end{itemize}
+
+\newpage
 
 \begin{thebibliography}{9}
 	\addcontentsline{toc}{part}{Bibliography}
