@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.19)  13 NOV 2017 10:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.19)  13 NOV 2017 16:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -433,7 +433,7 @@ File: velocity_colocated_explicit_cosbell.png Graphic file (type png)
 
 <use velocity_colocated_explicit_cosbell.png>
 Package pdftex.def Info: velocity_colocated_explicit_cosbell.png used on input 
-line 443.
+line 442.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_colocated_explicit_cosbell.png, id=60, 433.62pt x 289.08pt>
@@ -441,10 +441,10 @@ File: height_colocated_explicit_cosbell.png Graphic file (type png)
 
 <use height_colocated_explicit_cosbell.png>
 Package pdftex.def Info: height_colocated_explicit_cosbell.png used on input li
-ne 451.
+ne 450.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 438--454
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 437--453
 []$[]$ $[]$ 
  []
 
@@ -453,7 +453,7 @@ File: velocity_varying_courant_explicit.png Graphic file (type png)
 
 <use velocity_varying_courant_explicit.png>
 Package pdftex.def Info: velocity_varying_courant_explicit.png used on input li
-ne 465.
+ne 464.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_varying_courant_explicit.png, id=62, 433.62pt x 289.08pt>
@@ -461,63 +461,63 @@ File: height_varying_courant_explicit.png Graphic file (type png)
 
 <use height_varying_courant_explicit.png>
 Package pdftex.def Info: height_varying_courant_explicit.png used on input line
- 473.
+ 472.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 460--476
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 459--475
 []$[]$ $[]$ 
  []
 
 [12 <./velocity_colocated_explicit_cosbell.png> <./height_colocated_explicit_co
-sbell.png>]
-<velocity_varying_courant_implicit.png, id=68, 433.62pt x 289.08pt>
+sbell.png> <./velocity_varying_courant_explicit.png> <./height_varying_courant_
+explicit.png>]
+<velocity_varying_courant_implicit.png, id=70, 433.62pt x 289.08pt>
 File: velocity_varying_courant_implicit.png Graphic file (type png)
 
 <use velocity_varying_courant_implicit.png>
 Package pdftex.def Info: velocity_varying_courant_implicit.png used on input li
-ne 488.
+ne 487.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-<height_varying_courant_implicit.png, id=69, 433.62pt x 289.08pt>
+<height_varying_courant_implicit.png, id=71, 433.62pt x 289.08pt>
 File: height_varying_courant_implicit.png Graphic file (type png)
 
 <use height_varying_courant_implicit.png>
 Package pdftex.def Info: height_varying_courant_implicit.png used on input line
- 496.
+ 495.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 483--499
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 482--498
 []$[]$ $[]$ 
  []
 
-<velocity_colocated_explicit_spike.png, id=70, 433.62pt x 289.08pt>
+<velocity_colocated_explicit_spike.png, id=72, 433.62pt x 289.08pt>
 File: velocity_colocated_explicit_spike.png Graphic file (type png)
 
 <use velocity_colocated_explicit_spike.png>
 Package pdftex.def Info: velocity_colocated_explicit_spike.png used on input li
-ne 511.
+ne 512.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-<height_colocated_explicit_spike.png, id=71, 433.62pt x 289.08pt>
+<height_colocated_explicit_spike.png, id=73, 433.62pt x 289.08pt>
 File: height_colocated_explicit_spike.png Graphic file (type png)
 
 <use height_colocated_explicit_spike.png>
 Package pdftex.def Info: height_colocated_explicit_spike.png used on input line
- 519.
+ 520.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 506--522
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 507--523
 []$[]$ $[]$ 
  []
 
-[13 <./velocity_varying_courant_explicit.png> <./height_varying_courant_explici
-t.png> <./velocity_varying_courant_implicit.png> <./height_varying_courant_impl
-icit.png>] <velocity_colocated_implicit_spike.png, id=80, 433.62pt x 289.08pt>
+[13 <./velocity_varying_courant_implicit.png> <./height_varying_courant_implici
+t.png>] <velocity_colocated_implicit_spike.png, id=80, 433.62pt x 289.08pt>
 File: velocity_colocated_implicit_spike.png Graphic file (type png)
 
 <use velocity_colocated_implicit_spike.png>
 Package pdftex.def Info: velocity_colocated_implicit_spike.png used on input li
-ne 530.
+ne 531.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <height_colocated_implicit_spike.png, id=81, 433.62pt x 289.08pt>
@@ -525,94 +525,120 @@ File: height_colocated_implicit_spike.png Graphic file (type png)
 
 <use height_colocated_implicit_spike.png>
 Package pdftex.def Info: height_colocated_implicit_spike.png used on input line
- 538.
+ 539.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 525--541
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 526--542
+[]$[]$ $[]$ 
+ []
+
+<velocity_staggered_explicit_spike.png, id=82, 433.62pt x 289.08pt>
+File: velocity_staggered_explicit_spike.png Graphic file (type png)
+
+<use velocity_staggered_explicit_spike.png>
+Package pdftex.def Info: velocity_staggered_explicit_spike.png used on input li
+ne 556.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<height_staggered_explicit_spike.png, id=83, 433.62pt x 289.08pt>
+File: height_staggered_explicit_spike.png Graphic file (type png)
+
+<use height_staggered_explicit_spike.png>
+Package pdftex.def Info: height_staggered_explicit_spike.png used on input line
+ 564.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 551--567
 []$[]$ $[]$ 
  []
 
 [14 <./velocity_colocated_explicit_spike.png> <./height_colocated_explicit_spik
 e.png> <./velocity_colocated_implicit_spike.png> <./height_colocated_implicit_s
-pike.png>] <velocity_staggered_explicit_spike.png, id=89, 433.62pt x 289.08pt>
-File: velocity_staggered_explicit_spike.png Graphic file (type png)
-
-<use velocity_staggered_explicit_spike.png>
-Package pdftex.def Info: velocity_staggered_explicit_spike.png used on input li
-ne 555.
-(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
-
-<height_staggered_explicit_spike.png, id=90, 433.62pt x 289.08pt>
-File: height_staggered_explicit_spike.png Graphic file (type png)
-
-<use height_staggered_explicit_spike.png>
-Package pdftex.def Info: height_staggered_explicit_spike.png used on input line
- 563.
-(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
-
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 550--566
-[]$[]$ $[]$ 
- []
-
-<comparison_with_exact_u.png, id=91, 433.62pt x 289.08pt>
+pike.png>] <comparison_with_exact_u.png, id=91, 433.62pt x 289.08pt>
 File: comparison_with_exact_u.png Graphic file (type png)
 
 <use comparison_with_exact_u.png>
-Package pdftex.def Info: comparison_with_exact_u.png used on input line 577.
+Package pdftex.def Info: comparison_with_exact_u.png used on input line 580.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
 <comparison_with_exact_h.png, id=92, 433.62pt x 289.08pt>
 File: comparison_with_exact_h.png Graphic file (type png)
 
 <use comparison_with_exact_h.png>
-Package pdftex.def Info: comparison_with_exact_h.png used on input line 585.
+Package pdftex.def Info: comparison_with_exact_h.png used on input line 588.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 572--588
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 575--591
 []$[]$ $[]$ 
  []
 
 [15 <./velocity_staggered_explicit_spike.png> <./height_staggered_explicit_spik
-e.png>] <error_in_u.png, id=98, 433.62pt x 289.08pt>
-File: error_in_u.png Graphic file (type png)
- <use error_in_u.png>
-Package pdftex.def Info: error_in_u.png used on input line 596.
+e.png>] <uerror_compared_dt_cossin.png, id=98, 433.62pt x 289.08pt>
+File: uerror_compared_dt_cossin.png Graphic file (type png)
+
+<use uerror_compared_dt_cossin.png>
+Package pdftex.def Info: uerror_compared_dt_cossin.png used on input line 644.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-<error_in_h.png, id=99, 433.62pt x 289.08pt>
-File: error_in_h.png Graphic file (type png)
- <use error_in_h.png>
-Package pdftex.def Info: error_in_h.png used on input line 604.
+<herror_compared_dt_cossin.png, id=99, 433.62pt x 289.08pt>
+File: herror_compared_dt_cossin.png Graphic file (type png)
+
+<use herror_compared_dt_cossin.png>
+Package pdftex.def Info: herror_compared_dt_cossin.png used on input line 652.
 (pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
 
-Overfull \hbox (2.61108pt too wide) in paragraph at lines 591--607
-[]$[]$ $[]$ 
+<uerror_compared_dx_cossin.png, id=100, 433.62pt x 289.08pt>
+File: uerror_compared_dx_cossin.png Graphic file (type png)
+
+<use uerror_compared_dx_cossin.png>
+Package pdftex.def Info: uerror_compared_dx_cossin.png used on input line 660.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+<herror_compared_dx_cossin.png, id=101, 433.62pt x 289.08pt>
+File: herror_compared_dx_cossin.png Graphic file (type png)
+
+<use herror_compared_dx_cossin.png>
+Package pdftex.def Info: herror_compared_dx_cossin.png used on input line 668.
+(pdftex.def)             Requested size: 227.62206pt x 151.74721pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 639--671
+[]$[]$ $[]$
  []
 
-[16 <./comparison_with_exact_u.png> <./comparison_with_exact_h.png> <./error_in
-_u.png> <./error_in_h.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 658.
 
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 639--671
+[]$ $[]$ 
+ []
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
+[16 <./comparison_with_exact_u.png> <./comparison_with_exact_h.png>] [17 <./uer
+ror_compared_dt_cossin.png> <./herror_compared_dt_cossin.png> <./uerror_compare
+d_dx_cossin.png> <./herror_compared_dx_cossin.png>]
+Overfull \hbox (4.2976pt too wide) in paragraph at lines 680--693
+ [][] 
+ []
+
+[18]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 748.
+
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 658.
- [17] [18]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 748.
+ [19]
 (./Numerical Assignment.aux) )
 (\end occurred inside a group at level 1)
 
-### simple group (level 1) entered at line 543 ({)
+### simple group (level 1) entered at line 544 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 5686 strings out of 492995
- 87208 string characters out of 6132704
- 163513 words of memory out of 5000000
- 9134 multiletter control sequences out of 15000+600000
+ 5702 strings out of 492995
+ 87777 string characters out of 6132704
+ 163572 words of memory out of 5000000
+ 9148 multiletter control sequences out of 15000+600000
  13371 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,14n,39p,972b,410s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,14n,39p,972b,415s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
@@ -626,10 +652,10 @@ pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></u
 sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb
 >
-Output written on "Numerical Assignment.pdf" (18 pages, 495710 bytes).
+Output written on "Numerical Assignment.pdf" (19 pages, 504267 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
- 78 compressed objects within 1 object stream
+ 161 PDF objects out of 1000 (max. 8388607)
+ 81 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 106 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

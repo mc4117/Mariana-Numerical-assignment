@@ -35,9 +35,9 @@ The shallow water equations are
 \end{equation}
 where $\mathbf{u}$ is the velocity of the flow, $\Omega$ is the angular velocity of the rotating frame of reference, $g$ is the gravitational acceleration constant, $h$ is the depth of the fluid and $h_{0}$ represents the underlying shape that the fluid is flowing over (as defined in \cite{MPE textbook}).
 
-The first equation (\ref{momentumsw}) represents the conservation of momentum and the second equation (\ref{masssw}) represents the conservation of mass. Both equations have a $u\cdot\nabla$ which represents advection.
+The first equation (\ref{momentumsw}) represents the conservation of momentum and the second equation (\ref{masssw}) represents the conservation of mass.
 
-In order to solve these equations numerically, we will first linearise them about the state $u = 0$ and $h = H$ ie.
+In order to solve these equations numerically, we first linearise them about the state $u = 0$ and $h = H$ ie.
 \begin{eqnarray}\nonumber
 \mathbf{u} =  & \mathbf{\hat{u}}
  \\   \nonumber
@@ -58,9 +58,9 @@ These equations can be simplified further by assuming that the frame is not rota
 \begin{equation}\label{linearisedsw2}
 \frac{\partial h}{\partial t} = - H \frac{\partial u}{\partial x}.
 \end{equation}
-This report will seek to solve these one-dimensional lineriased shallow water equations numerically. Note that throughout this report we will assume for simplicity that $u$ and $h$ have periodic boundary conditions.
+This report will seek to solve these one-dimensional lineriased shallow water equations numerically. Note that throughout this report we assume for simplicity that $u$ and $h$ have periodic boundary conditions.
 
-\section{Numerical Methods}
+\section{Numerical Methods}\label{numericalmethodssection}
 
 \subsection {Co-located Explicit}
 The first numerical method we use to attempt to solve (\ref{linearisedsw1}) and (\ref{linearisedsw2}) is a simple co-located forward-backward in time and centred in space scheme. As in \cite{MPE textbook}, we consider the scheme to be forward in $u$ and backward in $h$. Co-located means we define the velocity and the height at the same location on the meshgrid. Co-located schemes are also referred to as A-grid or unstaggered schemes.
@@ -202,7 +202,7 @@ Using (\ref{frequency}) we can find the dispersion relation
 assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. Again as with the explicit method, the numeric solution disperses too slowly and in fact at $k = \pi$, the wave is stationary. 
 
 \subsection{Staggered Explicit}
-Next we seek a scheme which propagates at a more similar speed to the analytic solution. Following \cite{MPE textbook}, we use a staggered grid (sometimes known as a C-grid) instead of a co-located grid. For a staggered grid, we shift $u$ so that it is defined at $x_{j} + \frac{\Delta x}{2}$ and $h$ remains defined at $x_{j}$ (where $x_{j} = j \Delta x$) ie. where $u$ and $h$ are defined alternately in space.
+Next we seek a scheme which propagates at a speed more similar to the analytic solution. Following \cite{MPE textbook}, we use a staggered grid (sometimes known as a C-grid) instead of a co-located grid. For a staggered grid, we shift $u$ so that it is defined at $x_{j} + \frac{\Delta x}{2}$ and $h$ remains defined at $x_{j}$ (where $x_{j} = j \Delta x$) ie. $u$ and $h$ are defined alternately in space.
 
 As in \cite{MPE textbook}, we take again the forward-backward in time and centred in space scheme where the scheme is forward in $u$ and backward in $h$, but this time on a staggered grid. This gives us the following scheme:
 
@@ -301,7 +301,7 @@ x_{j} = u_{j+ \frac{1}{2}}^{(n+1)} \text { and } b_{j} = -c\sqrt\frac{H}{g}(u_{j
 \end{equation}
 if solving for $u$.
 
-As throughout this report we have assumed periodic boundary conditions, $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$.
+As throughout this report, we have assumed periodic boundary conditions, $u_{\frac{1}{2}}^{(n)} = u_{N + \frac{1}{2}}^{(n)}$ and $h_{0}^{(n)} = h_{N}^{(n)}$ where $N\Delta x$ is the right hand boundary of the $x$-domain. Hence the matrix $A$ has dimension $N \times N$ and we consider the first row to be $j = 0$.
 
 We can determine the order of accuracy of this scheme, as before by using the Taylor series expansions (\ref{uj+1/2n}) and (\ref{uj+1/2n+1}) and
 \begin{equation}
@@ -328,7 +328,7 @@ Using (\ref{frequency}) we can find the dispersion relation
 \end{equation}
 assuming $\sqrt{gH} = 1$. The positive branch of this dispersion relation is again plotted in Figure \ref{dispersionfigure}. 
 
-As with the previous staggered grid scheme, this solution is still dispersive. The dispersion relation for the semi-implicit staggered scheme diverges more from the analytic solution than the explicit staggered scheme but it is still significantly better than either of the co-located schemes. 
+As with the previous staggered grid scheme, this solution is still dispersive, but much less so than either of the co-located schemes. The dispersion relation for the semi-implicit staggered scheme diverges more from the analytic solution than the explicit staggered scheme but the difference is very small. 
 
 \begin{figure}
 	\centering
@@ -337,7 +337,7 @@ As with the previous staggered grid scheme, this solution is still dispersive. T
 \end{figure}
 
 \section{Methodology to test Numerical Methods}
-In order to test the properties of the numerical methods outlined in the above section we have devised a series of tests.
+In order to test the properties of the numerical methods outlined in the above section we have devised a series of tests on a variety of initial conditions.
 
 \renewcommand\theContinuedFloat{\alph{ContinuedFloat}}
 \begin{figure}
@@ -357,8 +357,7 @@ In order to test the properties of the numerical methods outlined in the above s
 		\includegraphics[width=\textwidth]{initial_condition_spike.png}
 		\caption{\label{initialconditionspike}Initial condition such that $u$ is zero everywhere and $h$ is zero everywhere apart from one point at the centre where it is one} 
 	\end{minipage}
-	\begin{center}
-		\begin{minipage}{.5\textwidth}
+	\begin{minipage}{.5\textwidth}
 			\ContinuedFloat
 			%\centering
 			\captionsetup{width=0.9\textwidth}
@@ -366,39 +365,54 @@ In order to test the properties of the numerical methods outlined in the above s
 			\includegraphics[width=\textwidth]{initial_condition_cos.png}
 			\caption{\label{initialconditioncos}Initial condition such that $u$ is zero everywhere and $h$ is $\cos(x)$}
 		\end{minipage}
-	\end{center}
+		\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{initial_condition_cossin.png}
+		\caption{\label{initialconditioncossin}Initial condition such that $u$ is $\cos(x) - \sin(x)$ and $h$ is $\cos(x) + \sin(x)$}
+	\end{minipage}
 \end{figure}
 
 \subsection{Test 1}
 To begin with, we attempt to solve the shallow water equations using a simple initial condition (shown in Figure \ref{initialconditioncosbell}) with the co-located forward-backward explicit scheme.
 
 \subsection{Test 2}
-We found using Von-Neumann stability analysis that the co-located forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore we this test will determine if this is in fact the case.
+We found using Von-Neumann stability analysis that the co-located forward-backward explicit scheme is unstable for courant numbers higher than 2. Therefore this test will determine if this is in fact the case.
 
 \subsection{Test 3}
 We found using Von-Neumann stability analysis that the co-located forward-backward implicit scheme is stable for all courant numbers. Therefore this test will determine if this is in fact the case.
 
 \subsection{Test 4}
-When looking at the dispersion relation for the co-located grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the co-located forward-backward explicit scheme and the co-located forward-backward implicit scheme.
+When looking at the dispersion relation for the co-located grid it seems that the results produced by the scheme may be unphysical. We test this hypothesis by taking a different less smooth initial condition (shown in Figure \ref{initialconditionspike}) and plotting the solutions of $u$ and $h$ at multiple time steps for the co-located forward-backward explicit scheme and the co-located forward-backward implicit scheme.
 
 \subsection{Test 5}
-Our analysis of the dispersion relations suggests that on a staggered grid the solutions for $u$ and $h$ should be more physical. Therefore we repeat test 3 with the same initial conditions (shown in Figure \ref{initialconditionspike}), but instead using the staggered explicit scheme.
+Our analysis of the dispersion relations suggests that on a staggered grid the solutions for $u$ and $h$ should be more physical. Therefore we repeat Test 4 with the same initial conditions (shown in Figure \ref{initialconditionspike}), but instead using the staggered explicit scheme.
 
 \subsection{Test 6}
 In the previous tests, the comparisons have been about the properties of the schemes themselves. If the initial condition shown in Figure \ref{initialconditioncos} is chosen it is possible to find an analytic solution of the shallow water equations
-\begin{equation}
+\begin{equation}\label{uanalytic}
 u = \sin(x)\sin(t)
 \end{equation}
-\begin{equation}
+\begin{equation}\label{hanalytic}
 h = \cos(x)\cos(t).
 \end{equation}
 If we choose the interval $[-\pi, \pi]$ then these solutions are periodic.
 
-This test will look at the solution errors between the solutions produced by the numerical scheme and the analytic solution. Note these are not the same as the errors calculated before, which are truncation errors. 
-
-%It will also compare these errors to $\Delta x$ and $\Delta t$ to see if the error relationships found by the Taylor series expansions are correct.
+This test will look at the solution errors between the solutions produced by the numerical schemes and the analytic solution. 
 
 \subsection{Test 7}
+
+In this test we would like to see if the orders of accuracy with respect to $\Delta x$ and $\Delta t$ found by Taylor expansion analysis in section \ref{numericalmethodssection} are correct. 
+Also to further test that our numerical schemes give the correct solution to shallow water equation, we have chosen to compare to another analytical solution of the shallow water equations: 
+\begin{eqnarray}
+u = (\cos(x) - \sin(x))(\cos(t) - \sin(t))\\
+h = (\cos(x) + \sin(x))(\cos(t) + \sin(t))
+\end{eqnarray}
+which corresponds to the initial condition shown in Figure \ref{initialconditioncossin}.
+
+\subsection{Test 8}
 Finally we compare the computational cost of the four schemes, by comparing the time it takes for each scheme to run, starting from the same initial condition (shown in Figure \ref{initialconditioncos}) and with the same number of time steps and space steps.
 
 We would expect the co-located explicit and the staggered explicit schemes to take the same amount of time as the number of floating point operations per iteration of each scheme is the same. 
@@ -487,6 +501,8 @@ By contrast with the co-located explicit method tested in test 2 (\ref{sectionte
 
 \subsection{Test 4}\label{subsectiontest4}
 
+Note for this test we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same).
+
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat*
@@ -494,7 +510,7 @@ By contrast with the co-located explicit method tested in test 2 (\ref{sectionte
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_explicit_spike.png}
-		\caption{\label{velocity_colocated_explicit_spike} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{velocity_colocated_explicit_spike} Velocity at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -502,7 +518,7 @@ By contrast with the co-located explicit method tested in test 2 (\ref{sectionte
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_colocated_explicit_spike.png}
-		\caption{\label{height_colocated_explicit_spike} Height at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{height_colocated_explicit_spike} Height at different timesteps using the co-located explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 \end{figure}
 
@@ -513,7 +529,7 @@ By contrast with the co-located explicit method tested in test 2 (\ref{sectionte
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_colocated_implicit_spike.png}
-		\caption{\label{velocity_colocated_implicit_spike} Velocity at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{velocity_colocated_implicit_spike} Velocity at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -521,7 +537,7 @@ By contrast with the co-located explicit method tested in test 2 (\ref{sectionte
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_colocated_implicit_spike.png}
-		\caption{\label{height_colocated_implicit_spike} Height at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{height_colocated_implicit_spike} Height at different timesteps using the co-located implicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 \end{figure}
 
@@ -530,7 +546,7 @@ As expected the results shown in Figures \ref{velocity_colocated_explicit_spike}
 Therefore our hypothesis that the results are unphysical is true.
 
 \subsection{Test 5}
-
+Note for this test we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same).
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat*
@@ -538,7 +554,7 @@ Therefore our hypothesis that the results are unphysical is true.
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{velocity_staggered_explicit_spike.png}
-		\caption{\label{velocity_staggered_explicit_spike} Velocity at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{velocity_staggered_explicit_spike} Velocity at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -546,13 +562,15 @@ Therefore our hypothesis that the results are unphysical is true.
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{height_staggered_explicit_spike.png}
-		\caption{\label{height_staggered_explicit_spike} Height at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}). Note here we have used $nx = 20$ and $nt = 10$ (all other parameters remain the same)} 
+		\caption{\label{height_staggered_explicit_spike} Height at different timesteps using the staggered explicit method using the initial condition $u$ equals 0 and $h$ is a spike (as shown in Figure \ref{initialconditionspike}).} 
 	\end{minipage}
 \end{figure}
 
 As expected in contrast to the results in the previous test (\ref{subsectiontest4}), the staggered scheme produces physical results for this initial condition. Figure \ref{height_staggered_explicit_spike} shows that the height spreads out evenly using all grid points. Figure \ref{velocity_staggered_explicit_spike} shows further that the velocity is non-zero at the gridpoints where the wave has so far propagated as we would expect in a physically realistic system.
 
 \subsection{Test 6}
+
+Note for this test we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.
 \begin{figure} [H]
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat*
@@ -560,7 +578,7 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{comparison_with_exact_u.png}
-		\caption{\label{exact velocity} Velocity, $u$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
+		\caption{\label{exact velocity} Velocity, $u$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). } 
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat
@@ -568,28 +586,31 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 		\captionsetup{width=0.9\textwidth}
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{comparison_with_exact_h.png}
-		\caption{\label{exact height} Height, $h$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
+		\caption{\label{exact height} Height, $h$, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}).} 
 	\end{minipage}
 \end{figure}
+Figures \ref{exact velocity} and \ref{exact height} show that for the smooth initial condition $u= 0$ and $h= \cos(x)$, all the numerical schemes approximate very closely to the analytical solution. 
 
-\begin{figure} [H]
-	\begin{minipage}{.5\textwidth}
-		\ContinuedFloat*
+To distinguish which method is better, we have calculated the L2 error norms of the schemes in Table \ref{errortable}. These show that the staggered semi-implicit method is the most accurate, as expected as it is second order in time and space whereas the other schemes are first order in time and second order in space. Unexpectedly the co-located implicit scheme is more inaccurate than the other schemes for $u$. This may be because of cumulative errors when inverting and multiplying the matrix used in the scheme.
+
+%\begin{figure} [H]
+%	\begin{minipage}{.5\textwidth}
+%		\ContinuedFloat*
+%		%\centering
+%		\captionsetup{width=0.9\textwidth}
+%		\captionsetup{justification=centering}
+%		\includegraphics[width=\textwidth]{error_in_u.png}
+%		\caption{\label{error_velocity} Error in velocity, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
+%	\end{minipage}
+%	\begin{minipage}{.5\textwidth}
+%		\ContinuedFloat
 		%\centering
-		\captionsetup{width=0.9\textwidth}
-		\captionsetup{justification=centering}
-		\includegraphics[width=\textwidth]{error_in_u.png}
-		\caption{\label{error_velocity} Error in velocity, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
-	\end{minipage}
-	\begin{minipage}{.5\textwidth}
-		\ContinuedFloat
-		%\centering
-		\captionsetup{width=0.9\textwidth}
-		\captionsetup{justification=centering}
-		\includegraphics[width=\textwidth]{error_in_h.png}
-		\caption{\label{error_height} Error in height, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
-	\end{minipage}
-\end{figure}
+%		\captionsetup{width=0.9\textwidth}
+%		\captionsetup{justification=centering}
+%		\includegraphics[width=\textwidth]{error_in_h.png}
+%		\caption{\label{error_height} Error in height, for the initial condition where $u$ is 0 everywhere and $h$ is $\cos(x)$ (as shown in Figure \ref{initialconditioncos}). Note here we have used $c = 1$, $nx = 1000$, $nt = 1000$ and the domain $=\pi\leq x \leq \pi$.} 
+%	\end{minipage}
+%\end{figure}
 
 
 
@@ -608,12 +629,94 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 		Staggered Semi-implicit & $1.9 \times 10^{-5}$ & $1.39\times 10 ^{-5}$ \\
 		\hline
 	\end{tabular}
-	\caption{}
+	\caption{Error L2 norms for all 4 numerical schemes}
 	\label{errortable}
 \end{table}
 
 \subsection{Test 7}
+Note for this test we have used $c = 0.1$ and varying $nx$ and $nt$ (to find the relationship between $\Delta x$, $\Delta t$ and the error) on the domain $-\pi \leq x \leq \pi$.
+\begin{figure} [H]
+	\begin{minipage}{.5\textwidth}
+	\ContinuedFloat*
+	%\centering
+	\captionsetup{width=0.9\textwidth}
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{uerror_compared_dt_cossin.png}
+	\caption{\label{uerrorcossindt}Log plot for the solution error of $u$ vs $\Delta t$ for the initial condition $u = \cos(x) - \sin(x)$ and $h = \cos(x) + \sin(x)$ (as shown in Figure \ref{initialconditioncossin})} 
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+	\ContinuedFloat
+	%\centering
+	\captionsetup{width=0.9\textwidth}
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{herror_compared_dt_cossin.png}
+	\caption{\label{herrorcossindt}Log plot for the solution error of $h$ vs $\Delta t$ for the initial condition $u = \cos(x) - \sin(x)$ and $h = \cos(x) + \sin(x)$ (as shown in Figure \ref{initialconditioncossin})} 
+\end{minipage}
+	\begin{minipage}{.5\textwidth}
+	\ContinuedFloat
+	%\centering
+	\captionsetup{width=0.9\textwidth}
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{uerror_compared_dx_cossin.png}
+	\caption{\label{uerrorcossindx}Log plot for the solution error of $u$ vs $\Delta x$ for the initial condition $u = \cos(x) - \sin(x)$ and $h = \cos(x) + \sin(x)$ (as shown in Figure \ref{initialconditioncossin})} 
+\end{minipage}
+	\begin{minipage}{.5\textwidth}
+	\ContinuedFloat
+	%\centering
+	\captionsetup{width=0.9\textwidth}
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{herror_compared_dx_cossin.png}
+	\caption{\label{herrorcossindx}Log plot for the solution error of $h$ vs $\Delta x$ for the initial condition $u = \cos(x) - \sin(x)$ and $h = \cos(x) + \sin(x)$ (as shown in Figure \ref{initialconditioncossin})} 
+\end{minipage}
+\end{figure}
+We see in Figures \ref{uerrorcossindt} - \ref{herrorcossindx} that the error plotted against $\Delta x$ and the error plotted against $\Delta t$ is the same. This is because as we are keeping the courant number, $c$, constant and the number of time steps, $nt$, and number of space steps, $nx$, constant, it is impossible to vary $\Delta x$ without varying $\Delta t$. We also see that as before in Test 6 the error in the semi-implicit method is much lower than the error for the other methods. In contrast to Test 6 the implicit method has the same order of accuracy as the co-located explicit and staggered explicit methods, as we would expect.
 
+Table \ref{gradient} contains the gradient of the lines plotted in Figures \ref{uerrorcossindt} - \ref{herrorcossindx}. We would expect the gradient of the error vs. $\Delta x$ to be 2 for all schemes as they are all second order accurate in space. We would expect the error vs. $\Delta t$ to be 1 for all schemes apart from the staggered semi-implicit scheme for which it should be 2, because all the schemes are first order in time apart from the staggered semi-implicit scheme which is second order in time. However this is not what Table \ref{gradient} shows. One of the reasons may be because the $\Delta x$ and $\Delta t$ errors are being considered together so table \ref{gradient} contains cumulative orders of accuracy. Another may be that the higher order $\Delta x$ and $\Delta t$ terms are affecting the gradient. 
+
+Our results do still show that the staggered semi-implicit method does have a higher order of accuracy than the other schemes which is as expected.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c | c| c| c| c|} 
+		\hline
+		\textbf{Numerical Scheme} & $u$ error vs $\Delta x$ &  $u$ error vs $\Delta t$ & $h$ error vs $\Delta x$ & $h$ error vs $\Delta t$\\
+		\hline
+		Co-located Explicit & 0.57 & 0.57 & 0.48 & 0.48\\ 
+		\hline
+		Staggered Explicit & 0.50 & 0.50 & 0.53 & 0.53 \\
+		\hline
+		Co-located Implicit & 0.64 & 0.64 & 0.49 & 0.49 \\
+		\hline
+		Staggered Semi-implicit & 1.50 & 1.50 & 1.50 & 1.50\\
+		\hline
+	\end{tabular}
+	\caption{Gradient of functions shown in Figures \ref{uerrorcossindt} - \ref{herrorcossindx} ie. log of meshgrid vs log of error for the initial condition $u = \cos(x) - \sin(x)$ and $h = \cos(x) + \sin(x)$}
+	\label{gradient}
+\end{table}
+
+
+%Analytical solution is $u = \sin(x)\sin(t)$ and $h = \cos(x)\cos(t)$
+%\begin{table}[H]
+%	\centering
+%	\begin{tabular}{|c | c| c| c| c|} 
+%		\hline
+%		\textbf{Numerical Scheme} & $u$ error vs $\Delta x$ &  $u$ error vs $\Delta t$ & $h$ error vs $\Delta x$ & $h$ error vs $\Delta t$\\
+%		\hline
+%		Co-located Explicit & 1.50 & 1.50 &  0.45& 0.45\\ 
+%		\hline
+%		Staggered Explicit & 1.50 & 1.50 & 0.49 & 0.49 \\
+%		\hline
+%		Co-located Implicit & 0.52 & 0.52 & 0.42 & 0.42 \\
+%		\hline
+%		Staggered Semi-implicit & 1.50 & 1.50 & 1.50 & 1.50\\
+%		\hline
+%	\end{tabular}
+%	\caption{}
+%	\label{}
+%\end{table}
+
+\subsection{Test 8}
+Note for this test the number of space steps is 1000 and number of time steps is 1000.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c | c|} 
@@ -629,24 +732,25 @@ As expected in contrast to the results in the previous test (\ref{subsectiontest
 		Staggered Semi-implicit & 84.5 s \\
 		\hline
 	\end{tabular}
-\caption{Time taken for each numerical scheme to run for the initial condition that $h$ is $\cos(x)$ and $u$ is $0$ (as shown in Figure \ref{initialconditioncos}) and the number of space steps is 1000 and number of time steps is 1000.}
+\caption{Time taken for each numerical scheme to run for the initial condition that $h$ is $\cos(x)$ and $u$ is $0$ (as shown in Figure \ref{initialconditioncos}).}
 \label{timingtable}
 \end{table}
 
-Table \ref{timingtable} shows as expected that the staggered semi-implict scheme takes longest of the four schemes. The co-located explicit and staggered explicit schemes take a similar amount of time as expected as the number of floating point operations per iteration is the same for both schemes. Again as expected he co-located implicit scheme takes slightly longer than the explicit schemes but not as long as the staggered semi-implicit scheme. This is because the construction of the vector $b$ in the matrix equation is simpler for the co-located implicit scheme than for the staggered semi-implicit scheme.
+Table \ref{timingtable} shows as expected that the staggered semi-implict scheme takes the longest of the four schemes. The co-located explicit and staggered explicit schemes take a similar amount of time as expected as the number of floating point operations per iteration is the same for both schemes. Again as expected he co-located implicit scheme takes slightly longer than the explicit schemes but not as long as the staggered semi-implicit scheme. This is because the construction of the vector $b$ in the matrix equation is simpler for the co-located implicit scheme than for the staggered semi-implicit scheme.
+
+\newpage
 
 \section{Conclusions}
 
 From the results listed in Section \ref{results section}, we can conclude the following:
 
 \begin{itemize}
-	\item Staggered grids produce more physically realistic results than co-located grids for certain initial conditions (from Test 4 and Test 5)
 	\item When working with high courant numbers (e.g. if the meshgrid spacing is very fine so $\Delta x$ is small or if $H$ or $\Delta t$ are very large), it is better to choose implicit methods as they are stable for all courant numbers whereas explicit methods can have large instabilities (from Test 2 and Test 3)
-	\item SOME COMMENT ABOUT ERRORS
-	\item When working with small courant numbers, it is better to choose explicit methods as they are much less computationally expensive than implicit methods (from Test 7)
+	\item Staggered grids produce more physically realistic results than co-located grids for certain initial conditions (from Test 4 and Test 5)
+	\item The semi-implicit staggered method is the most accurate of the 4 schemes (from Test 6 and Test 7)
+	\item When working with small courant numbers, it is better to choose explicit methods as they are much less computationally expensive than implicit methods (from Test 8)
 \end{itemize}
 
-\newpage
 
 \begin{thebibliography}{9}
 	\addcontentsline{toc}{part}{Bibliography}

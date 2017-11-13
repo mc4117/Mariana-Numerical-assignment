@@ -38,48 +38,6 @@ for j in range(len(nx_range2)):
 print(nt_range2)
 
 
-
-
-
-def initialconditions_cossin(nx, xmin = 0, xmax = 1, plot = True):
-    """
-    xmin: minimum value of x on grid
-    xmax: maximum value of x on grid
-    nx: number of space steps
-    plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
-    """
-    x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
-    
-    
-    # initialize initial u and initial h
-    initialu = np.zeros(len(x)).astype(float)
-    initialh = np.zeros(len(x)).astype(float)
-    
-    # set the initial conditions
-    for i in range(len(x)):
-        initialu[i] = math.cos(x[i]) - math.sin(x[i])
-        initialh[i] = math.cos(x[i]) + math.sin(x[i])
-        
-    # plot these initial conditions
-    if plot == True:
-        fig1, ax1 = plt.subplots()
-        ax1.plot(x, initialh, 'g-', label = 'Initial h conditions')
-        ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
-        ax1.legend(loc = 'best')
-        ax1.set_xlabel("x")
-        #ax1.set_title("Initital Condition where h is cos(x)")
-        ax1.set_xlim = ([xmin, xmax])
-        ax1.set_ylim([-1.1, 1.1])
-        
-        # add space between the title and the plot
-        #plt.rcParams['axes.titlepad'] = 20 
-        fig1.savefig("initial_condition_cos.png")
-        fig1.show()
-    return initialu, initialh, x
-
-
-
-
 def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     """This function compares the solutions of the 4 numerical methods studied for the initial condition defined in the function initialconditions_cossin and finds the Frobenius norm of the error between these solutions and the exact solution
         Note this function can only be used with this initial condition as otherwise the exact solution is incorrect.
@@ -113,10 +71,10 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
         # derive the width of the spacestep
         dx_list[j] = (xmax - xmin)/nx
         dt_list[j] = total_time/nt
-        u_A_grid_explicit, h_A_grid_explicit, x1 = nm.A_grid_explicit(initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
-        u_C_grid_explicit, h_C_grid_explicit, x2 = nm.C_grid_explicit(initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
-        u_implicit, h_implicit, x3 = nm.implicit_method(initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
-        u_semi_implicit, h_semi_implicit, x4 = nm.semi_implicit_method(initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_A_grid_explicit, h_A_grid_explicit, x1 = nm.A_grid_explicit(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_C_grid_explicit, h_C_grid_explicit, x2 = nm.C_grid_explicit(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_implicit, h_implicit, x3 = nm.implicit_method(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_semi_implicit, h_semi_implicit, x4 = nm.semi_implicit_method(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
 
         # Note x1, x2, x3 and x4 are all the same variables as nx, nt, xmin and xmax are the same for all methods
     
@@ -143,35 +101,47 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
         norm_implicit_listh[j] = np.linalg.norm((h - h_implicit))
         norm_semi_implicit_listh[j] = np.linalg.norm((h - h_semi_implicit))
         
-    plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid')
-    plt.loglog(dx_list, norm_C_grid_listu, label = 'C-grid')
-    plt.loglog(dx_list, norm_implicit_listu, label = 'implicit')
-    plt.loglog(dx_list, norm_semi_implicit_listu, label = 'semi-implicit')
+    plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listu, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_implicit_listu, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_semi_implicit_listu, label = 'C-grid semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dx_cossin.png")
     plt.title('u_dx')
     plt.show()
     
-    plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid')
-    plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid')
-    plt.loglog(dx_list, norm_implicit_listh, label = 'implicit')
-    plt.loglog(dx_list, norm_semi_implicit_listh, label = 'semi-implicit')
+    plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_semi_implicit_listh, label = 'C-grid semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dx_cossin.png")
     plt.title('h_dx')
     plt.show()
     
-    plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid')
-    plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid')
-    plt.loglog(dt_list, norm_implicit_listu, label = 'implicit')
-    plt.loglog(dt_list, norm_semi_implicit_listu, label = 'semi-implicit')
+    plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_implicit_listu, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_semi_implicit_listu, label = 'C-grid semi-implicit')  
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dt_cossin.png")
     plt.title('u_dt')
     plt.show()
     
-    plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid')
-    plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid')
-    plt.loglog(dt_list, norm_implicit_listh, label = 'implicit')
-    plt.loglog(dt_list, norm_semi_implicit_listh, label = 'semi-implicit')
+    plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_semi_implicit_listh, label = 'C-grid semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dt_cossin.png")
     plt.title('h_dt')
     plt.show()
     
@@ -249,6 +219,9 @@ def error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi
     plt.loglog(dx_list, norm_implicit_listu, label = 'implicit')
     plt.loglog(dx_list, norm_semi_implicit_listu, label = 'semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dx_cos.png")
     plt.title('u_dx')
     plt.show()
     
@@ -257,6 +230,9 @@ def error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi
     plt.loglog(dx_list, norm_implicit_listh, label = 'implicit')
     plt.loglog(dx_list, norm_semi_implicit_listh, label = 'semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dx_cos.png")
     plt.title('h_dx')
     plt.show()
     
@@ -265,6 +241,9 @@ def error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi
     plt.loglog(dt_list, norm_implicit_listu, label = 'implicit')
     plt.loglog(dt_list, norm_semi_implicit_listu, label = 'semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dt_cos.png")
     plt.title('u_dt')
     plt.show()
     
@@ -273,53 +252,39 @@ def error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi
     plt.loglog(dt_list, norm_implicit_listh, label = 'implicit')
     plt.loglog(dt_list, norm_semi_implicit_listh, label = 'semi-implicit')
     plt.legend(loc = 'best')
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dt_cos.png")
     plt.title('h_dt')
     plt.show()
-    """
-    plt.plot(x1, u_A_grid_explicit, label = 'A explicit')
-    plt.plot(x1 + (xmax-xmin)/(2*nx), u_C_grid_explicit, label = 'C explicit')
-    plt.plot(x1, u_implicit, label = 'implicit')
-    plt.plot(x1, u_semi_implicit, label = 'semi-implicit')
-    plt.plot(x1, u_A_grid, label = 'exact')
-    plt.legend()
-    plt.show()
-    
-    plt.plot(x1, h_A_grid_explicit, label = 'a explicit')
-    plt.plot(x1, h_C_grid_explicit, label = 'c explicit')
-    plt.plot(x1, h_implicit, label = 'implicit')
-    plt.plot(x1, h_semi_implicit, label = 'semi-implicit')
-    plt.plot(x1, h, label = 'exact')
-    plt.legend()
-    plt.show()
-    """
+
     return dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh
 
-dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh = error_fn_cos(nx_range2, nt_range2, total_time, xmin, xmax, H, g, c)
+#dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh = error_fn_cos(nx_range2, nt_range2, total_time, xmin, xmax, H, g, c)
 
-cos_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
-cos_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
-cos_gradient_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listu),1)[0]
-cos_gradient_semi_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listu),1)[0]
+#cos_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
+#cos_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
+#cos_gradient_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listu),1)[0]
+#cos_gradient_semi_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listu),1)[0]
     
-cos_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
-cos_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
-cos_gradient_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listh),1)[0]
-cos_gradient_semi_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listh),1)[0]
+#cos_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
+#cos_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
+#cos_gradient_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listh),1)[0]
+#cos_gradient_semi_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listh),1)[0]
 
-cos_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
-cos_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
-cos_gradient_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listu),1)[0]
-cos_gradient_semi_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listu),1)[0]
+#cos_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
+#cos_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
+#cos_gradient_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listu),1)[0]
+#cos_gradient_semi_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listu),1)[0]
     
-cos_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
-cos_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
-cos_gradient_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listh),1)[0]
-cos_gradient_semi_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listh),1)[0]
+#cos_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
+#cos_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
+#cos_gradient_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listh),1)[0]
+#cos_gradient_semi_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listh),1)[0]
 
 
 
-
-dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh = gradient_A_grid_u, gradient_C_grid_u, gradient_implicit_u, gradient_semi_implicit_u, gradient_A_grid_h, gradient_C_grid_h, gradient_implicit_h, gradient_semi_implicit_h = error_fn_cossin(nx_range2, nt_range2, total_time, xmin, xmax, H, g, c)
+dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh = error_fn_cossin(nx_range2, nt_range2, total_time, xmin, xmax, H, g, c)
 
 cossin_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
 cossin_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]

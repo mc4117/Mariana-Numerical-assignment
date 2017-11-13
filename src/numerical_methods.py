@@ -5,7 +5,6 @@
 """
 
 import numpy as np
-from initial_conditions import flat_u 
 from math import sqrt
 
 def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):

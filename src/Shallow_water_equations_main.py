@@ -36,7 +36,7 @@ def main():
     ax1.plot(initialx, initialu, label = 'initial u')
     ax2.plot(initialx, initialh, label = 'initial h')
     
-    timerange = np.linspace(0, 2, 4)
+    timerange = np.linspace(0, 3, 4).astype('int')
     for i in timerange[1:]:
         u, h, x = nm.A_grid_explicit(ic.initialconditions_cosbell, nx, i*nt,  H = 1, g = 1, c = 0.1)
         ax1.plot(x, u, label = 'u after ' + str(int(i*nt)) + ' timesteps')
@@ -94,7 +94,7 @@ def main():
     # In order to see the phenomenon more clearly we use a slightly coarser grid than before
     
     nx_adapted = 20 # number of points from x = 0 to x = 1
-    nt_adapted = 10 # number of time steps in 1 second
+    nt_adapted = 9 # number of time steps in 1 second
     number_plotted = 3 # number of different iterations to be plotted on graph
     
     # set the colours to be used in the plot

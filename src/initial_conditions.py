@@ -142,5 +142,40 @@ def initialconditions_cos(nx, xmin = 0, xmax = 1, plot = True):
         fig1.show()
     return initialu, initialh, x
 
+def initialconditions_cossin(nx, xmin = 0, xmax = 1, plot = True):
+    """
+    xmin: minimum value of x on grid
+    xmax: maximum value of x on grid
+    nx: number of space steps
+    plot: if this variable is True then the initial conditions will be plotted, but it False then no plot will be produced
+    """
+    x = np.linspace(xmin,xmax,nx+1) # want the extra point at the boundary but in reality h[0] and h[nx] are equal
+    
+    
+    # initialize initial u and initial h
+    initialu = np.zeros(len(x)).astype(float)
+    initialh = np.zeros(len(x)).astype(float)
+    
+    # set the initial conditions
+    for i in range(len(x)):
+        initialu[i] = math.cos(x[i]) - math.sin(x[i])
+        initialh[i] = math.cos(x[i]) + math.sin(x[i])
+        
+    # plot these initial conditions
+    if plot == True:
+        fig1, ax1 = plt.subplots()
+        ax1.plot(x, initialh, 'g-', label = 'Initial h conditions')
+        ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
+        ax1.legend(loc = 'best')
+        ax1.set_xlabel("x")
+        #ax1.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
+        ax1.set_xlim = ([xmin, xmax])
+        ax1.set_ylim([-1.5, 1.5])
+        
+        # add space between the title and the plot
+        #plt.rcParams['axes.titlepad'] = 20 
+        fig1.savefig("initial_condition_cossin.png")
+        fig1.show()
+    return initialu, initialh, x
 
 

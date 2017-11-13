@@ -31,7 +31,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     fig2, ax2 = plt.subplots()
     
     # set the timesteps that will be plotted
-    timerange = np.linspace(0, number_iterations, (number_plotted + 1))
+    timerange = np.linspace(0, number_iterations, (number_plotted + 1)).astype('int')
      
     colorrange = plotparameterrange[0]
     linestylerange = plotparameterrange[1]
