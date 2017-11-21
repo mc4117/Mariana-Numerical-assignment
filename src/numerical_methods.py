@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 @author: Mariana Clare
+
+This file contains the four functions which simulate the shallow water equations 
+using four different numeric schemes.
+
 """
 
 import numpy as np
@@ -171,6 +175,7 @@ def semi_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g
     H:                  mean fluid depth set to 1 unless otherwise specified
     g:                  acceleration due to gravity scaled to 1
     c:                  courant number (c = root(gH)dt/dx)
+    
     """    
     
     # set initial conditions

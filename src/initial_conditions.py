@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 @author: Mariana Clare
+
+This file contains the functions which define the four initial conditions that
+are considered by this code.
+
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-def flat_u(j):
-    """produces a flat line at zero"""
-    y = 0
-    return y
 
 def h_spike(j, midpoint):
     """produces a curve which is zero everywhere but h = 1 at one point in the centre"""
@@ -46,7 +46,7 @@ def initialconditions_spike(nx, xmin = 0, xmax = 1, plot = True):
     
     # set the initial conditions such that u is zero everywhere and h is zero everywhere apart from one point at the centre where it is one
     for i in range(len(x)):
-        initialu[i] = flat_u(i)
+        initialu[i] = 0
         initialh[i] = h_spike(i, midpoint)
     
     # plot these initial conditions
@@ -56,7 +56,7 @@ def initialconditions_spike(nx, xmin = 0, xmax = 1, plot = True):
         ax.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax.legend(loc = 'best')
         ax.set_xlabel("x")
-        #ax.set_title("Initial Condition with spike in h")
+        ax.set_title("Initial Condition with spike in h")
         ax.set_xlim([xmin,xmax])
         ax.set_ylim([-0.1, 1.1])
         
@@ -85,7 +85,7 @@ def initialconditions_cosbell(nx, xmin = 0, xmax = 1, plot = True):
     
     # set the initial conditions such that u is zero everywhere and h has a bump in the centre and is surrounded by zero either side
     for i in range(len(x)):
-        initialu[i] = flat_u(i)
+        initialu[i] = 0
         initialh[i] = h_cosbell(x[i])
         
     # plot these initial conditions
@@ -96,7 +96,7 @@ def initialconditions_cosbell(nx, xmin = 0, xmax = 1, plot = True):
         ax.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax.legend(loc = 'best')
         ax.set_xlabel("x")
-        #ax.set_title("Initial Condition where h has a bump in the centre")
+        ax.set_title("Initial Condition where h has a bump in the centre")
         ax.set_xlim([xmin,xmax])
         ax.set_ylim([-0.1, 1.1])
         
@@ -122,7 +122,7 @@ def initialconditions_cos(nx, xmin = 0, xmax = 1, plot = True):
     
     # set the initial conditions such that u is zero everywhere and h is cos(x)
     for i in range(len(x)):
-        initialu[i] = flat_u(i)
+        initialu[i] = 0
         initialh[i] = math.cos(x[i])
         
     # plot these initial conditions
@@ -132,7 +132,7 @@ def initialconditions_cos(nx, xmin = 0, xmax = 1, plot = True):
         ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax1.legend(loc = 'best')
         ax1.set_xlabel("x")
-        #ax1.set_title("Initital Condition where h is cos(x)")
+        ax1.set_title("Initital Condition where h is cos(x)")
         ax1.set_xlim = ([xmin, xmax])
         ax1.set_ylim([-1.1, 1.1])
         
@@ -142,7 +142,7 @@ def initialconditions_cos(nx, xmin = 0, xmax = 1, plot = True):
         fig1.show()
     return initialu, initialh, x
 
-def initialconditions_cossin(nx, xmin = 0, xmax = 1, plot = True):
+def initialconditions_cossin(nx, xmin = -math.pi, xmax = math.pi, plot = True):
     """
     xmin: minimum value of x on grid
     xmax: maximum value of x on grid
@@ -168,7 +168,7 @@ def initialconditions_cossin(nx, xmin = 0, xmax = 1, plot = True):
         ax1.plot(x, initialu, 'r--', label = 'Initial u conditions')
         ax1.legend(loc = 'best')
         ax1.set_xlabel("x")
-        #ax1.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
+        ax1.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
         ax1.set_xlim = ([xmin, xmax])
         ax1.set_ylim([-1.5, 1.5])
         

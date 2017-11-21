@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: Mariana Clare
+
 """
 
 import numpy as np
@@ -203,6 +204,8 @@ def main():
     
     # therefore instead look at the error between the exact solution and the numerical method
     
+    # first calculate the error norms
+    
     fig1_error, fig2_error, ax1_error, ax2_error, error_norms_u, error_norms_h = pltfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     #ax1_error.set_title("Squared error in velocity, u, for the initial condition \n where u is 0 everywhere and h is cos(x)" )
@@ -216,17 +219,91 @@ def main():
     
     plt.show()
     
-    print(error_norms_u)
-    print(error_norms_h)
+    print("Error norm of u for A-grid explicit: %f" % (error_norms_u[0]))
+    print("Error norm of u for C-grid explicit: %f" % (error_norms_u[1]))
+    print("Error norm of u for A-grid implicit: %f" % (error_norms_u[2]))
+    print("Error norm of u for C-grid semi-implicit: %f" % (error_norms_u[3]))
+
+    print("Error norm of h for A-grid explicit: %f" % (error_norms_h[0]))
+    print("Error norm of h for C-grid explicit: %f" % (error_norms_h[1]))
+    print("Error norm of h for A-grid implicit: %f" % (error_norms_h[2]))
+    print("Error norm of h for C-grid semi-implicit: %f" % (error_norms_h[3]))
+    
+    
+    # to further test the numerical methods use a different inital condition which also has an analytical solution
+
+    # plot initial conditions where h is cos(x) + sin(x) and u is cos(x) - sin(x)
+    
+    ic.initialconditions_cossin(nx)
+    
+    plt.show()
+    
+    # we would like to compare the errors with respect to dx and dt 
+    # to do this we make a selection of nx and total time such that nt is an integer
+    
+    # the total time must be kept constant so that we are comparing the schemes at the same point in time
+    total_time = math.pi/3
+    
+    nx_range = [300, 600, 750, 900]
+    nt_range = np.zeros_like(nx_range).astype('int')
+
+    # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH)
+    # as nt = total_time/dt = pi/3 /(2pi c /nxsqrt(gH)) = 5 nx/3
+
+    for j in range(len(nx_range)):
+        nx_r = nx_range[j]
+        nt_range[j] = 5 * nx_r/3
+    
+    
+    # calculate the l2 error norm for u and h for each numerical method for different values of dx and dt
+    dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh = pltfns.error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
+    
+    # attempt to fit a straight line on the relationship between log(dx) and the log of the error of u for 
+    # each numerical method. The gradient of this line is the order of the scheme with respect to dx for u
+    cossin_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
+    cossin_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
+    cossin_gradient_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listu),1)[0]
+    cossin_gradient_semi_implicit_u_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listu),1)[0]
+
+    # attempt to fit a straight line on the relationship between log(dx) and the log of the error of h for 
+    # each numerical method. The gradient of this line is the order of the scheme with respect to dx for h
+    cossin_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
+    cossin_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
+    cossin_gradient_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_implicit_listh),1)[0]
+    cossin_gradient_semi_implicit_h_dx = np.polyfit(np.log(dx_list), np.log(norm_semi_implicit_listh),1)[0]
+
+    # attempt to fit a straight line on the relationship between log(dt) and the log of the error of u for 
+    # each numerical method. The gradient of this line is the order of the scheme with respect to dt for u
+    cossin_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
+    cossin_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
+    cossin_gradient_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listu),1)[0]
+    cossin_gradient_semi_implicit_u_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listu),1)[0]
+    
+    # attempt to fit a straight line on the relationship between log(dt) and the log of the error of h for 
+    # each numerical method. The gradient of this line is the order of the scheme with respect to dt for h
+    cossin_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
+    cossin_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
+    cossin_gradient_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_implicit_listh),1)[0]
+    cossin_gradient_semi_implicit_h_dt = np.polyfit(np.log(dt_list), np.log(norm_semi_implicit_listh),1)[0]
+
+    plt.show()
+
+    print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
+    print("A_grid explicit| %f | %f | %f | %f" % (cossin_gradient_A_grid_u_dx, cossin_gradient_A_grid_u_dt, cossin_gradient_A_grid_h_dx, cossin_gradient_A_grid_h_dt))
+    print("C_grid explicit| %f | %f | %f | %f" % (cossin_gradient_C_grid_u_dx, cossin_gradient_C_grid_u_dt, cossin_gradient_C_grid_h_dx, cossin_gradient_C_grid_h_dt))
+    print("A_grid implicit|%f | %f | %f | %f" % (cossin_gradient_implicit_u_dx, cossin_gradient_implicit_u_dt, cossin_gradient_implicit_h_dx, cossin_gradient_implicit_h_dt))
+    print("A_grid semi-implicit|%f | %f | %f | %f" % (cossin_gradient_semi_implicit_u_dx, cossin_gradient_semi_implicit_u_dt, cossin_gradient_semi_implicit_h_dx, cossin_gradient_semi_implicit_h_dt))
+    
+
     
     # Finally we would like to compare the computational cost of each scheme by comparing how long each takes to run
     t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 
 
-    print('A-grid explicit: ', t1 - t0, 'seconds')
-    print('C-grid explicit: ', t2 - t1, 'seconds')
-    print('A-grid implicit: ', t3 - t2, 'seconds')
-    print('C-grid semi-implicit: ', t4 - t3, 'seconds')
+    print("A-grid explicit: %f seconds" % (t1 - t0))
+    print("C-grid explicit: %f seconds" % (t2 - t1))
+    print("A-grid implicit: %f seconds" % (t3 - t2))
+    print("C-grid semi-implicit: %f seconds" % (t4 - t3))
     
 main()
 

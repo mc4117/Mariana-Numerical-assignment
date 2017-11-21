@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 @author: Mariana Clare
+
+This code plots the dispersion relations for the 4 numerical schemes considered
+and the analytic solution.
 """
 import numpy as np
 import matplotlib.pyplot as plt

@@ -236,3 +236,121 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     
     return fig1, fig2, ax1, ax2, error_norms_u, error_norms_h
 
+
+def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
+    """This function compares the solutions of the 4 numerical methods studied for the initial condition 
+       defined in the function initialconditions_cossin and finds the Frobenius norm of the error between 
+       these solutions and the exact solution
+        Note this function can only be used with this initial condition as otherwise the exact solution is incorrect.
+    nx_range:           range of total number of space steps (in order to vary mesh size)
+    nt:                 number of time steps
+    xmin:               minimum value of x on grid
+    xmax:               maximum value of x on grid
+    H:                  mean fluid depth set to 1 unless otherwise specified
+    g:                  acceleration due to gravity scaled to 1
+    c:                  courant number (c = root(gH)dt/dx)
+    """
+    
+    # initialize lists
+    norm_A_grid_listu = np.zeros_like(nx_range).astype('float')
+    norm_C_grid_listu = np.zeros_like(nx_range).astype('float')
+    norm_implicit_listu = np.zeros_like(nx_range).astype('float')
+    norm_semi_implicit_listu = np.zeros_like(nx_range).astype('float')
+
+    norm_A_grid_listh = np.zeros_like(nx_range).astype('float')
+    norm_C_grid_listh = np.zeros_like(nx_range).astype('float')
+    norm_implicit_listh = np.zeros_like(nx_range).astype('float')
+    norm_semi_implicit_listh = np.zeros_like(nx_range).astype('float')
+
+    dx_list = np.zeros_like(nx_range).astype('float')
+    dt_list = np.zeros_like(nt_range).astype('float')
+
+    
+    # find u and h for each numerical method for a range of space mesh sizes 
+    for j in range(len(nx_range)):
+        nx = nx_range[j]
+        nt = nt_range[j]
+        # derive the width of the spacestep
+        dx_list[j] = (xmax - xmin)/nx
+        dt_list[j] = total_time/nt
+        u_A_grid_explicit, h_A_grid_explicit, x1 = nm.A_grid_explicit(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_C_grid_explicit, h_C_grid_explicit, x2 = nm.C_grid_explicit(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_implicit, h_implicit, x3 = nm.implicit_method(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+        u_semi_implicit, h_semi_implicit, x4 = nm.semi_implicit_method(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
+
+        # Note x1, x2, x3 and x4 are all the same variables as nx, nt, xmin and xmax are the same for all methods
+        
+        # construct exact solution on both colocated and staggered grid
+        u_A_grid = np.zeros_like(x1).astype('float')
+        u_C_grid = np.zeros_like(x1).astype('float')
+        h = np.zeros_like(x1).astype('float')
+    
+        for i in range(len(x1)):
+            u_A_grid[i] = (math.cos(x1[i]) - math.sin(x1[i]))*(math.cos(total_time) - math.sin(total_time))
+            h[i] = (math.cos(x1[i]) + math.sin(x1[i]))*(math.cos(total_time) + math.sin(total_time))
+            u_C_grid[i] = (math.cos(x1[i] + (xmax - xmin)/(2*nx)) - math.sin(x1[i] + (xmax - xmin)/(2*nx)))*(math.cos(total_time) - math.sin(total_time))
+        
+        # find the Frobenius norm of the error between exact solution and solution found by numerical method
+        norm_A_grid_listu[j] = np.linalg.norm((u_A_grid - u_A_grid_explicit))
+        norm_C_grid_listu[j] = np.linalg.norm((u_C_grid - u_C_grid_explicit))
+        norm_implicit_listu[j] = np.linalg.norm(u_A_grid - u_implicit)
+        norm_semi_implicit_listu[j] = np.linalg.norm((u_C_grid - u_semi_implicit))
+    
+        norm_A_grid_listh[j] = np.linalg.norm((h - h_A_grid_explicit))
+        norm_C_grid_listh[j] = np.linalg.norm((h - h_C_grid_explicit))
+        norm_implicit_listh[j] = np.linalg.norm((h - h_implicit))
+        norm_semi_implicit_listh[j] = np.linalg.norm((h - h_semi_implicit))
+        
+    
+    # plot results on a log scale
+    
+    plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listu, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_implicit_listu, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_semi_implicit_listu, label = 'C-grid semi-implicit')
+    plt.legend(loc = 'best')
+    plt.xlim([min(dx_list),max(dx_list)])
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dx_cossin.png")
+    plt.title('u_dx')
+    plt.show()
+    
+    plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_semi_implicit_listh, label = 'C-grid semi-implicit')
+    plt.legend(loc = 'best')
+    plt.xlim([min(dx_list),max(dx_list)])
+    plt.xlabel(r"$\Delta x$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dx_cossin.png")
+    plt.title('h_dx')
+    plt.show()
+    
+    plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_implicit_listu, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_semi_implicit_listu, label = 'C-grid semi-implicit')  
+    plt.legend(loc = 'best')
+    plt.xlim([min(dt_list),max(dt_list)])
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in u")
+    plt.savefig("uerror_compared_dt_cossin.png")
+    plt.title('u_dt')
+    plt.show()
+    
+    plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_semi_implicit_listh, label = 'C-grid semi-implicit')
+    plt.legend(loc = 'best')
+    plt.xlim([min(dt_list),max(dt_list)])
+    plt.xlabel(r"$\Delta t$")
+    plt.ylabel("Error in h")
+    plt.savefig("herror_compared_dt_cossin.png")
+    plt.title('h_dt')
+    plt.show()
+    
+    return dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, norm_C_grid_listh, norm_implicit_listu, norm_implicit_listh, norm_semi_implicit_listu, norm_semi_implicit_listh
+
