@@ -78,14 +78,14 @@ def main():
     ax1.legend(loc = 'best', fontsize = 'medium')
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
-    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \
-                  \n and initial condition of a cos bell curve")
+    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
+and initial condition of a cos bell curve")
 
     ax2.legend(loc = 'best', fontsize = 'medium')
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
-    ax2.set_title("Height, h, calculated using the colocated explicit scheme \
-                  \n and initial condition of a cos bell curve")
+    ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
+and initial condition of a cos bell curve")
     
     fig1.savefig("velocity_colocated_explicit_cosbell.png")
     fig2.savefig("height_colocated_explicit_cosbell.png")
@@ -100,11 +100,10 @@ def main():
     crange = np.linspace(0,3,4)
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
             ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
-    ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers for colocated \
-                        explicit scheme \n with initial condition of a cos bell curve")
-    ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using \
-                              the colocated explicit scheme \n with initial condition of \
-                              a cos bell curve")
+    ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers for colocated explicit scheme\n\
+with initial condition of a cos bell curve")
+    ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated\n\
+explicit scheme with initial condition of a cos bell curve")
 
     fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
     fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
@@ -113,10 +112,10 @@ def main():
     fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
             ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, \
             nm.A_grid_implicit_method, crange, colorrange_multic)
-    ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers for \
-            colocated implicit scheme \n with initial condition of a cos bell curve")
-    ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers for colocated \
-                            implicit scheme \n with initial condition of cos bell curve")
+    ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers for colocated implicit scheme\n\
+with initial condition of a cos bell curve")
+    ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers for colocated implicit scheme\n\
+with initial condition of cos bell curve")
     
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
@@ -268,12 +267,12 @@ def main():
 
     # plot exact solution on plot as well
     ax1_exact.plot(x1, u, c = 'black', linestyle = ':', label = "exact solution")
-    ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n \
+    ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
                         and h is cos(x)")
     ax1_exact.legend(loc = 'best')
 
     ax2_exact.plot(x1, h, c = 'black', linestyle = ':', label = "exact solution")
-    ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere\n \
+    ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
                         and h is cos(x)")
     ax2_exact.legend(loc = 'best', fontsize = 'small')
     
@@ -289,11 +288,11 @@ def main():
     fig1_error, fig2_error, ax1_error, ax2_error, error_norms_u, error_norms_h = \
         errfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
-    ax1_error.set_title("Squared error in velocity, u, for the initial condition \n\
+    ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
                         where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
 
-    ax2_error.set_title("Squared error in height, h, for the initial condition \n\
+    ax2_error.set_title("Squared error in height, h, for the initial condition\n\
                         where u is 0 everywhere and h is cos(x)" )
     ax2_error.legend(loc = 1, fontsize = 'small')
     
@@ -320,17 +319,17 @@ def main():
     
     initialucossin, initialhcossin = ic.initialconditions_cossin(initialxcos)
     
-#    figic3, axic3 = plt.subplots()
-#    axic3.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h conditions')
-#    axic3.plot(initialxcos, initialucossin, 'r--', label = 'Initial u conditions')
-#    axic3.legend(loc = 'best')
-#    axic3.set_xlabel("x")
-#    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
-#    axic3.set_xlim = ([xmin_1, xmax_1])
-#    axic3.set_ylim([-1.5, 1.5])
+    plt.ion()
+    plt.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h conditions')
+    plt.plot(initialxcos, initialucossin, 'r--', label = 'Initial u conditions')
+    plt.legend(loc = 'best')
+    plt.xlabel("x")
+    plt.title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
+    plt.xlim = ([xmin_1, xmax_1])
+    plt.ylim([-1.5, 1.5])
         
-#    figic3.savefig("initial_condition_cossin.png")
-#    figic3.show()
+    plt.savefig("initial_condition_cossin.png")
+    plt.show()
     
     
     # we would like to compare the errors with respect to dx and dt 
@@ -338,9 +337,9 @@ def main():
     
     # the total time must be kept constant so that we are comparing the schemes 
     # at the same point in time
-    total_time = math.pi/3
+    total_time = math.pi/24
     
-    nx_range = [300, 600, 750, 900]
+    nx_range = [120, 240, 360, 480]
     nt_range = np.zeros_like(nx_range).astype('int')
 
     # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH)
@@ -348,7 +347,7 @@ def main():
 
     for j in range(len(nx_range)):
         nx_r = nx_range[j]
-        nt_range[j] = 5 * nx_r/3
+        nt_range[j] = 5 * nx_r/24
 
     
     # calculate the l2 error norm for u and h for each numerical method for different 
@@ -365,7 +364,7 @@ def main():
     cossin_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
     cossin_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
     cossin_gradient_A_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
-np.log(norm_A_grid_implicit_listu),1)[0]
+                                                      np.log(norm_A_grid_implicit_listu),1)[0]
     cossin_gradient_C_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
                                                       np.log(norm_C_grid_implicit_listu),1)[0]
 

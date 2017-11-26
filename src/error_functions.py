@@ -4,7 +4,7 @@
 
 @author: Mariana Clare
 
-Function which calculate the difference between an analytic solution for the shallow
+Functions which calculate the difference between an analytic solution for the shallow
 water equations and the solution found by the numerical methods studied.
 
 """
@@ -29,7 +29,7 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
         xmin:               minimum value of x on grid
         xmax:               maximum value of x on grid
         H:                  mean fluid depth set to 1 unless otherwise specified
-        g:                  acceleration due to gravity scaled to 1
+        g:                  acceleration due to gravity scaled to 1 unless otherwise specified
         c:                  courant number (c = root(gH)dt/dx)
 
     """
@@ -64,30 +64,30 @@ def error_fn(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     # find error between exact solution and solution found by numerical method
     error_A_grid_u = (u_A_grid - u_A_grid_explicit)**2
     error_C_grid_u = (u_C_grid - u_C_grid_explicit)**2
-    error_implicit_u = (u_A_grid - u_A_grid_implicit)**2
-    error_semi_implicit_u = (u_C_grid - u_C_grid_implicit)**2
+    error_A_grid_implicit_u = (u_A_grid - u_A_grid_implicit)**2
+    error_C_grid_implicit_u = (u_C_grid - u_C_grid_implicit)**2
     
     # plot error in u from 4 different methods
     fig1, ax1 = plt.subplots()
     ax1.plot(x1, error_A_grid_u, c = 'blue', label = "A-grid explicit")
     ax1.plot(x2 + dx/2, error_C_grid_u, c = 'green', label = "C-grid explicit")
-    ax1.plot(x3, error_implicit_u, c = 'red', label = "A-grid implicit")
-    ax1.plot(x4 + dx/2, error_semi_implicit_u, c ='orange', label = "C-grid semi-implicit")
+    ax1.plot(x3, error_A_grid_implicit_u, c = 'red', label = "A-grid implicit")
+    ax1.plot(x4 + dx/2, error_C_grid_implicit_u, c ='orange', label = "C-grid implicit")
     
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
     
     error_A_grid_h = (h - h_A_grid_explicit)**2
     error_C_grid_h = (h - h_C_grid_explicit)**2
-    error_implicit_h = (h - h_A_grid_implicit)**2
-    error_semi_implicit_h = (h - h_C_grid_implicit)**2
+    error_A_grid_implicit_h = (h - h_A_grid_implicit)**2
+    error_C_grid_implicit_h = (h - h_C_grid_implicit)**2
     
     # plot error in h from 4 different methods
     fig2, ax2 = plt.subplots()
     ax2.plot(x1, error_A_grid_h, c = 'blue', label = "A-grid explicit")
     ax2.plot(x2, error_C_grid_h, c = 'green', label = "C-grid explicit")
-    ax2.plot(x3, error_implicit_h, c = 'red', label = "A-grid implicit")
-    ax2.plot(x4, error_semi_implicit_h, c = 'orange', label = "C-grid semi-implicit")
+    ax2.plot(x3, error_A_grid_implicit_h, c = 'red', label = "A-grid implicit")
+    ax2.plot(x4, error_C_grid_implicit_h, c = 'orange', label = "C-grid implicit")
     
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
@@ -113,7 +113,7 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
     xmin:               minimum value of x on grid
     xmax:               maximum value of x on grid
     H:                  mean fluid depth set to 1 unless otherwise specified
-    g:                  acceleration due to gravity scaled to 1
+    g:                  acceleration due to gravity scaled to 1 unless otherwise specified
     c:                  courant number (c = root(gH)dt/dx)
     """
     norm_A_grid_listu = np.zeros_like(nx_range).astype('float')
@@ -182,12 +182,21 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
         norm_A_grid_implicit_listh[j] = np.linalg.norm((h - h_A_grid_implicit))
         norm_C_grid_implicit_listh[j] = np.linalg.norm((h - h_C_grid_implicit))
         
-        
+    # find min and max values to set limits of graph
+    dx_min = min(dx_list)
+    dx_max = max(dx_list)
+    
+    dt_min = min(dt_list)
+    dt_max = max(dt_list)
+    
+    plt.ion()
+    
     plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid explicit')
     plt.loglog(dx_list, norm_C_grid_listu, label = 'C-grid explicit')
     plt.loglog(dx_list, norm_A_grid_implicit_listu, label = 'A-grid implicit')
     plt.loglog(dx_list, norm_C_grid_implicit_listu, label = 'C-grid implicit')
     plt.legend(loc = 'best')
+    plt.xlim([dx_min, dx_max])
     plt.xlabel(r"$\Delta x$")
     plt.ylabel("Error in u")
     plt.savefig("uerror_compared_dx_cossin.png")
@@ -197,8 +206,9 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
     plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
     plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
     plt.loglog(dx_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
-    plt.loglog(dx_list, norm_C_grid_implicit_listh, label = 'C-grid semi-implicit')
+    plt.loglog(dx_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
     plt.legend(loc = 'best')
+    plt.xlim([dx_min, dx_max])
     plt.xlabel(r"$\Delta x$")
     plt.ylabel("Error in h")
     plt.savefig("herror_compared_dx_cossin.png")
@@ -208,8 +218,9 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
     plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid explicit')
     plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid explicit')
     plt.loglog(dt_list, norm_A_grid_implicit_listu, label = 'A-grid implicit')
-    plt.loglog(dt_list, norm_C_grid_implicit_listu, label = 'C-grid semi-implicit')  
+    plt.loglog(dt_list, norm_C_grid_implicit_listu, label = 'C-grid implicit')  
     plt.legend(loc = 'best')
+    plt.xlim([dt_min, dt_max])
     plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error in u")
     plt.savefig("uerror_compared_dt_cossin.png")
@@ -219,8 +230,9 @@ def error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math
     plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
     plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
     plt.loglog(dt_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
-    plt.loglog(dt_list, norm_C_grid_implicit_listh, label = 'C-grid semi-implicit')
+    plt.loglog(dt_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
     plt.legend(loc = 'best')
+    plt.xlim([dt_min, dt_max])
     plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error in h")
     plt.savefig("herror_compared_dt_cossin.png")

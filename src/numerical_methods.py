@@ -92,7 +92,7 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
     Outputs:
         uhalf:              array containing velocity solution of shallow water equations
                             found by C-grid explicit method
-        h_cgrid:            array containing height solution of shallow water equations
+        h:                  array containing height solution of shallow water equations
                             found by C-grid explicit method
         x:                  array of x-meshgrid
         
@@ -116,7 +116,7 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
 
     
     # initialize the system
-    h_cgrid = np.zeros_like(initialhAgrid)
+    h = np.zeros_like(initialhAgrid)
     uhalf = np.zeros_like(initialuCgrid)
     
     uOld = initialuCgrid.copy()
@@ -129,18 +129,18 @@ def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
             # forward in time and centred in space
             uhalf[i] = uOld[i] - c*sqrt(g/H)*(hOld[(i + 1)%nx] - hOld[i]) 
             # backward in time and centred in space
-            h_cgrid[i] = hOld[i] - c*sqrt(H/g)*(uhalf[i] - uhalf[(i-1)%nx]) 
+            h[i] = hOld[i] - c*sqrt(H/g)*(uhalf[i] - uhalf[(i-1)%nx]) 
 
         # as would like to plot from 0 to 1 set the value of u and h at end point 
         # using periodic boundary conditions
         uhalf[nx] = uhalf[0]
-        h_cgrid[nx] = h_cgrid[0]
+        h[nx] = h[0]
         
         # copy u and h for next iteration
-        hOld = h_cgrid.copy()
+        hOld = h.copy()
         uOld = uhalf.copy()
         
-    return uhalf, h_cgrid, x
+    return uhalf, h, x
 
 
 def A_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
