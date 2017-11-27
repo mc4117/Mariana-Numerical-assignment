@@ -126,12 +126,18 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
         c:                  Courant number (c = root(gH)dt/dx)
         
     Outputs:
-        gradient_u_dx:
-        gradient_u_dt:
-        gradient_h_dx:
-        gradient_h_dt:
+        gradient_u_dx:      array containing order of accuracy of u with respect to 
+                            dx for each numerical method
+        gradient_u_dt:      array containing order of accuracy of u with respect to 
+                            dt for each numerical method
+        gradient_h_dx:      array containing order of accuracy of h with respect to 
+                            dx for each numerical method
+        gradient_h_dt:      array containing order of accuracy of h with respect to 
+                            dt for each numerical method
         
     """
+    
+    # initialize system
     norm_A_grid_listu = np.zeros_like(nx_range).astype('float')
     norm_C_grid_listu = np.zeros_like(nx_range).astype('float')
     norm_A_grid_implicit_listu = np.zeros_like(nx_range).astype('float')
@@ -155,10 +161,15 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
         if isinstance(nt, numbers.Integral) == False:
             raise ValueError('nt is not an integer') 
         
-        dx_list[j], dt_list[j], error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
-             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h = \
-             error_calc(nx, nt, xmin, xmax, H, g, c)
+        # calculate the squared error between the analytic and the numeric solutions
+        dx_list[j], dt_list[j], error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, 
+             error_C_grid_implicit_u, error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, 
+             error_C_grid_implicit_h = error_calc(nx, nt, xmin, xmax, H, g, c)
 
+        # calculate the L2 norm of the error between the analytic solution and the 
+        # numeric solution. Note this is the L2 norm as the values produced by the error_calc
+        # function is the squared error.
+        
         norm_A_grid_listu[j] = math.sqrt(sum(error_A_grid_u))
         norm_C_grid_listu[j] = math.sqrt(sum(error_C_grid_u))
         norm_A_grid_implicit_listu[j] = math.sqrt(sum(error_A_grid_implicit_u))
@@ -168,7 +179,8 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
         norm_C_grid_listh[j] = math.sqrt(sum(error_C_grid_h))
         norm_A_grid_implicit_listh[j] = math.sqrt(sum(error_A_grid_implicit_h))
         norm_C_grid_implicit_listh[j] = math.sqrt(sum(error_C_grid_implicit_h))
-        
+    
+    # log plot of dx vs error norm of u for each numerical method    
     plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid explicit')
     plt.loglog(dx_list, norm_C_grid_listu, label = 'C-grid explicit')
     plt.loglog(dx_list, norm_A_grid_implicit_listu, label = 'A-grid implicit')
@@ -181,6 +193,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.title('u with respect to dx')
     plt.show()
     
+    # log plot of dx vs error norm of h for each numerical method
     plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
     plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
     plt.loglog(dx_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
@@ -193,6 +206,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.title('h with respect to dx')
     plt.show()
 
+    # log plot of dt vs error norm of u for each numerical method
     plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid explicit')
     plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid explicit')
     plt.loglog(dt_list, norm_A_grid_implicit_listu, label = 'A-grid implicit')
@@ -205,6 +219,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.title('u with respect to dt')
     plt.show()
     
+    # log plot of dx vs error norm of u for each numerical method
     plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
     plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
     plt.loglog(dt_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
@@ -256,11 +271,16 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
                                                       np.log(norm_A_grid_implicit_listh),1)[0]
     gradient_C_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
                                                       np.log(norm_C_grid_implicit_listh),1)[0]
-
-    gradient_u_dx = [gradient_A_grid_u_dx, gradient_C_grid_u_dx, gradient_A_grid_implicit_u_dx, gradient_C_grid_implicit_u_dx]
-    gradient_u_dt = [gradient_A_grid_u_dt, gradient_C_grid_u_dt, gradient_A_grid_implicit_u_dt, gradient_C_grid_implicit_u_dt]
-    gradient_h_dx = [gradient_A_grid_h_dx, gradient_C_grid_h_dx, gradient_A_grid_implicit_h_dx, gradient_C_grid_implicit_h_dx]    
-    gradient_h_dt = [gradient_A_grid_h_dt, gradient_C_grid_h_dt, gradient_A_grid_implicit_h_dt, gradient_C_grid_implicit_h_dt]      
+    
+    # compile the gradients to 4 arrays for ease of processing
+    gradient_u_dx = [gradient_A_grid_u_dx, gradient_C_grid_u_dx, gradient_A_grid_implicit_u_dx, \
+                     gradient_C_grid_implicit_u_dx]
+    gradient_u_dt = [gradient_A_grid_u_dt, gradient_C_grid_u_dt, gradient_A_grid_implicit_u_dt, \
+                     gradient_C_grid_implicit_u_dt]
+    gradient_h_dx = [gradient_A_grid_h_dx, gradient_C_grid_h_dx, gradient_A_grid_implicit_h_dx, \
+                     gradient_C_grid_implicit_h_dx]    
+    gradient_h_dt = [gradient_A_grid_h_dt, gradient_C_grid_h_dt, gradient_A_grid_implicit_h_dt, \
+                     gradient_C_grid_implicit_h_dt]      
     
     return gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt
 
