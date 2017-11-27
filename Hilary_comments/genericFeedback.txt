@@ -1,0 +1,73 @@
+This feedback is relevant to many students. Please take account of this feedback for your final code submission. 
+
+0. Good that you are making frequent commits with git
+   or
+   Commit your code and push to the remote repository more frequently
+
+1. Do not use file names with spaces in. This makes it difficult for people you collaborate with who use scripts and unix. 
+
+2. You should have a .gitignore file. You should use this to ensure that you do not add large or binary files to your repository such as pdf, pyc or gz files
+   OR
+   Good to have a .gitignore file. There are lots more file types that you can have in it such as *.pdf and *.gz
+
+3. Don't include large or binary files in a git repository. These should be automatically excluded by having a .gitignore file. (For example gz or pdf files).
+
+4. The README file should be more descriptive.
+   OR
+   You should have a readme file
+   OR
+   Great readme file
+
+5. Use file names describing what the code actually does
+
+6. All python files should have comments at the top describing what is in the file.
+
+7. All functions should have doc-strings
+
+8. Follow the coding guidelines at:
+http://www.met.reading.ac.uk/~sws02hs/teaching/PDEsNumerics/code.pdf
+
+9. You can have a look at my code for linear advection at
+https://bitbucket.org/mpecdt/mpecdt/
+under
+source/hilary/code
+
+10. Doc-strings should describe the arguments and return value of the function - what type they should be and what they mean.
+
+11. If I run your code it doesn't actually do anything. You need to include code that calls the functions that you write as well as just defining them. 
+
+12. I am commenting on your python code rather than your notebook file.
+
+13. If you know exactly how big an array is going to be but you want to inialise the array inside a loop, declare the array with the correct size as all zeros (for example) and set the values inside the loop rather than declaring the array to have no elements and appending elements each time around the loop. Appending elements is very inefficient.
+
+14. Avoid code duplication with functions.
+
+15. You will need to include code that tests to see if your code is behaving as expected.
+
+16. Good type and value checking.
+
+17. Avoid global variables (do not define variables outside a function).
+Global variables can be most easily avoided by just putting main() around everything global and then calling main() at the end.
+
+18. Using linspace, your arrays include both boundary values but your treatment of periodic boundary conditions is inconsistent with this.
+
+19. Use variable names like i,j,k for array indices rather than "x" or "y" as x is usually reserved for distance in the x direction which is a real number rather than an integer.
+
+20.  from moduleName import *
+is dangerous. If you are importing from more than one module there can be multiply defined functions and variables.
+
+21. You should try to avoid having so much commented out code. Either leave it in because it is useful and you will use it or remove it. You will always be able to get it back because you are using version control. You can put in a switch that calls the commented code depending on the value of an argument to the function.
+
+22. Your code needs more comments to describe what is happening in each block of code.
+
+22. Do not store the solutions from all times-steps. Store the final solution and summary statistics for every time-step.
+
+23. Put comments above code rather than after so that you can keep lines less that 80 characters.
+
+24. Keep lines less than 80 characters by wrapping long lines and putting \ at the end of the incomplete lines.
+
+25. Don't use more brackets than is necessary.
+
+26. I cannot guarantee to be able to debug your code when providing feedback. If you need help debugging, ask during the classes or post messages on the discussion cite.
+
+
