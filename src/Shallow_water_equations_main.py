@@ -21,8 +21,10 @@ plt.rcParams.update({'figure.max_open_warning': 0})
 
 def main():
 
+    print('Finding solution to Shallow Water Equations...')
+    
     # defining the grid and mesh we are working on
-    nx = 60  # number of points from x = xmin to x = xmax
+    nx = 100  # number of points from x = xmin to x = xmax
     xmin = 0 # minimum value of x on grid
     xmax = 1 # maximum value of x on grid
     nt = 100 # number of time steps
@@ -90,6 +92,10 @@ and initial condition of a cos bell curve")
     fig1.savefig("velocity_colocated_explicit_cosbell.png")
     fig2.savefig("height_colocated_explicit_cosbell.png")
     
+    plt.show()
+    
+    print('Varying Courant numbers...')
+    
     # This seems to work well but through von-neumann stability analysis we find 
     # that this is unstable for c>2
     
@@ -101,12 +107,14 @@ and initial condition of a cos bell curve")
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
             ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
     ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers for colocated explicit scheme\n\
-with initial condition of a cos bell curve")
+with initial condition of a cos bell curve\n")
     ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated\n\
-explicit scheme with initial condition of a cos bell curve")
+explicit scheme with initial condition of a cos bell curve\n")
 
     fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
     fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
+    
+    plt.show()
     
     # Therefore we try an implict method on a colocated grid which is stable everywhere
     fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
@@ -120,11 +128,15 @@ with initial condition of cos bell curve")
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
     
+    plt.show()
+    
     # by taking a differnt initial condition it is clear to see that the colocated grid 
     # gives unphysical results for both implicit and explicit methods
 
     # plot initial conditions where u is zero everywhere and h is zero everywhere 
     # apart from one point at the centre where it is one
+    
+    print('Initialising Shallow Water equations with different initial condition...')
     
     initialuspike, initialhspike = ic.initialconditions_spike(initialx)
     
@@ -167,6 +179,7 @@ with initial condition of cos bell curve")
     fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
     fig2_A_grid.savefig("height_colocated_explicit_spike.png")
 
+    plt.show()
     
     # plot solution at various time iterations for an implicit method on a colocated grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere 
@@ -208,6 +221,10 @@ with initial condition of cos bell curve")
     
     fig1_C_grid_implicit.savefig("velocity_staggered_implicit_spike.png")
     fig2_C_grid_implicit.savefig("height_staggered_implicit_spike.png")
+    
+    plt.show()
+    
+    print('Calculating errors...')
     
     # Finally we examine the error in the numerical method
     # For the initial solutions used so far it is difficult to find the exact solution.
@@ -285,13 +302,33 @@ and h is cos(x)")
     
     # first calculate the error norms
     
-    fig1_error, fig2_error, ax1_error, ax2_error, error_norms_u, error_norms_h = \
-        errfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
-
+    dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
+             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h\
+             = errfns.error_calc(nx_1, nt_1, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
+    
+    xerr = np.linspace(xmin_1, xmax_1, nx_1 + 1)
+    # plot error in u from 4 different methods
+    fig1_error, ax1_error = plt.subplots()
+    ax1_error.plot(xerr, error_A_grid_u, c = 'blue', label = "A-grid explicit")
+    ax1_error.plot(xerr + dx/2, error_C_grid_u, c = 'green', label = "C-grid explicit")
+    ax1_error.plot(xerr, error_A_grid_implicit_u, c = 'red', label = "A-grid implicit")
+    ax1_error.plot(xerr + dx/2, error_C_grid_implicit_u, c ='orange', label = "C-grid implicit")
+    
+    ax1_error.set_xlim([xmin_1,xmax_1])
+    ax1_error.set_xlabel("x")
     ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
-
+    
+    # plot error in h from 4 different methods
+    fig2_error, ax2_error = plt.subplots()
+    ax2_error.plot(xerr, error_A_grid_h, c = 'blue', label = "A-grid explicit")
+    ax2_error.plot(xerr, error_C_grid_h, c = 'green', label = "C-grid explicit")
+    ax2_error.plot(xerr, error_A_grid_implicit_h, c = 'red', label = "A-grid implicit")
+    ax2_error.plot(xerr, error_C_grid_implicit_h, c = 'orange', label = "C-grid implicit")
+    
+    ax2_error.set_xlim([xmin_1,xmax_1])
+    ax2_error.set_xlabel("x")
     ax2_error.set_title("Squared error in height, h, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
     ax2_error.legend(loc = 1, fontsize = 'small')
@@ -301,15 +338,15 @@ where u is 0 everywhere and h is cos(x)" )
     
     plt.show()
     
-    print("Error norm of u for A-grid explicit: %f" % (error_norms_u[0]))
-    print("Error norm of u for C-grid explicit: %f" % (error_norms_u[1]))
-    print("Error norm of u for A-grid implicit: %f" % (error_norms_u[2]))
-    print("Error norm of u for C-grid implicit: %f" % (error_norms_u[3]))
+    print("Error norm of u for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_u))))
+    print("Error norm of u for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_u))))
+    print("Error norm of u for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_u))))
+    print("Error norm of u for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_u))))
 
-    print("Error norm of h for A-grid explicit: %f" % (error_norms_h[0]))
-    print("Error norm of h for C-grid explicit: %f" % (error_norms_h[1]))
-    print("Error norm of h for A-grid implicit: %f" % (error_norms_h[2]))
-    print("Error norm of h for C-grid implicit: %f" % (error_norms_h[3]))
+    print("Error norm of h for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_h))))
+    print("Error norm of h for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_h))))
+    print("Error norm of h for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_h))))
+    print("Error norm of h for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_h))))
     
     
     # we would like to compare the errors with respect to dx and dt 
@@ -332,72 +369,31 @@ where u is 0 everywhere and h is cos(x)" )
     
     # calculate the l2 error norm for u and h for each numerical method for different 
     # values of dx and dt
-    dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, \
-        norm_C_grid_listh, norm_A_grid_implicit_listu, norm_A_grid_implicit_listh, \
-        norm_C_grid_implicit_listu, norm_C_grid_implicit_listh = \
-        errfns.error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, \
+    gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt = \
+        errfns.error_fn(nx_range, nt_range, total_time, xmin = -math.pi, \
                                xmax = math.pi, H = 1, g = 1, c = 0.1)
     
-    # attempt to fit a straight line on the relationship between log(dx) and the 
-    # log of the error of u for each numerical method. The gradient of this line 
-    # is the order of the scheme with respect to dx for u
-    cos_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
-    cos_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
-    cos_gradient_A_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
-                                                      np.log(norm_A_grid_implicit_listu),1)[0]
-    cos_gradient_C_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
-                                                      np.log(norm_C_grid_implicit_listu),1)[0]
-
-    # attempt to fit a straight line on the relationship between log(dx) and the log 
-    # of the error of h for each numerical method. The gradient of this line is the 
-    # order of the scheme with respect to dx for h
-    cos_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
-    cos_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
-    cos_gradient_A_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
-                                                      np.log(norm_A_grid_implicit_listh),1)[0]
-    cos_gradient_C_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
-                                                      np.log(norm_C_grid_implicit_listh),1)[0]
-
-    # attempt to fit a straight line on the relationship between log(dt) and the log 
-    # of the error of u for each numerical method. The gradient of this line is the 
-    # order of the scheme with respect to dt for u
-    cos_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
-    cos_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
-    cos_gradient_A_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
-                                                      np.log(norm_A_grid_implicit_listu),1)[0]
-    cos_gradient_C_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
-                                                      np.log(norm_C_grid_implicit_listu),1)[0]
-    
-    # attempt to fit a straight line on the relationship between log(dt) and the log 
-    # of the error of h for each numerical method. The gradient of this line is the 
-    # order of the scheme with respect to dt for h
-    cos_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
-    cos_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
-    cos_gradient_A_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
-                                                      np.log(norm_A_grid_implicit_listh),1)[0]
-    cos_gradient_C_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
-                                                      np.log(norm_C_grid_implicit_listh),1)[0]
 
     plt.show()
-
-    print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
-    print("A_grid explicit| %f | %f | %f | %f" % (cos_gradient_A_grid_u_dx, \
-        cos_gradient_A_grid_u_dt, cos_gradient_A_grid_h_dx, cos_gradient_A_grid_h_dt))
-    print("C_grid explicit| %f | %f | %f | %f" % (cos_gradient_C_grid_u_dx, \
-        cos_gradient_C_grid_u_dt, cos_gradient_C_grid_h_dx, cos_gradient_C_grid_h_dt))
-    print("A_grid implicit|%f | %f | %f | %f" % (cos_gradient_A_grid_implicit_u_dx, \
-        cos_gradient_A_grid_implicit_u_dt, cos_gradient_A_grid_implicit_h_dx, \
-        cos_gradient_A_grid_implicit_h_dt))
-    print("C_grid implicit|%f | %f | %f | %f" % (cos_gradient_C_grid_implicit_u_dx, \
-        cos_gradient_C_grid_implicit_u_dt, cos_gradient_C_grid_implicit_h_dx, \
-        cos_gradient_C_grid_implicit_h_dt))
     
 
+    print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
+    print("A_grid explicit| %f | %f | %f | %f" % (gradient_u_dx[0], \
+        gradient_u_dt[0], gradient_h_dx[0], gradient_h_dt[0]))
+    print("C_grid explicit| %f | %f | %f | %f" % (gradient_u_dx[1], \
+        gradient_u_dt[1], gradient_h_dx[1], gradient_h_dt[1]))
+    print("A_grid implicit|%f | %f | %f | %f" % (gradient_u_dx[2], \
+        gradient_u_dt[2], gradient_h_dx[2], gradient_h_dt[2]))
+    print("C_grid implicit|%f | %f | %f | %f" % (gradient_u_dx[3], \
+        gradient_u_dt[3], gradient_h_dx[3], gradient_h_dt[3]))
+    
+    print('Timing code...')
     
     # Finally we would like to compare the computational cost of each scheme by comparing how long each takes to run
     t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, \
         nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 
+    
 
     print("A-grid explicit: %f seconds" % (t1 - t0))
     print("C-grid explicit: %f seconds" % (t2 - t1))
