@@ -68,7 +68,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
             
         # plot h
         ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'h after ' \
-           + str(int(timerange[1+i])) + ' timesteps')
+           + str(timerange[1+i]) + ' timesteps')
     
     # for reference plot the x-meshgrid as well
     ax1.scatter(x,np.zeros_like(x), c = 'black', s = 10)

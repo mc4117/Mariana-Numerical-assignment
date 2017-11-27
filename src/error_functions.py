@@ -162,8 +162,8 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
             raise ValueError('nt is not an integer') 
         
         # calculate the squared error between the analytic and the numeric solutions
-        dx_list[j], dt_list[j], error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, 
-             error_C_grid_implicit_u, error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, 
+        dx_list[j], dt_list[j], error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u,\
+             error_C_grid_implicit_u, error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h,\
              error_C_grid_implicit_h = error_calc(nx, nt, xmin, xmax, H, g, c)
 
         # calculate the L2 norm of the error between the analytic solution and the 
@@ -194,10 +194,10 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.show()
     
     # log plot of dx vs error norm of h for each numerical method
-    plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
-    plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
-    plt.loglog(dx_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
-    plt.loglog(dx_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
+    plt.loglog(dx_list, norm_A_grid_listh, c = 'firebrick', linewidth = 5, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listh, c= 'orange', linestyle='--', linewidth = 4, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_A_grid_implicit_listh, c= 'gold', linestyle = ':', linewidth = 7, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_C_grid_implicit_listh, 'k', label = 'C-grid implicit')
     plt.legend(loc = 'best')
     plt.xlim([min(dx_list), max(dx_list)])
     plt.xlabel(r"$\Delta x$")
@@ -210,7 +210,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.loglog(dt_list, norm_A_grid_listu, label = 'A-grid explicit')
     plt.loglog(dt_list, norm_C_grid_listu, label = 'C-grid explicit')
     plt.loglog(dt_list, norm_A_grid_implicit_listu, label = 'A-grid implicit')
-    plt.loglog(dt_list, norm_C_grid_implicit_listu, label = 'C-grid implicit')  
+    plt.loglog(dt_list, norm_C_grid_implicit_listu, label = 'C-grid implicit') 
     plt.legend(loc = 'best')
     plt.xlim([min(dt_list), max(dt_list)])
     plt.xlabel(r"$\Delta t$")
@@ -220,10 +220,10 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.show()
     
     # log plot of dx vs error norm of u for each numerical method
-    plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
-    plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
-    plt.loglog(dt_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
-    plt.loglog(dt_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
+    plt.loglog(dt_list, norm_A_grid_listh, c = 'firebrick', linewidth = 5, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listh, c= 'orange', linestyle='--', linewidth = 4, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_A_grid_implicit_listh, c= 'gold', linestyle = ':', linewidth = 7, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_C_grid_implicit_listh, 'k', label = 'C-grid implicit')
     plt.legend(loc = 'best')
     plt.xlim([min(dt_list), max(dt_list)])
     plt.xlabel(r"$\Delta t$")
@@ -283,5 +283,3 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
                      gradient_C_grid_implicit_h_dt]      
     
     return gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt
-
-

@@ -5,7 +5,7 @@
 
 @author: Mariana Clare
 
-A function which plots the dispersion relations for the 4 numerical schemes considered
+Function which plots the dispersion relations for the 4 numerical schemes considered
 and the analytic solution.
 
 """

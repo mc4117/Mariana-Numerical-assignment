@@ -6,8 +6,10 @@ initial_conditions.py (contains functions which produce all four initial conditi
 
 numerical_methods.py (contains functions which compute the numerical schemes)
 
-plotting_functions.py (contains functions which produce the graphs for the report, as well as functions which compute the error between the analytic solution and numerical solutions)
+plotting_functions.py (contains functions which produce the graphs for the report)
+
+error_functions.py (contains functions which compute the error between the analytic solution and numerical solutions)
 
 in the src folder.
 
-The dispersion_graph.py is a standalone python script which used to produce the figure in the report which compares the dispersion relations of the numerical schemes and the analytic solution. 
+The dispersion_graph.py is a standalone python script which is used to produce the figure in the report which compares the dispersion relations of the numerical schemes to the dispersion relation of the analytic solution. 

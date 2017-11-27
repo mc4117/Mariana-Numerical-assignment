@@ -17,24 +17,25 @@ import numerical_methods as nm
 import plotting_functions as pltfns
 import error_functions as errfns
 
-plt.rcParams.update({'figure.max_open_warning': 0})
 
 def main():
 
     print('Finding solution to Shallow Water Equations...')
     
-    # defining the grid and mesh we are working on
-    nx = 100  # number of points from x = xmin to x = xmax
+    # defining the grid and mesh working on
     xmin = 0 # minimum value of x on grid
     xmax = 1 # maximum value of x on grid
-    nt = 100 # number of time steps
     
-    # First we attempt a simple initial condition with a colocated forward-backward scheme
+    nx = 100  # number of points from x = xmin to x = xmax
+    nt = 100 # number of time steps
+
+
+    
+    # First attempt a simple initial condition with a colocated forward-backward scheme
     
     # define a meshgrid on x
-    
-    # want the extra point at the boundary for plot but in reality h[0] and h[nx] are equal
     initialx = np.linspace(xmin,xmax,nx+1) 
+    # note want extra point at the boundary for plot but in reality h[0] and h[nx] are equal
     
     # plot initial conditions where u is zero everywhere and h has a bump in the centre 
     # and is surrounded by zero either side
@@ -51,7 +52,7 @@ def main():
     axic.set_ylim([-0.1, 1.1])
         
     figic.savefig("initial_condition_cosbell.png")
-    figic.show()
+    plt.show()
 
     # plot solution at various time iterations for an explicit method on a colocated 
     # grid for the initial condition where u is zero everywhere 
@@ -64,6 +65,7 @@ def main():
     ax1.plot(initialx, initialu, label = 'initial u')
     ax2.plot(initialx, initialh, label = 'initial h')
     
+    # then plot solutions at various iterations
     timerange = np.linspace(0, 3, 4).astype('int')
     for i in timerange[1:]:
         u, h, x = nm.A_grid_explicit(ic.initialconditions_cosbell, nx, i*nt,  \
@@ -71,11 +73,6 @@ def main():
         ax1.plot(x, u, label = 'u after ' + str(i*nt) + ' timesteps')
         ax2.plot(x, h, label = 'h after ' + str(i*nt) + ' timesteps')
         
-
-    # increase the font size
-    for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + [ax2.title, \
-                 ax2.xaxis.label, ax2.yaxis.label]):
-        item.set_fontsize(15)
     
     ax1.legend(loc = 'best', fontsize = 'medium')
     ax1.set_xlim([xmin,xmax])
@@ -94,49 +91,52 @@ and initial condition of a cos bell curve")
     
     plt.show()
     
-    print('Varying Courant numbers...')
     
     # This seems to work well but through von-neumann stability analysis we find 
     # that this is unstable for c>2
     
+    print('Varying Courant numbers...')
+    
     mymap = plt.get_cmap("YlOrRd")
     colorrange_multic = mymap(np.r_[np.array([0.3, 0.55, 1]), np.array([0.3, 0.55, 1])])
     
-    # plotting for different courant numbers we see this solution is very unstable
+    # plotting explicit method on colocated grid for different courant numbers
+    
     crange = np.linspace(0,3,4)
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
             ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
-    ax1_A_multiplec.set_title("Velocity, u, for varying courant numbers for colocated explicit scheme\n\
-with initial condition of a cos bell curve\n")
-    ax2_A_multiplec.set_title("Height, h, for varying courant numbers calculated using the colocated\n\
-explicit scheme with initial condition of a cos bell curve\n")
+    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated explicit scheme\n\
+and initial condition of cosbell curve", fontsize = 13)
+    fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
+explicit scheme and initial condition of cosbell curve", fontsize = 13)
 
     fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
     fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
     
     plt.show()
     
-    # Therefore we try an implict method on a colocated grid which is stable everywhere
+    # As this is very unstable try an implict method on a colocated grid which is stable everywhere
+    
     fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
             ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, \
             nm.A_grid_implicit_method, crange, colorrange_multic)
-    ax1_implicit_multiplec.set_title("Velocity, u, for varying courant numbers for colocated implicit scheme\n\
-with initial condition of a cos bell curve")
-    ax2_implicit_multiplec.set_title("Height, h, for varying courant numbers for colocated implicit scheme\n\
-with initial condition of cos bell curve")
+    fig1_implicit_multiplec.suptitle("Velocity, u, for varying courant numbers using colocated implicit scheme\n\
+and initial condition of cosbell curve", fontsize = 13)
+    fig2_implicit_multiplec.suptitle("Height, h, for varying courant numbers using colocated implicit scheme\n\
+and initial condition of cosbell curve", fontsize = 13)
     
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
     
     plt.show()
     
-    # by taking a differnt initial condition it is clear to see that the colocated grid 
+    # by taking a different initial condition it is clear to see that the colocated grid 
     # gives unphysical results for both implicit and explicit methods
+    
+    print('Initialising Shallow Water equations with different initial condition...')
 
     # plot initial conditions where u is zero everywhere and h is zero everywhere 
     # apart from one point at the centre where it is one
-    
-    print('Initialising Shallow Water equations with different initial condition...')
     
     initialuspike, initialhspike = ic.initialconditions_spike(initialx)
     
@@ -150,10 +150,10 @@ with initial condition of cos bell curve")
     axic1.set_ylim([-0.1, 1.1])
         
     figic1.savefig("initial_condition_spike.png")
-    figic1.show()
+    plt.show()
     
-    # In order to see the phenomenon more clearly we use a slightly coarser grid than before
-    
+    # in order to see the phenomenon more clearly use a slightly coarser grid than before
+
     nx_adapted = 20 # number of points from x = 0 to x = 1
     nt_adapted = 9 # number of time steps in 1 second
     number_plotted = 3 # number of different iterations to be plotted on graph
@@ -170,6 +170,7 @@ with initial condition of cos bell curve")
     # plot solution at various time iterations for an explicit method on a colocated grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere 
     # apart from one point at the centre where it is one
+    
     fig1_A_grid, fig2_A_grid, ax1_A_grid, ax2_A_grid = pltfns.plot_multiple_iterations(\
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, \
         plotparameterrange)
@@ -179,7 +180,6 @@ with initial condition of cos bell curve")
     fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
     fig2_A_grid.savefig("height_colocated_explicit_spike.png")
 
-    plt.show()
     
     # plot solution at various time iterations for an implicit method on a colocated grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere 
@@ -193,11 +193,14 @@ with initial condition of cos bell curve")
     fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
     fig2_implicit.savefig("height_colocated_implicit_spike.png")
     
+    plt.show()
+    
     # Therefore instead we use a staggered grid
     
     # plot solution at various time iterations for an explicit method on a staggered grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere apart 
     # from one point at the centre where it is one
+    
     fig1_C_grid, fig2_C_grid, ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(\
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, \
         plotparameterrange, staggered = True)
@@ -213,6 +216,7 @@ with initial condition of cos bell curve")
     # plot solution at various time iterations for a implicit method on a staggered grid for 
     # the initial condition where u is zero everywhere and h is zero everywhere apart 
     # from one point at the centre where it is one
+    
     fig1_C_grid_implicit, fig2_C_grid_implicit, ax1_C_grid_implicit, ax2_C_grid_implicit = \
     pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, \
         number_plotted, nm.C_grid_implicit_method, plotparameterrange, staggered = True)
@@ -224,11 +228,12 @@ with initial condition of cos bell curve")
     
     plt.show()
     
-    print('Calculating errors...')
     
     # Finally we examine the error in the numerical method
-    # For the initial solutions used so far it is difficult to find the exact solution.
+    # For the initial solutions used so far it is difficult to find the analytic solution.
     # Therefore we use the following initial condition
+    
+    print('Calculating errors...')
     
     xmin_1 = -math.pi
     xmax_1 = math.pi
@@ -245,11 +250,11 @@ with initial condition of cos bell curve")
     axic2.legend(loc = 'best')
     axic2.set_xlabel("x")
     axic2.set_title("Initital Condition where h is cos(x)")
-    axic2.set_xlim = ([xmin_1, xmax_1])
+    axic2.set_xlim([xmin_1,xmax_1])
     axic2.set_ylim([-1.1, 1.1])
         
     figic2.savefig("initial_condition_cos.png")
-    figic2.show()
+    plt.show()
  
     # set parameters and number of timesteps and space steps on grid
 
@@ -260,53 +265,54 @@ with initial condition of cos bell curve")
     g = 1
     c = 0.1
     
-    # results of all 4 methods
+    # plot u and h calculated by each different numerical scheme
     
-    fig1_exact, fig2_exact, ax1_exact, ax2_exact, x1 = pltfns.compare_results(\
+    fig1_analytic, fig2_analytic, ax1_analytic, ax2_analytic, x1 = pltfns.compare_results(\
             ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     # calculate width of spacestep and timestep
     dx = (xmax_1 - xmin_1)/nx_1
     dt = (c*dx)/math.sqrt(g*H)
 
-    # constructing exact solution
+    # construct analytic solution of shallow water equations for initial condition
+    # described by initialconditions_cos
 
     u = np.zeros_like(x1)
     h = np.zeros_like(x1)
 
-    # u = sin(x)sin(t)
     for i in range(len(x1)):
         u[i] = math.sin(x1[i])*math.sin(dt*nt_1)
     
-    # h = cos(x)cos(t)
     for i in range(len(x1)):
         h[i] = math.cos(x1[i])*math.cos(dt*nt_1)
 
-    # plot exact solution on plot as well
-    ax1_exact.plot(x1, u, c = 'black', linestyle = ':', label = "exact solution")
-    ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
+    # plot analytic solution same figure which has results from numerical schemes
+    ax1_analytic.plot(x1, u, c = 'black', linestyle = ':', label = "analytic solution")
+    ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
 and h is cos(x)")
-    ax1_exact.legend(loc = 'best')
+    ax1_analytic.legend(loc = 'best')
 
-    ax2_exact.plot(x1, h, c = 'black', linestyle = ':', label = "exact solution")
-    ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
+    ax2_analytic.plot(x1, h, c = 'black', linestyle = ':', label = "analytic solution")
+    ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
 and h is cos(x)")
-    ax2_exact.legend(loc = 'best', fontsize = 'small')
+    ax2_analytic.legend(loc = 'best', fontsize = 'small')
     
-    fig1_exact.savefig("comparison_with_exact_u.png")
-    fig2_exact.savefig("comparison_with_exact_h.png")
+    fig1_analytic.savefig("comparison_with_analytic_u.png")
+    fig2_analytic.savefig("comparison_with_analytic_h.png")
     
     # This does not provide much clarity as all the solutions are very close together
     
-    # therefore instead look at the error between the exact solution and the numerical method
+    # therefore instead look at the error between the analytic solution and the numerical method
     
-    # first calculate the error norms
+    # first calculate the square of the error between the analytic solution and the numerical method
+    # note these are arrays
     
     dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
              error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h\
              = errfns.error_calc(nx_1, nt_1, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
     
     xerr = np.linspace(xmin_1, xmax_1, nx_1 + 1)
+    
     # plot error in u from 4 different methods
     fig1_error, ax1_error = plt.subplots()
     ax1_error.plot(xerr, error_A_grid_u, c = 'blue', label = "A-grid explicit")
@@ -314,7 +320,10 @@ and h is cos(x)")
     ax1_error.plot(xerr, error_A_grid_implicit_u, c = 'red', label = "A-grid implicit")
     ax1_error.plot(xerr + dx/2, error_C_grid_implicit_u, c ='orange', label = "C-grid implicit")
     
+    ymaxerror1 =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
+    
     ax1_error.set_xlim([xmin_1,xmax_1])
+    ax1_error.set_ylim(bottom = -0.001, top = None)
     ax1_error.set_xlabel("x")
     ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
@@ -327,7 +336,10 @@ where u is 0 everywhere and h is cos(x)" )
     ax2_error.plot(xerr, error_A_grid_implicit_h, c = 'red', label = "A-grid implicit")
     ax2_error.plot(xerr, error_C_grid_implicit_h, c = 'orange', label = "C-grid implicit")
     
+    ymaxerror2 =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
+    
     ax2_error.set_xlim([xmin_1,xmax_1])
+    ax2_error.set_ylim(bottom = -ymaxerror2/10, top = ymaxerror2 + ymaxerror2/10)
     ax2_error.set_xlabel("x")
     ax2_error.set_title("Squared error in height, h, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
@@ -338,18 +350,19 @@ where u is 0 everywhere and h is cos(x)" )
     
     plt.show()
     
-    print("Error norm of u for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_u))))
-    print("Error norm of u for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_u))))
-    print("Error norm of u for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_u))))
-    print("Error norm of u for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_u))))
+    # print l2 norm of error 
+    print("l2 error norm of u for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_u))))
+    print("l2 error norm of u for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_u))))
+    print("l2 error norm of u for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_u))))
+    print("l2 error norm of u for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_u))))
 
-    print("Error norm of h for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_h))))
-    print("Error norm of h for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_h))))
-    print("Error norm of h for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_h))))
-    print("Error norm of h for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_h))))
+    print("l2 error norm of h for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_h))))
+    print("l2 error norm of h for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_h))))
+    print("l2 error norm of h for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_h))))
+    print("l2 error norm of h for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_h))))
     
     
-    # we would like to compare the errors with respect to dx and dt 
+    # would like to compare the errors with respect to dx and dt 
     # to do this we make a selection of nx and total time such that nt is an integer
     
     # the total time must be kept constant so that we are comparing the schemes 
@@ -359,23 +372,23 @@ where u is 0 everywhere and h is cos(x)" )
     nx_range = [120, 240, 360, 480]
     nt_range = np.zeros_like(nx_range).astype('int')
 
-    # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH)
-    # as nt = total_time/dt = pi/3 /(2pi c /nxsqrt(gH)) = 5 nx/3
+    # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH),
+    # nt = total_time/dt = pi/3 /(2pi c /nxsqrt(gH)) = 5 nx/3
 
     for j in range(len(nx_range)):
         nx_r = nx_range[j]
         nt_range[j] = 5 * nx_r/24
 
     
-    # calculate the l2 error norm for u and h for each numerical method for different 
-    # values of dx and dt
+    # plot the log of dx (or dt) against log of the error norm of u (or h)
+    # then calculate the gradient of the curve plotted to find the order of accuracy
+    # of u or h with respect to dx or dt
+    
     gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt = \
         errfns.error_fn(nx_range, nt_range, total_time, xmin = -math.pi, \
                                xmax = math.pi, H = 1, g = 1, c = 0.1)
     
-
     plt.show()
-    
 
     print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
     print("A_grid explicit| %f | %f | %f | %f" % (gradient_u_dx[0], \
@@ -389,7 +402,8 @@ where u is 0 everywhere and h is cos(x)" )
     
     print('Timing code...')
     
-    # Finally we would like to compare the computational cost of each scheme by comparing how long each takes to run
+    # Finally we would like to compare the computational cost of each scheme by 
+    # comparing how long each takes to run
     t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, \
         nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 

@@ -3,7 +3,7 @@
 """
 @author: Mariana Clare
 
-Various different initial conditions for shallow water equations
+Functions which calculate various different initial conditions for shallow water equations
 
 """
 
