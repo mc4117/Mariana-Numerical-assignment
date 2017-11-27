@@ -202,6 +202,18 @@ def A_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
     
     # loop over timesteps
     for it in range(nt):      
+        # construct vector uvector such that matrix*u = uvector 
+        uvector = np.zeros_like(uOld)
+        
+        for i in range(nx + 1):
+            uvector[i] = uOld[i] - 0.5*c*sqrt(g/H)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
+        
+        # note here that uvector[nx] = uvector[0] because of modulus operator so 
+        # periodic boundaries are still kept   
+
+        # solve matrix equation to find u
+        u = np.dot(inverse, uvector)
+        
         # construct vector hvector such that matrix*h = hvector         
         hvector = np.zeros_like(hOld)
         
@@ -214,17 +226,7 @@ def A_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
         # solve matrix equation to find h
         h = np.dot(inverse, hvector)
     
-        # construct vector uvector such that matrix*u = uvector 
-        uvector = np.zeros_like(uOld)
-        
-        for i in range(nx + 1):
-            uvector[i] = uOld[i] - 0.5*c*sqrt(g/H)*(hOld[(i+1)%nx] - hOld[(i-1)%nx])
-        
-        # note here that uvector[nx] = uvector[0] because of modulus operator so 
-        # periodic boundaries are still kept   
 
-        # solve matrix equation to find u
-        u = np.dot(inverse, uvector)
         
         
         # copy u and h for next iteration

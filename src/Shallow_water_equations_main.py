@@ -38,7 +38,7 @@ def main():
     # note want extra point at the boundary for plot but in reality h[0] and h[nx] are equal
     
     # plot initial conditions where u is zero everywhere and h has a bump in the centre 
-    # and is surrounded by zero either side
+    # and is surrounded by zero either side (hereafter referred to as cosbell)
     initialu, initialh = ic.initialconditions_cosbell(initialx)
 
     figic, axic = plt.subplots()
@@ -47,7 +47,7 @@ def main():
     axic.plot(initialx, initialu, 'r--', label = 'Initial u conditions')
     axic.legend(loc = 'best')
     axic.set_xlabel("x")
-    axic.set_title("Initial Condition where h has a bump in the centre")
+    axic.set_title("Initial Condition where h has a bump in the centre (cosbell curve)")
     axic.set_xlim([min(initialx),max(initialx)])
     axic.set_ylim([-0.1, 1.1])
         
@@ -56,7 +56,7 @@ def main():
 
     # plot solution at various time iterations for an explicit method on a colocated 
     # grid for the initial condition where u is zero everywhere 
-    # and h has a bump in the centre and is surrounded by zero either side
+    # and h is cosbell curve
     
     fig1, ax1 = plt.subplots()
     fig2, ax2 = plt.subplots()
@@ -78,13 +78,13 @@ def main():
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
     ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
-and initial condition of a cos bell curve")
+and initial condition of a cosbell curve")
 
     ax2.legend(loc = 'best', fontsize = 'medium')
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
     ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
-and initial condition of a cos bell curve")
+and initial condition of a cosbell curve")
     
     fig1.savefig("velocity_colocated_explicit_cosbell.png")
     fig2.savefig("height_colocated_explicit_cosbell.png")
@@ -105,8 +105,8 @@ and initial condition of a cos bell curve")
     crange = np.linspace(0,3,4)
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
             ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
-    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated explicit scheme\n\
-and initial condition of cosbell curve", fontsize = 13)
+    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
+explicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
 explicit scheme and initial condition of cosbell curve", fontsize = 13)
 
@@ -120,10 +120,10 @@ explicit scheme and initial condition of cosbell curve", fontsize = 13)
     fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
             ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, \
             nm.A_grid_implicit_method, crange, colorrange_multic)
-    fig1_implicit_multiplec.suptitle("Velocity, u, for varying courant numbers using colocated implicit scheme\n\
-and initial condition of cosbell curve", fontsize = 13)
-    fig2_implicit_multiplec.suptitle("Height, h, for varying courant numbers using colocated implicit scheme\n\
-and initial condition of cosbell curve", fontsize = 13)
+    fig1_implicit_multiplec.suptitle("Velocity, u, for varying courant numbers using colocated \
+implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
+    fig2_implicit_multiplec.suptitle("Height, h, for varying courant numbers using colocated \
+implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
@@ -307,29 +307,34 @@ and h is cos(x)")
     
     # therefore instead look at the error between the analytic solution and the numerical method
     
-    # first calculate the square of the error between the analytic solution and the numerical method
+    # first calculate square of error between the analytic solution and the numerical method
     # note these are arrays
     
     dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
-             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h\
-             = errfns.error_calc(nx_1, nt_1, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
+             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h,\
+             normuAgrid, normuCgrid, normh = errfns.error_calc(ic.initialconditions_cos, nx_1, \
+                                nt_1, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
     
     # calculate max error value of u to use to set y-axis limits on graph
-    umaxerror =  max(max(error_A_grid_u), max(error_C_grid_u), max(error_A_grid_implicit_u), max(error_C_grid_implicit_u))
+    umaxerror =  max(max(error_A_grid_u), max(error_C_grid_u), max(error_A_grid_implicit_u),\
+                     max(error_C_grid_implicit_u))
     
     # calculate max error value of h to use to set y-axis limits on graph
     
-    hmaxerror =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
+    hmaxerror =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h),\
+                     max(error_C_grid_implicit_h))
     
     # define x meshgrid
     xerr = np.linspace(xmin_1, xmax_1, nx_1 + 1)
     
     # plot error in u from 4 different methods
     fig1_error, ax1_error = plt.subplots()
-    ax1_error.plot(xerr, error_A_grid_u, c = 'blue', label = "A-grid explicit")
-    ax1_error.plot(xerr + dx/2, error_C_grid_u, c = 'green', label = "C-grid explicit")
-    ax1_error.plot(xerr, error_A_grid_implicit_u, c = 'red', label = "A-grid implicit")
-    ax1_error.plot(xerr + dx/2, error_C_grid_implicit_u, c ='orange', label = "C-grid implicit")
+    ax1_error.plot(xerr, error_A_grid_u, c = 'firebrick', linewidth = 5, label = "A-grid explicit")
+    ax1_error.plot(xerr + dx/2, error_C_grid_u, c= 'orange', linestyle='--', linewidth = 4,\
+                   label = "C-grid explicit")
+    ax1_error.plot(xerr, error_A_grid_implicit_u, c = 'black', label = "A-grid implicit")
+    ax1_error.plot(xerr + dx/2, error_C_grid_implicit_u, c ='gold', linestyle = ':', \
+                   linewidth = 7, label = "C-grid implicit")
     
     ax1_error.set_xlim([xmin_1,xmax_1])
     ax1_error.set_ylim([-umaxerror/10, umaxerror + umaxerror/10])
@@ -340,10 +345,12 @@ where u is 0 everywhere and h is cos(x)" )
     
     # plot error in h from 4 different methods
     fig2_error, ax2_error = plt.subplots()
-    ax2_error.plot(xerr, error_A_grid_h, c = 'blue', label = "A-grid explicit")
-    ax2_error.plot(xerr, error_C_grid_h, c = 'green', label = "C-grid explicit")
-    ax2_error.plot(xerr, error_A_grid_implicit_h, c = 'red', label = "A-grid implicit")
-    ax2_error.plot(xerr, error_C_grid_implicit_h, c = 'orange', label = "C-grid implicit")
+    ax2_error.plot(xerr, error_A_grid_h, c = 'firebrick', linewidth = 5, label = "A-grid explicit")
+    ax2_error.plot(xerr + dx/2, error_C_grid_h, c= 'orange', linestyle='--', linewidth = 4,\
+                   label = "C-grid explicit")
+    ax2_error.plot(xerr, error_A_grid_implicit_h, c = 'black', label = "A-grid implicit")
+    ax2_error.plot(xerr + dx/2, error_C_grid_implicit_h, c ='gold', linestyle = ':', \
+                   linewidth = 7, label = "C-grid implicit")
 
     ax2_error.set_xlim([xmin_1,xmax_1])
     ax2_error.set_ylim([-hmaxerror/10, hmaxerror + hmaxerror/10])
@@ -358,60 +365,128 @@ where u is 0 everywhere and h is cos(x)" )
     plt.show()
     
     # print l2 norm of error 
-    print("l2 error norm of u for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_u))))
-    print("l2 error norm of u for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_u))))
-    print("l2 error norm of u for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_u))))
-    print("l2 error norm of u for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_u))))
+    print("l2 error norm of u for A-grid explicit: %.8f" % \
+          (math.sqrt(sum(error_A_grid_u))/normuAgrid))
+    print("l2 error norm of u for C-grid explicit: %.8f" % \
+          (math.sqrt(sum(error_C_grid_u))/normuCgrid))
+    print("l2 error norm of u for A-grid implicit: %.8f" % \
+          (math.sqrt(sum(error_A_grid_implicit_u))/normuAgrid))
+    print("l2 error norm of u for C-grid implicit: %.8f" % \
+          (math.sqrt(sum(error_C_grid_implicit_u))/normuCgrid))
 
-    print("l2 error norm of h for A-grid explicit: %f" % (math.sqrt(sum(error_A_grid_h))))
-    print("l2 error norm of h for C-grid explicit: %f" % (math.sqrt(sum(error_C_grid_h))))
-    print("l2 error norm of h for A-grid implicit: %f" % (math.sqrt(sum(error_A_grid_implicit_h))))
-    print("l2 error norm of h for C-grid implicit: %f" % (math.sqrt(sum(error_C_grid_implicit_h))))
+    print("l2 error norm of h for A-grid explicit: %.8f" % \
+          (math.sqrt(sum(error_A_grid_h))/normh))
+    print("l2 error norm of h for C-grid explicit: %.8f" % \
+          (math.sqrt(sum(error_C_grid_h))/normh))
+    print("l2 error norm of h for A-grid implicit: %.8f" % \
+          (math.sqrt(sum(error_A_grid_implicit_h))/normh))
+    print("l2 error norm of h for C-grid implicit: %.8f" % \
+          (math.sqrt(sum(error_C_grid_implicit_h))/normh))
     
     
     # would like to compare the errors with respect to dx and dt 
+    
+    # to further test the numerical methods use a different inital condition which 
+    # also has an analytical solution
+
+    # plot initial conditions where h is cos(x) + sin(x) and u is cos(x) - sin(x)
+    initialucossin, initialhcossin = ic.initialconditions_cossin(initialxcos)
+
+    figic3, axic3 = plt.subplots()
+        
+    axic3.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h conditions')
+    axic3.plot(initialxcos, initialucossin, 'r--', label = 'Initial u conditions')
+    axic3.legend(loc = 'best')
+    axic3.set_xlabel("x")
+    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
+    axic3.set_xlim([min(initialxcos),max(initialxcos)])
+    axic3.set_ylim([-1.5, 1.5])
+        
+    figic3.savefig("initial_condition_cossin.png")
+    plt.show()
+    
     # to do this we make a selection of nx and total time such that nt is an integer
     
     # the total time must be kept constant so that we are comparing the schemes 
     # at the same point in time
-    total_time = math.pi/24
     
-    nx_range = [120, 240, 360, 480]
-    nt_range = np.zeros_like(nx_range).astype('int')
+    # first we use a large Courant number to find the order of the error with respect to dt
+    c_1 = 0.1
+    total_time_1 = math.pi/12
+    
+    nx_range_1 = [120, 240, 360, 480]
+    nt_range_1 = np.zeros_like(nx_range_1).astype('int')
 
     # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH),
-    # nt = total_time/dt = pi/3 /(2pi c /nxsqrt(gH)) = 5 nx/3
+    # nt = total_time/dt = pi/12 /(2pi c /nxsqrt(gH)) = 5 nx/12
 
-    for j in range(len(nx_range)):
-        nx_r = nx_range[j]
-        nt_range[j] = 5 * nx_r/24
+    for j in range(len(nx_range_1)):
+        nx_r_1 = nx_range_1[j]
+        nt_range_1[j] = 5 * nx_r_1/12
 
     
     # plot the log of dx (or dt) against log of the error norm of u (or h)
     # then calculate the gradient of the curve plotted to find the order of accuracy
     # of u or h with respect to dx or dt
     
-    gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt = \
-        errfns.error_fn(nx_range, nt_range, total_time, xmin = -math.pi, \
-                               xmax = math.pi, H = 1, g = 1, c = 0.1)
+    gradient_u_dx_1, gradient_u_dt_1, gradient_h_dx_1, gradient_h_dt_1 = \
+        errfns.error_fn(nx_range_1, nt_range_1, total_time_1, xmin = -math.pi, \
+                               xmax = math.pi, H = 1, g = 1, c = c_1)
     
     plt.show()
+    
+    # note the error plotted against dx and the error plotted against dt is the same
+    # because as keeping the c, nt and nx constant impossible dx without varying dt
 
-    print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
-    print("A_grid explicit| %f | %f | %f | %f" % (gradient_u_dx[0], \
-        gradient_u_dt[0], gradient_h_dx[0], gradient_h_dt[0]))
-    print("C_grid explicit| %f | %f | %f | %f" % (gradient_u_dx[1], \
-        gradient_u_dt[1], gradient_h_dx[1], gradient_h_dt[1]))
-    print("A_grid implicit|%f | %f | %f | %f" % (gradient_u_dx[2], \
-        gradient_u_dt[2], gradient_h_dx[2], gradient_h_dt[2]))
-    print("C_grid implicit|%f | %f | %f | %f" % (gradient_u_dx[3], \
-        gradient_u_dt[3], gradient_h_dx[3], gradient_h_dt[3]))
+
+    # second we use a small Courant number to find the order of the error with respect to dx
+    c_2 = 0.005
+    
+    # again the total time must be kept constant so that we are comparing the schemes 
+    # at the same point in time
+    total_time_2 = math.pi
+    
+    nx_range_2 = [12, 24, 36, 48]
+    nt_range_2 = np.zeros_like(nx_range_2).astype('int')
+
+    # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH),
+    # nt = total_time/dt = pi /(2pi c /nxsqrt(gH))
+
+    for j in range(len(nx_range_2)):
+        nx_r_2 = nx_range_2[j]
+        nt_range_2[j] = 100 * nx_r_2
+
+    
+    # plot the log of dx against log of the error norm of u (or h)
+    # then calculate the gradient of the curve plotted to find the order of accuracy
+    # of u or h with respect to dx or dt
+    
+    gradient_u_dx_2, gradient_u_dt_2, gradient_h_dx_2, gradient_h_dt_2 = \
+        errfns.error_fn(nx_range_2, nt_range_2, total_time_2, xmin = -math.pi, \
+                               xmax = math.pi, H = 1, g = 1, c = c_2)
+    
+    plt.show()
+    # note the error plotted against dx and the error plotted against dt is the same
+    # because as keeping the c, nt and nx constant impossible dx without varying dt
+
+    # the following orders agree with the taylor expansion apart from the error with
+    # respect to dt for C_grid_explicit
+    print ("Numerical method| u error vs dx| h error vs dx| u error vs dt| h error vs dt")
+    print("A_grid explicit| %f | %f | %f | %f" % (gradient_u_dx_2[0], gradient_h_dx_2[0], \
+                                                  gradient_u_dt_1[0], gradient_h_dt_1[0]))
+    print("C_grid explicit| %f | %f | %f | %f" % (gradient_u_dx_2[1], gradient_h_dx_2[1], \
+                                                  gradient_u_dt_1[1], gradient_h_dt_1[1]))
+    print("A_grid implicit| %f | %f | %f | %f" % (gradient_u_dx_2[2], gradient_h_dx_2[2], \
+                                                  gradient_u_dt_1[2], gradient_h_dt_1[2]))
+    print("C_grid implicit| %f | %f | %f | %f" % (gradient_u_dx_2[3], gradient_h_dx_2[3], \
+                                                  gradient_u_dt_1[3], gradient_h_dt_1[3]))
+
     
     print('Timing code...')
     
     # Finally we would like to compare the computational cost of each scheme by 
     # comparing how long each takes to run
-    t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cos, nx_1, \
+    t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cossin, nx_1, \
         nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 
     

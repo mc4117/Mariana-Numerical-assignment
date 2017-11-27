@@ -19,15 +19,16 @@ import math
 
 
 
-def error_calc(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
+def error_calc(initialconditions, nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     """This function finds the solutions of the 4 numerical methods studied 
        for the initial condition that u = 0 everywhere and h is cos(x) and calculates 
        the error between these solutions and the exact solution
-       Note this function can only be used with this initial condition (cos) as otherwise 
-       the exact solution is incorrect.
+       Note this function can only be used with the initial condition cos or initial 
+       condition cossin as otherwise the exact solution is incorrect.
        
        Inputs:
            
+         initial conditions: function which specifies the initial conditions for the system         
          nx:                 number of space steps
          nt:                 number of time steps
          xmin:               minimum value of x on grid
@@ -65,13 +66,13 @@ def error_calc(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     
     # find u and h for each numerical method
     u_A_grid_explicit, h_A_grid_explicit, x1 = nm.A_grid_explicit(\
-                ic.initialconditions_cos, nx, nt, xmin, xmax, H, g, c)
+                initialconditions, nx, nt, xmin, xmax, H, g, c)
     u_C_grid_explicit, h_C_grid_explicit, x2 = nm.C_grid_explicit(\
-                ic.initialconditions_cos, nx, nt, xmin, xmax, H, g, c)
+                initialconditions, nx, nt, xmin, xmax, H, g, c)
     u_A_grid_implicit, h_A_grid_implicit, x3 = nm.A_grid_implicit_method(\
-                ic.initialconditions_cos, nx, nt, xmin, xmax, H, g, c)
+                initialconditions, nx, nt, xmin, xmax, H, g, c)
     u_C_grid_implicit, h_C_grid_implicit, x4 = nm.C_grid_implicit_method(\
-                ic.initialconditions_cos, nx, nt, xmin, xmax, H, g, c)
+                initialconditions, nx, nt, xmin, xmax, H, g, c)
 
     # Note x1, x2, x3 and x4 are all the same variables as nx, nt, xmin and xmax 
     # are the same for all methods
@@ -81,11 +82,30 @@ def error_calc(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     u_C_grid = np.zeros_like(x1)
     h = np.zeros_like(x1)
     
-    for i in range(len(x1)):
-        u_A_grid[i] = math.sin(x1[i])*math.sin(dt*nt)
-        h[i] = math.cos(x1[i])*math.cos(dt*nt)
-        u_C_grid[i] = math.sin(x1[i]+ dx/2)*math.sin(dt*nt)
+    # if initial condition is h is cos(x) and u is 0
     
+    if initialconditions.__name__ == 'initialconditions_cos':
+        for i in range(len(x1)):
+            u_A_grid[i] = math.sin(x1[i])*math.sin(dt*nt)
+            h[i] = math.cos(x1[i])*math.cos(dt*nt)
+            u_C_grid[i] = math.sin(x1[i]+ dx/2)*math.sin(dt*nt)
+            
+    # if initial condition is h is cos(x) + sin(x) and u is cos(x) - sin(x)
+    
+    elif initialconditions.__name__ == 'initialconditions_cossin': 
+        for i in range(len(x1)):
+            u_A_grid[i] = (math.cos(x1[i]) - math.sin(x1[i]))*(math.cos(dt*nt) - math.sin(dt*nt))
+            h[i] = (math.cos(x1[i]) + math.sin(x1[i]))*(math.cos(dt*nt) + math.sin(dt*nt))
+            u_C_grid[i] = (math.cos(x1[i] + dx/2) - math.sin(x1[i] + (dx/2)))\
+                            *(math.cos(dt*nt) - math.sin(dt*nt))
+                            
+    else:
+        raise ValueError('This function is not valid for this initial condition')
+        
+    # calculate l2 norm of exact solutions
+    normuAgrid = math.sqrt(sum(u_A_grid**2))
+    normuCgrid = math.sqrt(sum(u_C_grid**2))
+    normh = math.sqrt(sum(h**2))
         
     # find error between exact solution and solution found by numerical method
     error_A_grid_u = (u_A_grid - u_A_grid_explicit)**2
@@ -100,7 +120,8 @@ def error_calc(nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     
     
     return dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
-             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h
+             error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h,\
+             normuAgrid, normuCgrid, normh
              
 
 
@@ -113,7 +134,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
        the exact solution for each nx, nt combination.
        These errors are then plotted against dx and dt and the gradient of this line is calculated.
        
-       Note this function can only be used with this initial condition (cos) as otherwise 
+       Note this function can only be used with this initial condition (cossin) as otherwise 
        the exact solution is incorrect.
        
     Inputs:
@@ -159,26 +180,27 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
         
         # end function if nt is not an integer
         if isinstance(nt, numbers.Integral) == False:
-            raise ValueError('nt is not an integer') 
+            raise ValueError('nt is not an integer')  
         
         # calculate the squared error between the analytic and the numeric solutions
         dx_list[j], dt_list[j], error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u,\
              error_C_grid_implicit_u, error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h,\
-             error_C_grid_implicit_h = error_calc(nx, nt, xmin, xmax, H, g, c)
+             error_C_grid_implicit_h, normuAgrid, normuCgrid, normh = \
+             error_calc(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
 
         # calculate the L2 norm of the error between the analytic solution and the 
         # numeric solution. Note this is the L2 norm as the values produced by the error_calc
         # function is the squared error.
         
-        norm_A_grid_listu[j] = math.sqrt(sum(error_A_grid_u))
-        norm_C_grid_listu[j] = math.sqrt(sum(error_C_grid_u))
-        norm_A_grid_implicit_listu[j] = math.sqrt(sum(error_A_grid_implicit_u))
-        norm_C_grid_implicit_listu[j] = math.sqrt(sum(error_C_grid_implicit_u))
+        norm_A_grid_listu[j] = math.sqrt(sum(error_A_grid_u))/normuAgrid
+        norm_C_grid_listu[j] = math.sqrt(sum(error_C_grid_u))/normuCgrid
+        norm_A_grid_implicit_listu[j] = math.sqrt(sum(error_A_grid_implicit_u))/normuAgrid
+        norm_C_grid_implicit_listu[j] = math.sqrt(sum(error_C_grid_implicit_u))/normuCgrid
     
-        norm_A_grid_listh[j] = math.sqrt(sum(error_A_grid_h))
-        norm_C_grid_listh[j] = math.sqrt(sum(error_C_grid_h))
-        norm_A_grid_implicit_listh[j] = math.sqrt(sum(error_A_grid_implicit_h))
-        norm_C_grid_implicit_listh[j] = math.sqrt(sum(error_C_grid_implicit_h))
+        norm_A_grid_listh[j] = math.sqrt(sum(error_A_grid_h))/normh
+        norm_C_grid_listh[j] = math.sqrt(sum(error_C_grid_h))/normh
+        norm_A_grid_implicit_listh[j] = math.sqrt(sum(error_A_grid_implicit_h))/normh
+        norm_C_grid_implicit_listh[j] = math.sqrt(sum(error_C_grid_implicit_h))/normh
     
     # log plot of dx vs error norm of u for each numerical method    
     plt.loglog(dx_list, norm_A_grid_listu, label = 'A-grid explicit')
@@ -194,10 +216,10 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.show()
     
     # log plot of dx vs error norm of h for each numerical method
-    plt.loglog(dx_list, norm_A_grid_listh, c = 'firebrick', linewidth = 5, label = 'A-grid explicit')
-    plt.loglog(dx_list, norm_C_grid_listh, c= 'orange', linestyle='--', linewidth = 4, label = 'C-grid explicit')
-    plt.loglog(dx_list, norm_A_grid_implicit_listh, c= 'gold', linestyle = ':', linewidth = 7, label = 'A-grid implicit')
-    plt.loglog(dx_list, norm_C_grid_implicit_listh, 'k', label = 'C-grid implicit')
+    plt.loglog(dx_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dx_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dx_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dx_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
     plt.legend(loc = 'best')
     plt.xlim([min(dx_list), max(dx_list)])
     plt.xlabel(r"$\Delta x$")
@@ -220,10 +242,10 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.show()
     
     # log plot of dx vs error norm of u for each numerical method
-    plt.loglog(dt_list, norm_A_grid_listh, c = 'firebrick', linewidth = 5, label = 'A-grid explicit')
-    plt.loglog(dt_list, norm_C_grid_listh, c= 'orange', linestyle='--', linewidth = 4, label = 'C-grid explicit')
-    plt.loglog(dt_list, norm_A_grid_implicit_listh, c= 'gold', linestyle = ':', linewidth = 7, label = 'A-grid implicit')
-    plt.loglog(dt_list, norm_C_grid_implicit_listh, 'k', label = 'C-grid implicit')
+    plt.loglog(dt_list, norm_A_grid_listh, label = 'A-grid explicit')
+    plt.loglog(dt_list, norm_C_grid_listh, label = 'C-grid explicit')
+    plt.loglog(dt_list, norm_A_grid_implicit_listh, label = 'A-grid implicit')
+    plt.loglog(dt_list, norm_C_grid_implicit_listh, label = 'C-grid implicit')
     plt.legend(loc = 'best')
     plt.xlim([min(dt_list), max(dt_list)])
     plt.xlabel(r"$\Delta t$")
@@ -283,3 +305,4 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
                      gradient_C_grid_implicit_h_dt]      
     
     return gradient_u_dx, gradient_u_dt, gradient_h_dx, gradient_h_dt
+
