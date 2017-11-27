@@ -229,7 +229,10 @@ and initial condition of cosbell curve", fontsize = 13)
     plt.show()
     
     
-    # Finally we examine the error in the numerical method
+    # Finally we examine the error in the numerical method.
+    # This also serves as a check that our code for the numerical methods is working 
+    # as expected.
+    
     # For the initial solutions used so far it is difficult to find the analytic solution.
     # Therefore we use the following initial condition
     
@@ -311,6 +314,14 @@ and h is cos(x)")
              error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h\
              = errfns.error_calc(nx_1, nt_1, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1)
     
+    # calculate max error value of u to use to set y-axis limits on graph
+    umaxerror =  max(max(error_A_grid_u), max(error_C_grid_u), max(error_A_grid_implicit_u), max(error_C_grid_implicit_u))
+    
+    # calculate max error value of h to use to set y-axis limits on graph
+    
+    hmaxerror =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
+    
+    # define x meshgrid
     xerr = np.linspace(xmin_1, xmax_1, nx_1 + 1)
     
     # plot error in u from 4 different methods
@@ -320,10 +331,8 @@ and h is cos(x)")
     ax1_error.plot(xerr, error_A_grid_implicit_u, c = 'red', label = "A-grid implicit")
     ax1_error.plot(xerr + dx/2, error_C_grid_implicit_u, c ='orange', label = "C-grid implicit")
     
-    ymaxerror1 =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
-    
     ax1_error.set_xlim([xmin_1,xmax_1])
-    ax1_error.set_ylim(bottom = -0.001, top = None)
+    ax1_error.set_ylim([-umaxerror/10, umaxerror + umaxerror/10])
     ax1_error.set_xlabel("x")
     ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
@@ -335,11 +344,9 @@ where u is 0 everywhere and h is cos(x)" )
     ax2_error.plot(xerr, error_C_grid_h, c = 'green', label = "C-grid explicit")
     ax2_error.plot(xerr, error_A_grid_implicit_h, c = 'red', label = "A-grid implicit")
     ax2_error.plot(xerr, error_C_grid_implicit_h, c = 'orange', label = "C-grid implicit")
-    
-    ymaxerror2 =  max(max(error_A_grid_h), max(error_C_grid_h), max(error_A_grid_implicit_h), max(error_C_grid_implicit_h))
-    
+
     ax2_error.set_xlim([xmin_1,xmax_1])
-    ax2_error.set_ylim(bottom = -ymaxerror2/10, top = ymaxerror2 + ymaxerror2/10)
+    ax2_error.set_ylim([-hmaxerror/10, hmaxerror + hmaxerror/10])
     ax2_error.set_xlabel("x")
     ax2_error.set_title("Squared error in height, h, for the initial condition\n\
 where u is 0 everywhere and h is cos(x)" )
