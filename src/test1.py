@@ -19,7 +19,7 @@ def error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi
     """This function compares the solutions of the 4 numerical methods studied 
        for the initial condition defined in the function initialconditions_cossin 
        and finds the Frobenius norm of the error between these solutions and the exact solution.
-       Note this function can only be used with this initial condition (cossin) as otherwise 
+       Note this function can only be used with this initial condition (cos) as otherwise 
        the exact solution is incorrect.
     nx_range:           range of total number of space steps (in order to vary mesh size)
     nt:                 number of time steps

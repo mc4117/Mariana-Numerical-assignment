@@ -268,12 +268,12 @@ with initial condition of cos bell curve")
     # plot exact solution on plot as well
     ax1_exact.plot(x1, u, c = 'black', linestyle = ':', label = "exact solution")
     ax1_exact.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
-                        and h is cos(x)")
+and h is cos(x)")
     ax1_exact.legend(loc = 'best')
 
     ax2_exact.plot(x1, h, c = 'black', linestyle = ':', label = "exact solution")
     ax2_exact.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
-                        and h is cos(x)")
+and h is cos(x)")
     ax2_exact.legend(loc = 'best', fontsize = 'small')
     
     fig1_exact.savefig("comparison_with_exact_u.png")
@@ -289,11 +289,11 @@ with initial condition of cos bell curve")
         errfns.error_fn(nx_1, nt_1, xmin_1, xmax_1, H, g, c)
 
     ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
-                        where u is 0 everywhere and h is cos(x)" )
+where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
 
     ax2_error.set_title("Squared error in height, h, for the initial condition\n\
-                        where u is 0 everywhere and h is cos(x)" )
+where u is 0 everywhere and h is cos(x)" )
     ax2_error.legend(loc = 1, fontsize = 'small')
     
     fig1_error.savefig("error_in_u.png")
@@ -310,26 +310,6 @@ with initial condition of cos bell curve")
     print("Error norm of h for C-grid explicit: %f" % (error_norms_h[1]))
     print("Error norm of h for A-grid implicit: %f" % (error_norms_h[2]))
     print("Error norm of h for C-grid implicit: %f" % (error_norms_h[3]))
-    
-    
-    # to further test the numerical methods use a different inital condition which 
-    # also has an analytical solution
-
-    # plot initial conditions where h is cos(x) + sin(x) and u is cos(x) - sin(x)
-    
-    initialucossin, initialhcossin = ic.initialconditions_cossin(initialxcos)
-    
-    plt.ion()
-    plt.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h conditions')
-    plt.plot(initialxcos, initialucossin, 'r--', label = 'Initial u conditions')
-    plt.legend(loc = 'best')
-    plt.xlabel("x")
-    plt.title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
-    plt.xlim = ([xmin_1, xmax_1])
-    plt.ylim([-1.5, 1.5])
-        
-    plt.savefig("initial_condition_cossin.png")
-    plt.show()
     
     
     # we would like to compare the errors with respect to dx and dt 
@@ -355,62 +335,62 @@ with initial condition of cos bell curve")
     dx_list, dt_list, norm_A_grid_listu, norm_A_grid_listh, norm_C_grid_listu, \
         norm_C_grid_listh, norm_A_grid_implicit_listu, norm_A_grid_implicit_listh, \
         norm_C_grid_implicit_listu, norm_C_grid_implicit_listh = \
-        errfns.error_fn_cossin(nx_range, nt_range, total_time, xmin = -math.pi, \
+        errfns.error_fn_cos(nx_range, nt_range, total_time, xmin = -math.pi, \
                                xmax = math.pi, H = 1, g = 1, c = 0.1)
     
     # attempt to fit a straight line on the relationship between log(dx) and the 
     # log of the error of u for each numerical method. The gradient of this line 
     # is the order of the scheme with respect to dx for u
-    cossin_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
-    cossin_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
-    cossin_gradient_A_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
+    cos_gradient_A_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listu),1)[0]
+    cos_gradient_C_grid_u_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listu),1)[0]
+    cos_gradient_A_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
                                                       np.log(norm_A_grid_implicit_listu),1)[0]
-    cossin_gradient_C_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
+    cos_gradient_C_grid_implicit_u_dx = np.polyfit(np.log(dx_list),\
                                                       np.log(norm_C_grid_implicit_listu),1)[0]
 
     # attempt to fit a straight line on the relationship between log(dx) and the log 
     # of the error of h for each numerical method. The gradient of this line is the 
     # order of the scheme with respect to dx for h
-    cossin_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
-    cossin_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
-    cossin_gradient_A_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
+    cos_gradient_A_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_A_grid_listh),1)[0]
+    cos_gradient_C_grid_h_dx = np.polyfit(np.log(dx_list), np.log(norm_C_grid_listh),1)[0]
+    cos_gradient_A_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
                                                       np.log(norm_A_grid_implicit_listh),1)[0]
-    cossin_gradient_C_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
+    cos_gradient_C_grid_implicit_h_dx = np.polyfit(np.log(dx_list), \
                                                       np.log(norm_C_grid_implicit_listh),1)[0]
 
     # attempt to fit a straight line on the relationship between log(dt) and the log 
     # of the error of u for each numerical method. The gradient of this line is the 
     # order of the scheme with respect to dt for u
-    cossin_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
-    cossin_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
-    cossin_gradient_A_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
+    cos_gradient_A_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listu),1)[0]
+    cos_gradient_C_grid_u_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listu),1)[0]
+    cos_gradient_A_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
                                                       np.log(norm_A_grid_implicit_listu),1)[0]
-    cossin_gradient_C_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
+    cos_gradient_C_grid_implicit_u_dt = np.polyfit(np.log(dt_list), \
                                                       np.log(norm_C_grid_implicit_listu),1)[0]
     
     # attempt to fit a straight line on the relationship between log(dt) and the log 
     # of the error of h for each numerical method. The gradient of this line is the 
     # order of the scheme with respect to dt for h
-    cossin_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
-    cossin_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
-    cossin_gradient_A_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
+    cos_gradient_A_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_A_grid_listh),1)[0]
+    cos_gradient_C_grid_h_dt = np.polyfit(np.log(dt_list), np.log(norm_C_grid_listh),1)[0]
+    cos_gradient_A_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
                                                       np.log(norm_A_grid_implicit_listh),1)[0]
-    cossin_gradient_C_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
+    cos_gradient_C_grid_implicit_h_dt = np.polyfit(np.log(dt_list),\
                                                       np.log(norm_C_grid_implicit_listh),1)[0]
 
     plt.show()
 
     print ("Numerical method| u error vs dx| u error vs dt| h error vs dx| h error vs dt")
-    print("A_grid explicit| %f | %f | %f | %f" % (cossin_gradient_A_grid_u_dx, \
-        cossin_gradient_A_grid_u_dt, cossin_gradient_A_grid_h_dx, cossin_gradient_A_grid_h_dt))
-    print("C_grid explicit| %f | %f | %f | %f" % (cossin_gradient_C_grid_u_dx, \
-        cossin_gradient_C_grid_u_dt, cossin_gradient_C_grid_h_dx, cossin_gradient_C_grid_h_dt))
-    print("A_grid implicit|%f | %f | %f | %f" % (cossin_gradient_A_grid_implicit_u_dx, \
-        cossin_gradient_A_grid_implicit_u_dt, cossin_gradient_A_grid_implicit_h_dx, \
-        cossin_gradient_A_grid_implicit_h_dt))
-    print("C_grid implicit|%f | %f | %f | %f" % (cossin_gradient_C_grid_implicit_u_dx, \
-        cossin_gradient_C_grid_implicit_u_dt, cossin_gradient_C_grid_implicit_h_dx, \
-        cossin_gradient_C_grid_implicit_h_dt))
+    print("A_grid explicit| %f | %f | %f | %f" % (cos_gradient_A_grid_u_dx, \
+        cos_gradient_A_grid_u_dt, cos_gradient_A_grid_h_dx, cos_gradient_A_grid_h_dt))
+    print("C_grid explicit| %f | %f | %f | %f" % (cos_gradient_C_grid_u_dx, \
+        cos_gradient_C_grid_u_dt, cos_gradient_C_grid_h_dx, cos_gradient_C_grid_h_dt))
+    print("A_grid implicit|%f | %f | %f | %f" % (cos_gradient_A_grid_implicit_u_dx, \
+        cos_gradient_A_grid_implicit_u_dt, cos_gradient_A_grid_implicit_h_dx, \
+        cos_gradient_A_grid_implicit_h_dt))
+    print("C_grid implicit|%f | %f | %f | %f" % (cos_gradient_C_grid_implicit_u_dx, \
+        cos_gradient_C_grid_implicit_u_dt, cos_gradient_C_grid_implicit_h_dx, \
+        cos_gradient_C_grid_implicit_h_dt))
     
 
     
