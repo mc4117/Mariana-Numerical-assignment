@@ -1,4 +1,4 @@
-#ignore a file type image, pdf, pyc and gz
+#ignore a file type image, pdf, pyc and gz and .DS_Store
 *.png
 *.pdf
 *.pyc
