@@ -11,10 +11,6 @@ equations
 import numpy as np
 import math
 
-
-
-
-
 def initialconditions_spike(x):
     """calculate the initial velocity and height such that u is zero everywhere
        and h is zero everywhere apart from one point at the centre where it is one
