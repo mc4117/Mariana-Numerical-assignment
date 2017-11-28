@@ -102,9 +102,9 @@ and initial condition of a cosbell curve")
             ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic, nx, nt, \
             H = 1, g = 1)
     fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
-explicit scheme\n and initial condition of cosbell curve", fontsize = 13)
+explicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
     fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
-explicit scheme and initial condition of cosbell curve", fontsize = 13)
+explicit scheme and initial condition of a cosbell curve", fontsize = 13)
 
     fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
     fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
@@ -117,9 +117,9 @@ explicit scheme and initial condition of cosbell curve", fontsize = 13)
             ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, \
             nm.A_grid_implicit_method, crange, colorrange_multic, nx, nt, H = 1, g = 1)
     fig1_implicit_multiplec.suptitle("Velocity, u, for varying Courant numbers using colocated \
-implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
+implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
     fig2_implicit_multiplec.suptitle("Height, h, for varying Courant numbers using colocated \
-implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
+implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
     
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
@@ -162,8 +162,10 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, \
         plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, plot_meshgrid = True)
     
-    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme")
-    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme")
+    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
+and initial condition of a spike")
+    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme \n\
+and initial condition of a spike")
     
     fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
     fig2_A_grid.savefig("height_colocated_explicit_spike.png")
@@ -178,8 +180,10 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
             ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, \
             nm.A_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1,\
             plot_meshgrid = True)
-    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme") 
-    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme")
+    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme \n\
+and initial condition of a spike") 
+    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme \n\
+and initial condition of a spike")
     
     fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
     fig2_implicit.savefig("height_colocated_implicit_spike.png")
@@ -196,8 +200,10 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, \
         plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, staggered = True, \
         plot_meshgrid = True)   
-    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")    
-    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme")
+    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme \n\
+and initial condition of a spike")    
+    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme \n\
+and initial condition of a spike")
 
     fig1_C_grid.savefig("velocity_staggered_explicit_spike.png")
     fig2_C_grid.savefig("height_staggered_explicit_spike.png")
@@ -215,8 +221,10 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, \
         number_plotted, nm.C_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1,\
          g = 1, c = 0.1, staggered = True, plot_meshgrid = True)   
-    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme")   
-    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme")
+    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme \n\
+and initial condition of a spike")   
+    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme \n\
+and initial condition of a spike")
     
     fig1_C_grid_implicit.savefig("velocity_staggered_implicit_spike.png")
     fig2_C_grid_implicit.savefig("height_staggered_implicit_spike.png")
