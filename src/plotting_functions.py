@@ -17,7 +17,7 @@ import time
 
 def plot_multiple_iterations(initialconditions, nx, number_iterations, number_plotted,\
                              numerical_method, plotparameterrange, xmin = 0, xmax = 1, \
-                             staggered = False):
+                             H = 1, g = 1, c = 0.1, staggered = False, plot_meshgrid = False):
     """This function plots the solution of the numerical method at various time iterations.
        Note this function can be used with any initial condition defined in 
        initial_conditions.py 
@@ -32,7 +32,12 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         plotparameterrange: used to specify the colour and linestyle of lines plotted
         xmin:               minimum value of x on grid
         xmax:               maximum value of x on grid
+        H:                  mean fluid depth set to 1 unless otherwise specified
+        g:                  acceleration due to gravity scaled to 1 unless otherwise specified
+        c:                  Courant number (c = root(gH)dt/dx)
         staggered:          if this value is true then u is plotted on a staggered grid
+        plot_meshgrid:      if this value is true then the x-meshgrid is plotted
+                            for reference
     
     Outputs:
         fig1, ax1:          figure and axis of figure for velocity solution
@@ -53,10 +58,11 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     linestylerange = plotparameterrange[1]
 
     # iterate through and plot chosen timesteps - note we do not plot the timestep 0 as 
-    # this is just the initial condition
+    # this is just initial condition
     
     for i in range(len(timerange[1:])):
-        u, h, x = numerical_method(initialconditions, nx, nt = timerange[1+i])
+        u, h, x = numerical_method(initialconditions, nx, timerange[1+i],\
+                                   H, g, c)
 
         # plot u
         if staggered == True:
@@ -71,23 +77,24 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'h after ' \
            + str(timerange[1+i]) + ' timesteps')
     
-    # for reference plot the x-meshgrid as well
-    ax1.scatter(x,np.zeros_like(x), c = 'black', s = 10)
-    ax2.scatter(x,np.zeros_like(x), c = 'black', s = 10)
+    if plot_meshgrid == True:
+        # for reference plot the x-meshgrid as well
+        ax1.scatter(x,np.zeros_like(x), c = 'black', s = 10)
+        ax2.scatter(x,np.zeros_like(x), c = 'black', s = 10)
     
     # set labels, limits and legends on plots
     ax1.set_xlim([xmin,xmax])
-    ax1.set_xlabel("x")
     ax1.legend(loc = 'best')
+    ax1.set_xlabel("x")
 
     ax2.set_xlim([xmin, xmax])
-    ax2.set_xlabel("x")
-    ax2.legend(loc = 'best') 
+    ax2.legend(loc = 'best')
+    ax2.set_xlabel("x") 
         
     return fig1, fig2, ax1, ax2
 
 def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 100, \
-                    nt = 100, xmin = 0, xmax = 1, staggered = False):
+                    nt = 100, xmin = 0, xmax = 1, H = 1, g = 1, staggered = False):
     """This function plots the solution of the numerical method for various different 
        Courant numbers. Note this function can be used with any initial condition 
        defined in initial_conditions.py 
@@ -101,6 +108,8 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
         nt:                 number of time steps
         xmin:               minimum value of x on grid
         xmax:               maximum value of x on grid
+        H:                  mean fluid depth set to 1 unless otherwise specified
+        g:                  acceleration due to gravity scaled to 1 unless otherwise specified
         staggered:          if this value is true then u is plotted on a staggered grid
         
     Outputs:
@@ -116,7 +125,7 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
     
     # iterate through different courant numbers and plot results
     for i in range(len(crange[1:])):
-        u, h, x = numerical_method(initialconditions, nx, nt, c = crange[i + 1])
+        u, h, x = numerical_method(initialconditions, nx, nt, H, g, c = crange[i + 1])
         
         # plot u
         if staggered == True:

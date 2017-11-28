@@ -22,20 +22,19 @@ def main():
 
     print('Finding solution to Shallow Water Equations...')
     
-    # defining the grid and mesh working on
+    # define the meshgrid working on
     xmin = 0 # minimum value of x on grid
     xmax = 1 # maximum value of x on grid
     
     nx = 100  # number of points from x = xmin to x = xmax
     nt = 100 # number of time steps
-
-
     
     # First attempt a simple initial condition with a colocated forward-backward scheme
     
-    # define a meshgrid on x
+    # set up a meshgrid on x
     initialx = np.linspace(xmin,xmax,nx+1) 
-    # note want extra point at the boundary for plot but in reality h[0] and h[nx] are equal
+    # note want extra point at the boundary for plotting reasons but in reality 
+    # h[0] and h[nx] are equal and u[0] and u[nx] are equal 
     
     # plot initial conditions where u is zero everywhere and h has a bump in the centre 
     # and is surrounded by zero either side (hereafter referred to as cosbell)
@@ -54,35 +53,26 @@ def main():
     figic.savefig("initial_condition_cosbell.png")
     plt.show()
 
-    # plot solution at various time iterations for an explicit method on a colocated 
+    # to plot solution first set the colours to be used in the plot
+    mymap = plt.get_cmap("YlOrRd")
+    colorrange_multiiterations = mymap(np.r_[np.array([0.3, 0.55, 1]), np.array([0.3, 0.55, 1])])
+
+    # then set the linestyles that are used for each line in the plot
+    linestylerange = np.array(['-', '--', '-'])
+
+    plotparameterrange = [colorrange_multiiterations, linestylerange]
+    
+    # now plot solution at various time iterations for an explicit method on a colocated 
     # grid for the initial condition where u is zero everywhere 
     # and h is cosbell curve
     
-    fig1, ax1 = plt.subplots()
-    fig2, ax2 = plt.subplots()
+    fig1, fig2, ax1, ax2 = pltfns.plot_multiple_iterations(ic.initialconditions_cosbell, nx, 3*nt,\
+            3, nm.A_grid_explicit, plotparameterrange, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1)
     
-    # first plot initial conditions
-    ax1.plot(initialx, initialu, label = 'initial u')
-    ax2.plot(initialx, initialh, label = 'initial h')
-    
-    # then plot solutions at various iterations
-    timerange = np.linspace(0, 3, 4).astype('int')
-    for i in timerange[1:]:
-        u, h, x = nm.A_grid_explicit(ic.initialconditions_cosbell, nx, i*nt,  \
-                                     H = 1, g = 1, c = 0.1)
-        ax1.plot(x, u, label = 'u after ' + str(i*nt) + ' timesteps')
-        ax2.plot(x, h, label = 'h after ' + str(i*nt) + ' timesteps')
-        
-    
-    ax1.legend(loc = 'best', fontsize = 'medium')
-    ax1.set_xlim([xmin,xmax])
-    ax1.set_xlabel("x")
+    # display legend and title
     ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
 and initial condition of a cosbell curve")
-
-    ax2.legend(loc = 'best', fontsize = 'medium')
-    ax2.set_xlim([xmin,xmax])
-    ax2.set_xlabel("x")
+    
     ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
 and initial condition of a cosbell curve")
     
@@ -97,14 +87,14 @@ and initial condition of a cosbell curve")
     
     print('Varying Courant numbers...')
     
-    mymap = plt.get_cmap("YlOrRd")
-    colorrange_multic = mymap(np.r_[np.array([0.3, 0.55, 1]), np.array([0.3, 0.55, 1])])
+    # set colorrange as before
+    colorrange_multic = plotparameterrange[0]
     
     # plotting explicit method on colocated grid for different courant numbers
     
     crange = np.linspace(0,3,4)
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
-            ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic)
+            ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic, H = 1, g = 1)
     fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
 explicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
@@ -158,22 +148,14 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     nt_adapted = 9 # number of time steps in 1 second
     number_plotted = 3 # number of different iterations to be plotted on graph
     
-    # set the colours to be used in the plot
-    mymap = plt.get_cmap("YlOrRd")
-    colorrange_multiiterations = mymap(np.r_[np.array([0.3, 0.55, 1]), np.array([0.3, 0.55, 1])])
-
-    # set the linestyles that are used for each line in the plot
-    linestylerange = np.array(['-', '--', '-'])
-
-    plotparameterrange = [colorrange_multiiterations, linestylerange]
-
     # plot solution at various time iterations for an explicit method on a colocated grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere 
     # apart from one point at the centre where it is one
     
     fig1_A_grid, fig2_A_grid, ax1_A_grid, ax2_A_grid = pltfns.plot_multiple_iterations(\
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, \
-        plotparameterrange)
+        plotparameterrange, H = 1, g = 1, c = 0.1, plot_meshgrid = True)
+    
     ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme")
     ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme")
     
@@ -186,8 +168,8 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     # apart from one point at the centre where it is one
     fig1_implicit, fig2_implicit, ax1_implicit, ax2_implicit = pltfns.plot_multiple_iterations(\
             ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, \
-            nm.A_grid_implicit_method, plotparameterrange)
-    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme")
+            nm.A_grid_implicit_method, plotparameterrange, H = 1, g = 1, c = 0.1, plot_meshgrid = True)
+    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme") 
     ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme")
     
     fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
@@ -203,10 +185,10 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     
     fig1_C_grid, fig2_C_grid, ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(\
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, \
-        plotparameterrange, staggered = True)
-    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")
+        plotparameterrange, H = 1, g = 1, c = 0.1, staggered = True, plot_meshgrid = True)   
+    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme")    
     ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme")
-    
+
     fig1_C_grid.savefig("velocity_staggered_explicit_spike.png")
     fig2_C_grid.savefig("height_staggered_explicit_spike.png")
     
@@ -219,8 +201,9 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     
     fig1_C_grid_implicit, fig2_C_grid_implicit, ax1_C_grid_implicit, ax2_C_grid_implicit = \
     pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, \
-        number_plotted, nm.C_grid_implicit_method, plotparameterrange, staggered = True)
-    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme")
+        number_plotted, nm.C_grid_implicit_method, plotparameterrange, H = 1, g = 1, c = 0.1, \
+        staggered = True, plot_meshgrid = True)   
+    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme")   
     ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme")
     
     fig1_C_grid_implicit.savefig("velocity_staggered_implicit_spike.png")
@@ -235,8 +218,6 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     
     # For the initial solutions used so far it is difficult to find the analytic solution.
     # Therefore we use the following initial condition
-    
-    print('Calculating errors...')
     
     xmin_1 = -math.pi
     xmax_1 = math.pi
@@ -259,14 +240,16 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     figic2.savefig("initial_condition_cos.png")
     plt.show()
  
+    print('Calculating errors...')
+
     # set parameters and number of timesteps and space steps on grid
 
     nx_1 = 1000
     nt_1 = 1000
     
-    H = 1
-    g = 1
-    c = 0.1
+    H = 1    # mean fluid depth
+    g = 1    # acceleration due to gravity
+    c = 0.1  # Courant number 
     
     # plot u and h calculated by each different numerical scheme
     
@@ -289,7 +272,7 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     for i in range(len(x1)):
         h[i] = math.cos(x1[i])*math.cos(dt*nt_1)
 
-    # plot analytic solution same figure which has results from numerical schemes
+    # plot analytic solution on same figure which has results from numerical schemes
     ax1_analytic.plot(x1, u, c = 'black', linestyle = ':', label = "analytic solution")
     ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
 and h is cos(x)")
@@ -308,7 +291,7 @@ and h is cos(x)")
     # therefore instead look at the error between the analytic solution and the numerical method
     
     # first calculate square of error between the analytic solution and the numerical method
-    # note these are arrays
+    # at each point (note these are arrays)
     
     dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
              error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h,\
@@ -364,7 +347,12 @@ where u is 0 everywhere and h is cos(x)" )
     
     plt.show()
     
-    # print l2 norm of error 
+    
+    # calculate the l2 error norm ie. the l2 norm of the difference between 
+    # the analytic solution and the numeric solution normalised by the l2 norm
+    # of the analytic solution.
+    # Note the numerator is an l2 norm as the values produced by the error_calc
+    # function is the squared error.
     print("l2 error norm of u for A-grid explicit: %.8f" % \
           (math.sqrt(sum(error_A_grid_u))/normuAgrid))
     print("l2 error norm of u for C-grid explicit: %.8f" % \
@@ -384,10 +372,9 @@ where u is 0 everywhere and h is cos(x)" )
           (math.sqrt(sum(error_C_grid_implicit_h))/normh))
     
     
-    # would like to compare the errors with respect to dx and dt 
     
-    # to further test the numerical methods use a different inital condition which 
-    # also has an analytical solution
+    # to further test the numerical methods and that the code is working correctly
+    # use a different inital condition which also has an analytical solution
 
     # plot initial conditions where h is cos(x) + sin(x) and u is cos(x) - sin(x)
     initialucossin, initialhcossin = ic.initialconditions_cossin(initialxcos)
@@ -405,6 +392,7 @@ where u is 0 everywhere and h is cos(x)" )
     figic3.savefig("initial_condition_cossin.png")
     plt.show()
     
+    # would like to compare the errors with respect to dx and dt 
     # to do this we make a selection of nx and total time such that nt is an integer
     
     # the total time must be kept constant so that we are comparing the schemes 
@@ -436,7 +424,8 @@ where u is 0 everywhere and h is cos(x)" )
     plt.show()
     
     # note the error plotted against dx and the error plotted against dt is the same
-    # because as keeping the c, nt and nx constant impossible dx without varying dt
+    # because as keeping the c, nt and nx constant impossible to vary dx without varying dt.
+    # Hence the gradients are also the same
 
 
     # second we use a small Courant number to find the order of the error with respect to dx
@@ -467,7 +456,8 @@ where u is 0 everywhere and h is cos(x)" )
     
     plt.show()
     # note the error plotted against dx and the error plotted against dt is the same
-    # because as keeping the c, nt and nx constant impossible dx without varying dt
+    # because as keeping the c, nt and nx constant impossible dx without varying dt.
+    # Hence the gradients are also the same
 
     # the following orders agree with the taylor expansion apart from the error with
     # respect to dt for C_grid_explicit
@@ -485,7 +475,7 @@ where u is 0 everywhere and h is cos(x)" )
     print('Timing code...')
     
     # Finally we would like to compare the computational cost of each scheme by 
-    # comparing how long each takes to run
+    # comparing how long each scheme takes to run
     t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cossin, nx_1, \
         nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 
