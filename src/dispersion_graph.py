@@ -36,7 +36,7 @@ def main():
     plt.plot(x, omega2, label = "Implicit co-located")
     plt.plot(x, omega3, label = "Explicit staggered")
     plt.plot(x, omega4, label = "Implicit staggered")
-    plt.plot(x, x, 'k--', label = "Exact analytic")
+    plt.plot(x, x, 'k--', label = "Analytic")
     plt.legend(loc = 'best')
     plt.xlabel(r"$k \Delta x$")
     plt.ylabel(r"$\omega \Delta x$")

@@ -14,7 +14,7 @@ import numbers
 
 def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
     """This function simulates the shallow water equations using an explicit method 
-       on the colocated scheme
+       on a colocated grid
 
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
@@ -77,7 +77,7 @@ def A_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
 
 def C_grid_explicit(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, c = 0.1):
     """This function simulates the shallow water equations using an explicit method on 
-        the staggered grid
+        a staggered grid
 
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
@@ -225,9 +225,6 @@ def A_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
             
         # solve matrix equation to find h
         h = np.dot(inverse, hvector)
-    
-
-        
         
         # copy u and h for next iteration
         hOld = h.copy()
@@ -282,6 +279,10 @@ def C_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
     uOld = initialuCgrid.copy()
     hOld = initialhAgrid.copy()
     
+    # construct matrix to solve implicit method matrix equation
+    # as matrix constructed is not dependent on time, only needs to be constructed once
+
+    
     # for plotting reasons we have chosen to include the end point in the scheme
     # hence the matrix has the following dimensions: 
     matrix = np.zeros((nx+ 1,nx + 1))
@@ -295,6 +296,9 @@ def C_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
     # note because of the way the matrix has been constructed with a modulus operator 
     # still have periodic boundaries
     
+    # find inverse of this matrix
+    inverse = np.linalg.inv(matrix)
+    
     # loop over timesteps
     for it in range(nt):
         # construct vector uvector such that matrix*h = uvector        
@@ -307,7 +311,7 @@ def C_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
         # periodic boundaries are still kept
         
         # solve matrix equation to find u
-        u = np.linalg.solve(matrix, uvector)
+        u = np.dot(inverse, uvector)
 
         # construct vector hvector such that matrix*u = hvector
         hvector = np.zeros_like(hOld)
@@ -320,7 +324,7 @@ def C_grid_implicit_method(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1,
         # periodic boundaries are still kept
         
         # solve matrix equation to find h
-        h = np.linalg.solve(matrix, hvector)
+        h = np.dot(inverse, hvector)
 
         # copy u and h for next iteration
         uOld = u.copy()

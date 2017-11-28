@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
 @author: Mariana Clare
 
 Functions which calculate the difference between an analytic solution for the shallow
@@ -22,9 +21,9 @@ import math
 def error_calc(initialconditions, nx, nt, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, c = 0.1):
     """This function finds the solutions of the 4 numerical methods studied 
        for the initial condition that u = 0 everywhere and h is cos(x) and calculates 
-       the error between these solutions and the exact solution
+       the error between these solutions and the analytic solution
        Note this function can only be used with the initial condition cos or initial 
-       condition cossin as otherwise the exact solution is incorrect.
+       condition cossin as otherwise the analytic solution is incorrect.
        
        Inputs:
            
@@ -42,21 +41,21 @@ def error_calc(initialconditions, nx, nt, xmin = -math.pi, xmax = math.pi, H = 1
          dx:                      spacestep
          dt:                      timestep
          error_A_grid_u:          array of squared difference between solution of u 
-                                  by explicit A-grid method and exact solution of u
+                                  by explicit A-grid method and analytic solution of u
          error_C_grid_u:          array of squared difference between solution of u 
-                                  by explicit C-grid method and exact solution of u  
+                                  by explicit C-grid method and analytic solution of u  
          error_A_grid_implicit_u: array of squared difference between solution of u 
-                                  by implicit A-grid method and exact solution of u
+                                  by implicit A-grid method and analytic solution of u
          error_C_grid_implicit_u: array of squared difference between solution of u 
-                                  by implicit C-grid method and exact solution of u
+                                  by implicit C-grid method and analytic solution of u
          error_A_grid_h:          array of squared difference between solution of h 
-                                  by explicit A-grid method and exact solution of h
+                                  by explicit A-grid method and analytic solution of h
          error_C_grid_h:          array of squared difference between solution of h 
-                                  by explicit C-grid method and exact solution of h
+                                  by explicit C-grid method and analytic solution of h
          error_A_grid_implicit_h: array of squared difference between solution of h 
-                                  by implicit A-grid method and exact solution of h
+                                  by implicit A-grid method and analytic solution of h
          error_C_grid_implicit_h: array of squared difference between solution of h 
-                                  by implicit C-grid method and exact solution of h
+                                  by implicit C-grid method and analytic solution of h
            
 
     """
@@ -77,7 +76,7 @@ def error_calc(initialconditions, nx, nt, xmin = -math.pi, xmax = math.pi, H = 1
     # Note x1, x2, x3 and x4 are all the same variables as nx, nt, xmin and xmax 
     # are the same for all methods
     
-    # construct exact solution on both colocated and staggered grid
+    # construct analytic solution on both colocated and staggered grid
     u_A_grid = np.zeros_like(x1)
     u_C_grid = np.zeros_like(x1)
     h = np.zeros_like(x1)
@@ -102,12 +101,12 @@ def error_calc(initialconditions, nx, nt, xmin = -math.pi, xmax = math.pi, H = 1
     else:
         raise ValueError('This function is not valid for this initial condition')
         
-    # calculate l2 norm of exact solutions
+    # calculate l2 norm of analytic solutions
     normuAgrid = math.sqrt(sum(u_A_grid**2))
     normuCgrid = math.sqrt(sum(u_C_grid**2))
     normh = math.sqrt(sum(h**2))
         
-    # find error between exact solution and solution found by numerical method
+    # find error between analytic solution and solution found by numerical method
     error_A_grid_u = (u_A_grid - u_A_grid_explicit)**2
     error_C_grid_u = (u_C_grid - u_C_grid_explicit)**2
     error_A_grid_implicit_u = (u_A_grid - u_A_grid_implicit)**2
@@ -131,11 +130,11 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
        for the initial condition defined in the function initialconditions_cos
        and for a range of nx and nt. 
        It then calculates the L2 norm of the error between these solutions and 
-       the exact solution for each nx, nt combination.
+       the analytic solution for each nx, nt combination.
        These errors are then plotted against dx and dt and the gradient of this line is calculated.
        
        Note this function can only be used with this initial condition (cossin) as otherwise 
-       the exact solution is incorrect.
+       the analytic solution is incorrect.
        
     Inputs:
         nx_range:           range of total number of space steps (in order to vary mesh size)

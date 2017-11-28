@@ -3,7 +3,8 @@
 """
 @author: Mariana Clare
 
-Functions which calculate various different initial conditions for shallow water equations
+Functions which calculate various different initial conditions for shallow water 
+equations
 
 """
 
@@ -11,36 +12,7 @@ import numpy as np
 import math
 
 
-def h_spike(j, midpoint):
-    """produces a curve which is zero everywhere except at one point in the 
-       centre where it is one
-       
-       Inputs:
-           j:         point at which function is evaluated
-           midpoint:  middle point of meshgrid
-               
-        Outputs:
-            y:        result of evaluating function at j"""
-    if j == midpoint:
-        y = 1
-    else:
-        y = 0
-    return y
 
-def h_cosbell(j):
-    """produces a curve which has a bump in the centre and is surrounded by zero 
-       either side       
-       
-       Inputs:
-           j:         point at which function is evaluated
-               
-       Outputs:
-            y:        result of evaluating function at j"""
-    if 0.25 <= j <= 0.75:
-        y = math.cos(2*(math.pi)*(j - 0.5))
-    else:
-        y = 0
-    return y
 
 
 def initialconditions_spike(x):
@@ -143,3 +115,33 @@ def initialconditions_cossin(x):
     return initialu, initialh
 
 
+def h_spike(j, midpoint):
+    """produces a curve which is zero everywhere except at midpoint where it is 
+       one
+       
+       Inputs:
+           j:         point at which function is evaluated
+           midpoint:  middle point of meshgrid
+               
+        Outputs:
+            y:        result of evaluating function at j"""
+    if j == midpoint:
+        y = 1
+    else:
+        y = 0
+    return y
+
+def h_cosbell(j):
+    """produces a curve which has a bump in the centre and is surrounded by zero 
+       either side       
+       
+       Inputs:
+           j:         point at which function is evaluated
+               
+       Outputs:
+            y:        result of evaluating function at j"""
+    if 0.25 <= j <= 0.75:
+        y = math.cos(2*(math.pi)*(j - 0.5))
+    else:
+        y = 0
+    return y

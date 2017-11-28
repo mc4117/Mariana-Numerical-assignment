@@ -18,13 +18,14 @@ import time
 def plot_multiple_iterations(initialconditions, nx, number_iterations, number_plotted,\
                              numerical_method, plotparameterrange, xmin = 0, xmax = 1, \
                              staggered = False):
-    """This function plots the solution of the numerical method at various time iterations
+    """This function plots the solution of the numerical method at various time iterations.
+       Note this function can be used with any initial condition defined in 
+       initial_conditions.py 
 
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
         nx:                 number of space steps
-        number_iterations:  number of time steps for the last iteration that is plotted by 
-                            this function
+        number_iterations:  number of time steps for the final iteration plotted
         number_plotted:     number of different iterations that are plotted (ie. number of 
                             curves on graph)
         numerical_method:   function which specifies the numerical method used
@@ -34,8 +35,8 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         staggered:          if this value is true then u is plotted on a staggered grid
     
     Outputs:
-        fig1, ax1:          figure and axis of figure for u
-        fig2, ax2:          figure and axis of figure for h
+        fig1, ax1:          figure and axis of figure for velocity solution
+        fig2, ax2:          figure and axis of figure for height solution
     """
     
     # initialize plots
@@ -85,16 +86,17 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         
     return fig1, fig2, ax1, ax2
 
-def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 60, \
+def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 100, \
                     nt = 100, xmin = 0, xmax = 1, staggered = False):
     """This function plots the solution of the numerical method for various different 
-       Courant numbers
+       Courant numbers. Note this function can be used with any initial condition 
+       defined in initial_conditions.py 
 
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
         numerical_method:   function which specifies the numerical method used
         crange:             range of different courant numbers used
-        colorrange:         used to specify the colour lines plotted
+        colorrange:         used to specify the colour of  the lines plotted
         nx:                 number of space steps
         nt:                 number of time steps
         xmin:               minimum value of x on grid
@@ -139,8 +141,9 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
 def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, \
                     c = 0.1, timing = False):
     """This function compares the solutions of the 4 numerical methods studied 
-       for a given initial condition. Note this function can be used with any 
-       initial condition defined in initial_conditions.py
+       for a given initial condition. It also times how long each scheme takes.
+       Note this function can be used with any initial condition defined in 
+       initial_conditions.py
     
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
@@ -192,8 +195,8 @@ def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1,
         # plot u found by 4 different methods
         fig1, ax1 = plt.subplots()
         ax1.plot(x1, u_A_grid, c = 'blue', label = "A-grid explicit")
-        ax1.plot(x2, u_C_grid, c = 'green', label = "C-grid explicit")
-        ax1.plot(x3 + dx/2, u_A_grid_implicit, c = 'red', label = "A-grid implicit")
+        ax1.plot(x2 + dx/2, u_C_grid, c = 'green', label = "C-grid explicit")
+        ax1.plot(x3, u_A_grid_implicit, c = 'red', label = "A-grid implicit")
         ax1.plot(x4 + dx/2, u_C_grid_implicit, c ='orange',label = "C-grid implicit")
     
 
