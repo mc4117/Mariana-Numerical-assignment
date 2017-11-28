@@ -19,6 +19,9 @@ def main():
     c = 0.4
     x = np.linspace(0, pi, 1000)
 
+    # dispersion relation for analytic solution 
+    omega = x
+    
     # dispersion relation for explicit co-located scheme
     omega1 = (2/c) * np.arcsin(c/2*np.sin(x))
 
@@ -36,7 +39,7 @@ def main():
     plt.plot(x, omega2, label = "Implicit co-located")
     plt.plot(x, omega3, label = "Explicit staggered")
     plt.plot(x, omega4, label = "Implicit staggered")
-    plt.plot(x, x, 'k--', label = "Analytic")
+    plt.plot(x, omega, 'k--', label = "Analytic")
     plt.legend(loc = 'best')
     plt.xlabel(r"$k \Delta x$")
     plt.ylabel(r"$\omega \Delta x$")
