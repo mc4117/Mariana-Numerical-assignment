@@ -4,8 +4,8 @@
 @author: Mariana Clare
 
 This file contains the main code for solving the shallow water equations using the 
-numerical schemes. It also calculates the errors between the numerical schemes and 
-the analytical solutions. It calls on functions defined in the python files 
+numerical schemes. It also tests various properties of the scheme.
+It calls on functions defined in the following python files:
 initial_conditions.py, numerical_methods.py, plotting_functions.py and error_functions.py
 """
 
@@ -211,7 +211,7 @@ implicit scheme\n and initial condition of cosbell curve", fontsize = 13)
     fig2_C_grid.savefig("height_staggered_explicit_spike.png")
     
     # However a von-neumann stability analysis shows this is unstable for c > 1 therefore try 
-    # the following implicit method
+    # the following implicit method and check whether solution is still physical
     
     # plot solution at various time iterations for a implicit method on a staggered grid for 
     # the initial condition where u is zero everywhere and h is zero everywhere apart 
