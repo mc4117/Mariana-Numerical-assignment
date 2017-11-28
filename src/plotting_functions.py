@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 @author: Mariana Clare
-
 Functions which plot the solutions found by the numerical schemes (Note these functions
 do not plot any analytic solution. For functions comparing analytic solutions and 
 solutions from numerical methods please see error_functions.py).
-
 """
 
 import numpy as np
@@ -21,7 +19,6 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     """This function plots the solution of the numerical method at various time iterations.
        Note this function can be used with any initial condition defined in 
        initial_conditions.py 
-
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
         nx:                 number of space steps
@@ -58,11 +55,11 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     linestylerange = plotparameterrange[1]
 
     # iterate through and plot chosen timesteps - note we do not plot the timestep 0 as 
-    # this is just initial condition
+    # this is just the initial condition
     
     for i in range(len(timerange[1:])):
-        u, h, x = numerical_method(initialconditions, nx, timerange[1+i],\
-                                   H, g, c)
+        u, h, x = numerical_method(initialconditions, nx, timerange[1+i], xmin, \
+                                   xmax, H, g, c)
 
         # plot u
         if staggered == True:
@@ -84,12 +81,12 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     
     # set labels, limits and legends on plots
     ax1.set_xlim([xmin,xmax])
-    ax1.legend(loc = 'best')
     ax1.set_xlabel("x")
+    ax1.legend(loc = 'best')
 
     ax2.set_xlim([xmin, xmax])
-    ax2.legend(loc = 'best')
-    ax2.set_xlabel("x") 
+    ax2.set_xlabel("x")
+    ax2.legend(loc = 'best') 
         
     return fig1, fig2, ax1, ax2
 
@@ -98,7 +95,6 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
     """This function plots the solution of the numerical method for various different 
        Courant numbers. Note this function can be used with any initial condition 
        defined in initial_conditions.py 
-
     Inputs:
         initial conditions: function which specifies the initial conditions for the system 
         numerical_method:   function which specifies the numerical method used
@@ -125,7 +121,7 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
     
     # iterate through different courant numbers and plot results
     for i in range(len(crange[1:])):
-        u, h, x = numerical_method(initialconditions, nx, nt, H, g, c = crange[i + 1])
+        u, h, x = numerical_method(initialconditions, nx, nt, xmin, xmax, H, g, c = crange[i + 1])
         
         # plot u
         if staggered == True:

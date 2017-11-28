@@ -198,10 +198,10 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
              error_calc(ic.initialconditions_cossin, nx, nt, xmin, xmax, H, g, c)
 
         # calculate the l2 error norm ie. the l2 norm of the difference between 
-        # the analytic solution and the numeric solution normalised by the l2 norm
+        # the analytic solution and the numeric solution divided by the l2 norm
         # of the analytic solution.
         # Note the numerator is an l2 norm as the values produced by the error_calc
-        # function is the squared error.
+        # function is the square of the difference
         
         norm_A_grid_listu[j] = math.sqrt(sum(error_A_grid_u))/normuAgrid
         norm_C_grid_listu[j] = math.sqrt(sum(error_C_grid_u))/normuCgrid
@@ -223,7 +223,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.xlabel(r"$\Delta x$")
     plt.ylabel("Error in u")
     plt.savefig("uerror_compared_dx_cossin.png")
-    plt.title('u with respect to dx and Courant number =' + str(c))
+    plt.title('u with respect to dx and Courant number = ' + str(c))
     plt.show()
     
     # log plot of dx vs error norm of h for each numerical method
@@ -236,7 +236,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.xlabel(r"$\Delta x$")
     plt.ylabel("Error in h")
     plt.savefig("herror_compared_dx_cossin.png")
-    plt.title('h with respect to dx and Courant number =' + str(c))
+    plt.title('h with respect to dx and Courant number = ' + str(c))
     plt.show()
 
     # log plot of dt vs error norm of u for each numerical method
@@ -249,7 +249,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error in u")
     plt.savefig("uerror_compared_dt_cossin.png")
-    plt.title('u with respect to dt and Courant number =' + str(c))
+    plt.title('u with respect to dt and Courant number = ' + str(c))
     plt.show()
     
     # log plot of dt vs error norm of h for each numerical method
@@ -262,7 +262,7 @@ def error_fn(nx_range, nt_range, total_time, xmin = -math.pi, xmax = math.pi, H 
     plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error in h")
     plt.savefig("herror_compared_dt_cossin.png")
-    plt.title('h with respect to dt and Courant number =' + str(c))
+    plt.title('h with respect to dt and Courant number = ' + str(c))
     plt.show()
     
     # attempt to fit a straight line on the relationship between log(dx) and the 
