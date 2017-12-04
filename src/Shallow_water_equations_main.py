@@ -42,12 +42,12 @@ def main():
     initialu, initialh = ic.initialconditions_cosbell(initialx)
 
     figic, axic = plt.subplots()
-        
-    axic.plot(initialx, initialh, 'g-', label = 'Initial h conditions')
-    axic.plot(initialx, initialu, 'r--', label = 'Initial u conditions')
+    axic.plot(initialx, initialu, 'r--', label = 'Initial u')        
+    axic.plot(initialx, initialh, 'g-', label = 'Initial h')
+
     axic.legend(loc = 'best')
     axic.set_xlabel("x")
-    axic.set_title("Initial Condition where h has a bump in the centre (cosbell curve)")
+#    axic.set_title("Initial Condition where h has a bump in the centre (cosbell curve)")
     axic.set_xlim([min(initialx),max(initialx)])
     axic.set_ylim([-0.1, 1.1])
         
@@ -74,12 +74,12 @@ def main():
     
    # display legend and title
     ax1.legend(loc = 'best', fontsize = 10)
-    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
-and initial condition of a cosbell curve") 
+#    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
+#and initial condition of a cosbell curve") 
 
     ax2.legend(loc = 'best', fontsize = 10)
-    ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
-and initial condition of a cosbell curve")
+#    ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
+#and initial condition of a cosbell curve")
     
     fig1.savefig("velocity_colocated_explicit_cosbell.png")
     fig2.savefig("height_colocated_explicit_cosbell.png")
@@ -99,12 +99,13 @@ and initial condition of a cosbell curve")
     
     crange = np.linspace(0,3,4)
     fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
-            ic.initialconditions_cosbell, nm.A_grid_explicit, crange, colorrange_multic, nx, nt, \
+            ic.initialconditions_cos, nm.A_grid_explicit, crange, colorrange_multic, nx, nt, \
             H = 1, g = 1)
-    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
-explicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
-    fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
-explicit scheme and initial condition of a cosbell curve", fontsize = 13)
+
+#    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
+#explicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
+#    fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
+#explicit scheme and initial condition of a cosbell curve", fontsize = 13)
 
     fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
     fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
@@ -114,12 +115,12 @@ explicit scheme and initial condition of a cosbell curve", fontsize = 13)
     # As this is very unstable try an implict method on a colocated grid which is stable everywhere
     
     fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
-            ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cosbell, \
+            ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cos, \
             nm.A_grid_implicit_method, crange, colorrange_multic, nx, nt, H = 1, g = 1)
-    fig1_implicit_multiplec.suptitle("Velocity, u, for varying Courant numbers using colocated \
-implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
-    fig2_implicit_multiplec.suptitle("Height, h, for varying Courant numbers using colocated \
-implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
+#    fig1_implicit_multiplec.suptitle("Velocity, u, for varying Courant numbers using colocated \
+#implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
+#    fig2_implicit_multiplec.suptitle("Height, h, for varying Courant numbers using colocated \
+#implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
     
     fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
     fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
@@ -137,11 +138,12 @@ implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
     initialuspike, initialhspike = ic.initialconditions_spike(initialx)
     
     figic1, axic1 = plt.subplots()
-    axic1.plot(initialx, initialhspike, 'g-', label = 'Initial h conditions')
-    axic1.plot(initialx, initialuspike, 'r--', label = 'Initial u conditions')
+    axic1.plot(initialx, initialuspike, 'r--', label = 'Initial u')
+    axic1.plot(initialx, initialhspike, 'g-', label = 'Initial h')
+
     axic1.legend(loc = 'best')
     axic1.set_xlabel("x")
-    axic1.set_title("Initial Condition with spike in h")
+#    axic1.set_title("Initial Condition with spike in h")
     axic1.set_xlim([min(initialx),max(initialx)])
     axic1.set_ylim([-0.1, 1.1])
         
@@ -162,10 +164,10 @@ implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, \
         plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, plot_meshgrid = True)
     
-    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
-and initial condition of a spike")
-    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme \n\
-and initial condition of a spike")
+#    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
+#and initial condition of a spike")
+#    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme \n\
+#and initial condition of a spike")
     
     fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
     fig2_A_grid.savefig("height_colocated_explicit_spike.png")
@@ -180,10 +182,10 @@ and initial condition of a spike")
             ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, \
             nm.A_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1,\
             plot_meshgrid = True)
-    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme \n\
-and initial condition of a spike") 
-    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme \n\
-and initial condition of a spike")
+#    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme \n\
+#and initial condition of a spike") 
+#    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme \n\
+#and initial condition of a spike")
     
     fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
     fig2_implicit.savefig("height_colocated_implicit_spike.png")
@@ -200,10 +202,10 @@ and initial condition of a spike")
         ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, \
         plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, staggered = True, \
         plot_meshgrid = True)   
-    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme \n\
-and initial condition of a spike")    
-    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme \n\
-and initial condition of a spike")
+#    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme \n\
+#and initial condition of a spike")    
+#    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme \n\
+#and initial condition of a spike")
 
     fig1_C_grid.savefig("velocity_staggered_explicit_spike.png")
     fig2_C_grid.savefig("height_staggered_explicit_spike.png")
@@ -221,10 +223,10 @@ and initial condition of a spike")
     pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, \
         number_plotted, nm.C_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1,\
          g = 1, c = 0.1, staggered = True, plot_meshgrid = True)   
-    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme \n\
-and initial condition of a spike")   
-    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme \n\
-and initial condition of a spike")
+#    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme \n\
+#and initial condition of a spike")   
+#    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme \n\
+#and initial condition of a spike")
     
     fig1_C_grid_implicit.savefig("velocity_staggered_implicit_spike.png")
     fig2_C_grid_implicit.savefig("height_staggered_implicit_spike.png")
@@ -249,11 +251,12 @@ and initial condition of a spike")
     initialucos, initialhcos = ic.initialconditions_cos(initialxcos)
     
     figic2, axic2 = plt.subplots()
-    axic2.plot(initialxcos, initialhcos, 'g-', label = 'Initial h conditions')
-    axic2.plot(initialxcos, initialucos, 'r--', label = 'Initial u conditions')
+    axic2.plot(initialxcos, initialucos, 'r--', label = 'Initial u')
+    axic2.plot(initialxcos, initialhcos, 'g-', label = 'Initial h')
+
     axic2.legend(loc = 'best')
     axic2.set_xlabel("x")
-    axic2.set_title("Initital Condition where h is cos(x)")
+#    axic2.set_title("Initital Condition where h is cos(x)")
     axic2.set_xlim([xmin_1,xmax_1])
     axic2.set_ylim([-1.1, 1.1])
         
@@ -262,10 +265,7 @@ and initial condition of a spike")
  
     print('Calculating errors...')
 
-    # set parameters and number of timesteps and space steps on grid
-
-    nx_1 = 1000
-    nt_1 = 1000
+    # set parameters 
     
     H = 1    # mean fluid depth
     g = 1    # acceleration due to gravity
@@ -274,10 +274,10 @@ and initial condition of a spike")
     # plot u and h calculated by each different numerical scheme
     
     fig1_analytic, fig2_analytic, ax1_analytic, ax2_analytic, x1 = pltfns.compare_results(\
-            ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c)
+            ic.initialconditions_cos, nx, nt, xmin_1, xmax_1, H, g, c)
 
     # calculate width of spacestep and timestep
-    dx = (xmax_1 - xmin_1)/nx_1
+    dx = (xmax_1 - xmin_1)/nx
     dt = (c*dx)/math.sqrt(g*H)
 
     # construct analytic solution of shallow water equations for initial condition
@@ -287,20 +287,20 @@ and initial condition of a spike")
     h = np.zeros_like(x1)
 
     for i in range(len(x1)):
-        u[i] = math.sin(x1[i])*math.sin(dt*nt_1)
+        u[i] = math.sin(x1[i])*math.sin(dt*nt)
     
     for i in range(len(x1)):
-        h[i] = math.cos(x1[i])*math.cos(dt*nt_1)
+        h[i] = math.cos(x1[i])*math.cos(dt*nt)
 
     # plot analytic solution on same figure which has results from numerical schemes
     ax1_analytic.plot(x1, u, c = 'black', linestyle = ':', label = "analytic solution")
-    ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
-and h is cos(x)")
+#    ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
+#and h is cos(x)")
     ax1_analytic.legend(loc = 'best')
 
     ax2_analytic.plot(x1, h, c = 'black', linestyle = ':', label = "analytic solution")
-    ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
-and h is cos(x)")
+#    ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
+#and h is cos(x)")
     ax2_analytic.legend(loc = 'best', fontsize = 'small')
     
     fig1_analytic.savefig("comparison_with_analytic_u.png")
@@ -317,8 +317,8 @@ and h is cos(x)")
     
     dx, dt, error_A_grid_u, error_C_grid_u, error_A_grid_implicit_u, error_C_grid_implicit_u,\
              error_A_grid_h, error_C_grid_h, error_A_grid_implicit_h, error_C_grid_implicit_h,\
-             normuAgrid, normuCgrid, normh = errfns.error_calc(ic.initialconditions_cos, nx_1, \
-                                nt_1, xmin_1, xmax_1, H = 1, g = 1, c = 0.1)
+             normuAgrid, normuCgrid, normh = errfns.error_calc(ic.initialconditions_cos, nx, \
+                                nt, xmin_1, xmax_1, H = 1, g = 1, c = 0.1)
     
     # calculate max error value of u to use to set y-axis limits on graph
     umaxerror =  max(max(error_A_grid_u), max(error_C_grid_u), max(error_A_grid_implicit_u),\
@@ -330,7 +330,7 @@ and h is cos(x)")
                      max(error_C_grid_implicit_h))
     
     # define x meshgrid
-    xerr = np.linspace(xmin_1, xmax_1, nx_1 + 1)
+    xerr = np.linspace(xmin_1, xmax_1, nx + 1)
     
     # plot error in u from 4 different methods
     fig1_error, ax1_error = plt.subplots()
@@ -344,8 +344,8 @@ and h is cos(x)")
     ax1_error.set_xlim([xmin_1,xmax_1])
     ax1_error.set_ylim([-umaxerror/10, umaxerror + umaxerror/10])
     ax1_error.set_xlabel("x")
-    ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
-where u is 0 everywhere and h is cos(x)" )
+#    ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
+#where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
     
     # plot error in h from 4 different methods
@@ -360,8 +360,8 @@ where u is 0 everywhere and h is cos(x)" )
     ax2_error.set_xlim([xmin_1,xmax_1])
     ax2_error.set_ylim([-hmaxerror/10, hmaxerror + hmaxerror/10])
     ax2_error.set_xlabel("x")
-    ax2_error.set_title("Squared error in height, h, for the initial condition\n\
-where u is 0 everywhere and h is cos(x)" )
+#    ax2_error.set_title("Squared error in height, h, for the initial condition\n\
+#where u is 0 everywhere and h is cos(x)" )
     ax2_error.legend(loc = 1, fontsize = 'small')
     
     fig1_error.savefig("error_in_u.png")
@@ -402,12 +402,12 @@ where u is 0 everywhere and h is cos(x)" )
     initialucossin, initialhcossin = ic.initialconditions_cossin(initialxcos)
 
     figic3, axic3 = plt.subplots()
-        
-    axic3.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h conditions')
-    axic3.plot(initialxcos, initialucossin, 'r--', label = 'Initial u conditions')
+    axic3.plot(initialxcos, initialucossin, 'r--', label = 'Initial u')        
+    axic3.plot(initialxcos, initialhcossin, 'g-', label = 'Initial h')
+
     axic3.legend(loc = 'best')
     axic3.set_xlabel("x")
-    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
+#    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
     axic3.set_xlim([min(initialxcos),max(initialxcos)])
     axic3.set_ylim([-1.5, 1.5])
         
@@ -421,18 +421,18 @@ where u is 0 everywhere and h is cos(x)" )
     # at the same point in time
     
     # first we use a large Courant number to find the order of the error with respect to dt
-    c_1 = 0.1
+    c_1 = 0.5
     total_time_1 = math.pi/12
     
     nx_range_1 = [120, 240, 360, 480]
     nt_range_1 = np.zeros_like(nx_range_1).astype('int')
 
     # as dx = (xmax - xmin)/nx = 2pi/nx and dt = c*dx/sqrt(gH) = 2pic/nxsqrt(gH),
-    # nt = total_time/dt = pi/12 /(2pi c /nxsqrt(gH)) = 5 nx/12
+    # nt = total_time/dt = pi/12 /(2pi c /nxsqrt(gH)) = nx/12
 
     for j in range(len(nx_range_1)):
         nx_r_1 = nx_range_1[j]
-        nt_range_1[j] = 5 * nx_r_1/12
+        nt_range_1[j] = nx_r_1/12
 
     
     # plot the log of dx (or dt) against log of the error norm of u (or h)
@@ -499,17 +499,46 @@ where u is 0 everywhere and h is cos(x)" )
     
     print('Timing code...')
     
+    # set number of timesteps and space steps on grid
+    
+    nx_1 = 1000
+    nt_1 = 1000
+    
     # Finally we would like to compare the computational cost of each scheme by 
     # comparing how long each scheme takes to run
-    t0, t1, t2, t3, t4 = pltfns.compare_results(ic.initialconditions_cossin, nx_1, \
-        nt_1, xmin_1, xmax_1, H, g, c, timing = True)
+    
+    # this test is carried out for each initial condition
+    t0cos, t1cos, t2cos, t3cos, t4cos = pltfns.compare_results(\
+        ic.initialconditions_cos, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
 
+    t0cossin, t1cossin, t2cossin, t3cossin, t4cossin = pltfns.compare_results(\
+        ic.initialconditions_cossin, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
+    
+    t0spike, t1spike, t2spike, t3spike, t4spike = pltfns.compare_results(\
+        ic.initialconditions_spike, nx_1, nt_1, xmin_1, xmax_1, H, g, c, timing = True)
+
+    print("cos initial condition")
+    
+    print("A-grid explicit: %f seconds" % (t1cos - t0cos))
+    print("C-grid explicit: %f seconds" % (t2cos - t1cos))
+    print("A-grid implicit: %f seconds" % (t3cos - t2cos))
+    print("C-grid implicit: %f seconds" % (t4cos - t3cos))
+    
+    print("cossin initial condition")
+    
+    print("A-grid explicit: %f seconds" % (t1cossin - t0cossin))
+    print("C-grid explicit: %f seconds" % (t2cossin - t1cossin))
+    print("A-grid implicit: %f seconds" % (t3cossin - t2cossin))
+    print("C-grid implicit: %f seconds" % (t4cossin - t3cossin))
+    
+    print("spike initial condition")
+    
+    print("A-grid explicit: %f seconds" % (t1spike - t0spike))
+    print("C-grid explicit: %f seconds" % (t2spike - t1spike))
+    print("A-grid implicit: %f seconds" % (t3spike - t2spike))
+    print("C-grid implicit: %f seconds" % (t4spike - t3spike))
     
 
-    print("A-grid explicit: %f seconds" % (t1 - t0))
-    print("C-grid explicit: %f seconds" % (t2 - t1))
-    print("A-grid implicit: %f seconds" % (t3 - t2))
-    print("C-grid implicit: %f seconds" % (t4 - t3))
     
 main()
 

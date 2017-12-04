@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numerical_methods as nm
 import time
+import math
 
 
 def plot_multiple_iterations(initialconditions, nx, number_iterations, number_plotted,\
@@ -91,7 +92,7 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     return fig1, fig2, ax1, ax2
 
 def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 100, \
-                    nt = 100, xmin = 0, xmax = 1, H = 1, g = 1, staggered = False):
+                    nt = 100, xmin = -math.pi, xmax = math.pi, H = 1, g = 1, staggered = False):
     """This function plots the solution of the numerical method for various different 
        Courant numbers. Note this function can be used with any initial condition 
        defined in initial_conditions.py 
