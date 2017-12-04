@@ -1,5 +1,5 @@
-\documentclass[a4paper, 10.5pt, notitlepage]{article}
-\usepackage[margin=3cm]{geometry}
+\documentclass[a4paper, 10.8pt, notitlepage]{article}
+\usepackage[margin=2.7cm]{geometry}
 \usepackage{listings}
 \usepackage[parfill]{parskip}
 \setlength{\parskip}{\baselineskip}%
@@ -26,7 +26,7 @@
 \maketitle
 \thispagestyle{empty}
 \section{Introduction}
-This report seeks to solve the one-dimensional lineriased shallow water equations using four different numerical methods: Co-located Explicit, Co-located Implicit, Staggered Explicit and Staggered Implicit. It also compares the error between these methods and the analytic solutions for given initial conditions, as well as testing their stability and computational cost and evaluating how physically realistic they are.
+This report seeks to solve the one-dimensional lineriased shallow water equations using four different numerical methods: co-located explicit, co-located Implicit, staggered explicit and staggered implicit. It also compares the error between these methods and the analytic solutions for given initial conditions, as well as testing their stability and computational cost and evaluating how physically realistic they are.
 
 The shallow water equations are
 \begin{equation}\label{momentumsw}
@@ -371,12 +371,12 @@ These error norms are displayed in Table \ref{errortable} and show that the stag
 		\hline
 		Co-located Explicit & $5.6 \times 10^{-4}$ & $2.0 \times 10^{-3}$\\ 
 		\hline
-		Staggered Explicit &  $1.5 \times 10^{-4}$ & $2.1 \times 10^{-3}$\\
-		\hline
 		Co-located  Implicit & $2.5 \times 10^{-3}$ & $1.7 \times 10^{-3}$ \\
 		\hline
+		Staggered Explicit &  $1.5 \times 10^{-4}$ & $2.1 \times 10^{-3}$\\
+		\hline
 		Staggered Semi-implicit & $1.4 \times 10^{-4}$ & $7.7\times 10 ^{-5}$ \\
-	\hline
+		\hline
 	\end{tabular}
 	\caption{l2 error norms for all 4 numerical methods}
 	\label{errortable}
@@ -449,9 +449,9 @@ Our results agree closely with the order of accuracy calculated by the Taylor se
 		\hline
 		Co-located Explicit & 1.02 & 1.01 & 1\\ 
 		\hline
-		Staggered Explicit & 0.13 & 0.02 & 1\\
-		\hline
 		Co-located Implicit & 0.95 & 1.01 & 1\\
+		\hline
+		Staggered Explicit & 0.13 & 0.02 & 1\\
 		\hline
 		Staggered Implicit & 2.00 & 2.00 & 2\\
 		\hline
@@ -468,9 +468,9 @@ Our results agree closely with the order of accuracy calculated by the Taylor se
 		\hline
 		Co-located Explicit & 1.94 & 2.03 & 2 \\ 
 		\hline
-		Staggered Explicit & 1.93 & 1.99 & 2 \\
-		\hline
 		Co-located Implicit & 2.00 & 1.97 & 2 \\
+		\hline
+		Staggered Explicit & 1.93 & 1.99 & 2 \\
 		\hline
 		Staggered Implicit & 1.99 & 2.01 & 2 \\
 		\hline
@@ -489,19 +489,40 @@ For Courant numbers larger than $2$, Figures \ref{velocity_varying_courant} and 
 	\begin{minipage}{.5\textwidth}
 		\ContinuedFloat*
 		%\centering
-		\captionsetup{width=0.9\textwidth}
+		\captionsetup{width=0.95\textwidth}
 		\captionsetup{justification=centering}
-		\includegraphics[width=\textwidth]{velocity_varying_courant.png}
-		\caption{\label{velocity_varying_courant} Velocity for varying Courant numbers for the co-located explicit and implicit schemes} 
+		\includegraphics[width=\textwidth]{velocity_varying_courant_colocated.png}
+		\caption{\label{velocity_varying_courant} Velocity for varying Courant numbers for the co-located explicit and implicit schemes for initial conditions shown in Figure \ref{initialconditioncossin}}
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
 	\ContinuedFloat
 	%\centering
-	\captionsetup{width=0.9\textwidth}
+	\captionsetup{width=0.95\textwidth}
 	\captionsetup{justification=centering}
-	\includegraphics[width=\textwidth]{height_varying_courant.png}
-	\caption{\label{height_varying_courant} Height for varying Courant numbers for the co-located explicit and implicit methods} 
+	\includegraphics[width=\textwidth]{height_varying_courant_colocated.png}
+	\caption{\label{height_varying_courant} Height for varying Courant numbers for the co-located explicit and implicit schemes for initial conditions shown in Figure \ref{initialconditioncossin}} 
 \end{minipage}
+\end{figure}
+
+A similar analysis can be conducted for the staggered grids as shown in Figures \ref{velocity_varying_courant_staggered} and \ref{height_varying_courant_staggered}. For this test we run both schemes using a range of Courant numbers with different initial conditions to the previous test, $h = \cos(x)$ and $u = 0$ (shown in Figure \ref{initialconditioncossin}), plus $nx = 100$ and $nt = 100$ as before. As expected from the Von-Neumann stability analysis the staggered explicit scheme is unstable for both $u$ and $h$ for Courant numbers higher that 1. By contrast, the staggered implicit scheme is stable for both $u$ and $h$ for large Courant numbers.
+
+\begin{figure}[H]
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat*
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{velocity_varying_courant_staggered.png}
+		\caption{\label{velocity_varying_courant_staggered} Velocity for varying Courant numbers for the staggered explicit and implicit schemes for initial conditions shown in Figure \ref{initialconditioncos}}
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\ContinuedFloat
+		%\centering
+		\captionsetup{width=0.9\textwidth}
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{height_varying_courant_staggered.png}
+		\caption{\label{height_varying_courant_staggered} Height for varying Courant numbers for the staggered explicit and implicit schemes for initial conditions shown in Figure \ref{initialconditioncos}} 
+	\end{minipage}
 \end{figure}
 
 \subsection{Test 2}
@@ -562,9 +583,9 @@ Finally, we compare the computational cost of the four numerical methods by comp
 		\hline
 		Co-located Explicit & 1.76 s & 1.77 s & 1.82 s\\ 
 		\hline
-		Staggered Explicit & 1.58 s &1.58 s & 1.59 s\\
-		\hline
 		Co-located  Implicit & 3.05 s &3.05 s & 2.97 s\\
+		\hline
+		Staggered Explicit & 1.58 s &1.58 s & 1.59 s\\
 		\hline
 		Staggered Implicit & 5.21 s &5.27 s & 5.16 s\\
 		\hline

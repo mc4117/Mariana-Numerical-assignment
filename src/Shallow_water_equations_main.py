@@ -30,7 +30,7 @@ def main():
     nx = 100  # number of points from x = xmin to x = xmax
     nt = 100 # number of time steps
     
-    # First attempt a simple initial condition with a colocated forward-backward scheme
+    # First attempt a simple initial condition with a co-located forward-backward scheme
     
     # set up a meshgrid on x
     initialx = np.linspace(xmin,xmax,nx+1) 
@@ -47,11 +47,13 @@ def main():
 
     axic.legend(loc = 'best')
     axic.set_xlabel("x")
-#    axic.set_title("Initial Condition where h has a bump in the centre (cosbell curve)")
     axic.set_xlim([min(initialx),max(initialx)])
     axic.set_ylim([-0.1, 1.1])
         
     figic.savefig("initial_condition_cosbell.png")
+    
+    axic.set_title("Initial Condition where h has a bump in the centre (cosbell curve)")
+    
     plt.show()
 
     # to plot solution first set the colours to be used in the plot
@@ -63,26 +65,32 @@ def main():
 
     plotparameterrange = [colorrange_multiiterations, linestylerange]
     
-    # now plot solution at various time iterations for an explicit method on a colocated 
+    # now plot solution at various time iterations for an explicit method on a co-located 
     # grid for the initial condition where u is zero everywhere and h is a cosbell curve
     
-    fig1, fig2, ax1, ax2 = pltfns.plot_multiple_iterations(ic.initialconditions_cosbell, nx, 3*nt,\
-            3, nm.A_grid_explicit, plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1)
+    # initialize plots 
+    fig1, ax1 = plt.subplots()
+    fig2, ax2 = plt.subplots()
+    
+    
+    fig1, fig2, ax1, ax2 = pltfns.plot_multiple_iterations(fig1, ax1, fig2, ax2, \
+            ic.initialconditions_cosbell, nx, 3*nt, 3, nm.A_grid_explicit, \
+            plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1)
     
     ax1.plot(initialx, initialu, 'g', label = 'initial u')
     ax2.plot(initialx, initialh, 'g', label = 'initial h')
     
-   # display legend and title
+   # display legend
     ax1.legend(loc = 'best', fontsize = 10)
-#    ax1.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
-#and initial condition of a cosbell curve") 
-
     ax2.legend(loc = 'best', fontsize = 10)
-#    ax2.set_title("Height, h, calculated using the colocated explicit scheme \n\
-#and initial condition of a cosbell curve")
     
     fig1.savefig("velocity_colocated_explicit_cosbell.png")
     fig2.savefig("height_colocated_explicit_cosbell.png")
+    
+    ax1.set_title("Velocity, u, calculated using the co-located explicit scheme \n\
+and initial condition of a cosbell curve") 
+    ax2.set_title("Height, h, calculated using the co-located explicit scheme \n\
+and initial condition of a cosbell curve")
     
     plt.show()
     
@@ -92,42 +100,95 @@ def main():
     
     print('Varying Courant numbers...')
     
-    # set colorrange as before
-    colorrange_multic = plotparameterrange[0]
+    # initialize plots
     
-    # plotting explicit method on colocated grid for different Courant numbers
-    
-    crange = np.linspace(0,3,4)
-    fig1_A_multiplec, fig2_A_multiplec, ax1_A_multiplec, ax2_A_multiplec = pltfns.plot_multiple_c(\
-            ic.initialconditions_cos, nm.A_grid_explicit, crange, colorrange_multic, nx, nt, \
-            H = 1, g = 1)
+    fig_u_Agrid_c, ax_u_Agrid_c = plt.subplots()
+    fig_h_Agrid_c, ax_h_Agrid_c = plt.subplots()
 
-#    fig1_A_multiplec.suptitle("Velocity, u, for varying Courant number using colocated \
-#explicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
-#    fig2_A_multiplec.suptitle("Height, h, for varying Courant number using colocated\n\
-#explicit scheme and initial condition of a cosbell curve", fontsize = 13)
+    
+    # set color and linestyle range for each line in the plot as before
+    
+    mymap1 = plt.get_cmap("YlOrRd")
+    colorrange_multic1 = mymap1(np.r_[np.array([0.4, 0.7,1]), np.array([0.4, 0.7, 1])])
+    linestylerange1 = np.array(['-', '-', ':'])
+    
+    plotparameterrange1 = [colorrange_multic1, linestylerange1]
+    
+    # define range of Courant numbers to test where explicit co-located method becomes unstable
+    crangecolocated1 = [1.75, 1.95, 2.05]
+    
+    # plot explicit method on co-located grid for different Courant numbers
+    fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c = pltfns.plot_multiple_c(\
+            fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c, ic.initialconditions_cossin,\
+            nm.A_grid_explicit, crangecolocated1, plotparameterrange1,\
+            nx = 100, nt = 100, H = 1, g = 1)
+    
+    # as this is unstable try implicit method
 
-    fig1_A_multiplec.savefig("velocity_varying_courant_explicit.png")
-    fig2_A_multiplec.savefig("height_varying_courant_explicit.png")
+    # set another color and linestyle range for each line in plot. These are different
+    # so as to differentiate between the explicit and implicit methods
     
+    mymap2 = plt.get_cmap("YlGnBu")
+    colorrange_multic2 = mymap2(np.r_[np.array([0.4, 0.7,1]), np.array([0.4, 0.7, 1])])
+    linestylerange2 = np.array(['-', '-', '-'])
+
+    plotparameterrange2 = [colorrange_multic2, linestylerange2]
+    
+    # define different range of Courant numbers for implicit methods   
+    crange2 = [1.5, 2, 4]
+
+    # plot implicit method on co-located grid for different Courant numbers on same graph as plotted
+    # explicit method on co-located grid
+    fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c = pltfns.plot_multiple_c(\
+            fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c, ic.initialconditions_cossin,\
+            nm.A_grid_implicit_method, crange2, plotparameterrange2,\
+            nx = 100, nt = 100, H = 1, g = 1)
+    
+    fig_u_Agrid_c.savefig('velocity_varying_courant_colocated.png')
+    fig_h_Agrid_c.savefig('height_varying_courant_colocated.png')
+
+    fig_u_Agrid_c.suptitle("Velocity, u, for varying Courant number using co-located \n\
+explicit and implicit schemes", fontsize = 12)
+    fig_h_Agrid_c.suptitle("Height, h, for varying Courant number using co-located\n\
+explicit and implicit schemes", fontsize = 12)
     plt.show()
+
+    # perform same analysis for staggered grid
     
-    # As this is very unstable try an implict method on a colocated grid which is stable everywhere
+    # initialize plots
+    fig_u_Cgrid_c, ax_u_Cgrid_c = plt.subplots()
+    fig_h_Cgrid_c, ax_h_Cgrid_c = plt.subplots()
     
-    fig1_implicit_multiplec, fig2_implicit_multiplec, ax1_implicit_multiplec, \
-            ax2_implicit_multiplec = pltfns.plot_multiple_c(ic.initialconditions_cos, \
-            nm.A_grid_implicit_method, crange, colorrange_multic, nx, nt, H = 1, g = 1)
-#    fig1_implicit_multiplec.suptitle("Velocity, u, for varying Courant numbers using colocated \
-#implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
-#    fig2_implicit_multiplec.suptitle("Height, h, for varying Courant numbers using colocated \
-#implicit scheme\n and initial condition of a cosbell curve", fontsize = 13)
+    # define range of Courant numbers to test where explicit staggered method becomes unstable
+    crangestaggered1 = [0.8, 0.9, 1.005]
+
+    # plot explicit method on staggered grid for different Courant numbers
+    fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c = pltfns.plot_multiple_c(\
+            fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c, ic.initialconditions_cos,\
+            nm.C_grid_explicit, crangestaggered1, plotparameterrange1,\
+            nx = 100, nt = 100, H = 1, g = 1)
     
-    fig1_implicit_multiplec.savefig("velocity_varying_courant_implicit.png")
-    fig2_implicit_multiplec.savefig("height_varying_courant_implicit.png")
+    # plot implicit method on staggered grid for same range of Courant numbers used for 
+    # co-located implicit method on same graph as plotted explicit method on staggered grid
     
+    fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c = pltfns.plot_multiple_c(\
+            fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c, ic.initialconditions_cos,\
+            nm.C_grid_implicit_method, crange2, plotparameterrange2,\
+            nx = 100, nt = 100, H = 1, g = 1)
+    
+    fig_u_Cgrid_c.savefig('velocity_varying_courant_staggered.png')
+    fig_h_Cgrid_c.savefig('height_varying_courant_staggered.png') 
+    
+    fig_u_Cgrid_c.suptitle("Velocity, u, for varying Courant number using staggered \n\
+explicit and implicit schemes", fontsize = 12)
+    fig_h_Cgrid_c.suptitle("Height, h, for varying Courant number using staggered\n\
+explicit and implicit schemes", fontsize = 12)
     plt.show()
+
+
+
     
-    # by taking a different initial condition it is clear to see that the colocated grid 
+    # by taking a different initial condition it is clear to see that the co-located grid 
     # gives unphysical results for both implicit and explicit methods
     
     print('Initialising Shallow Water equations with different initial condition...')
@@ -143,93 +204,91 @@ def main():
 
     axic1.legend(loc = 'best')
     axic1.set_xlabel("x")
-#    axic1.set_title("Initial Condition with spike in h")
     axic1.set_xlim([min(initialx),max(initialx)])
     axic1.set_ylim([-0.1, 1.1])
         
     figic1.savefig("initial_condition_spike.png")
+
+    axic1.set_title("Initial Condition with spike in h")
+    
     plt.show()
     
     # in order to see the phenomenon more clearly use a slightly coarser grid than before
 
-    nx_adapted = 20 # number of points from x = 0 to x = 1
-    nt_adapted = 9 # number of time steps in 1 second
-    number_plotted = 3 # number of different iterations to be plotted on graph
+    nx_adapted = 10 # number of points from x = 0 to x = 1
+    nt_adapted = 15 # number of time steps in 1 second
+    number_plotted = 2 # number of different iterations to be plotted on graph
     
-    # plot solution at various time iterations for an explicit method on a colocated grid 
+    # initialize plots 
+    
+    fig_u_spike, ax_u_spike = plt.subplots()
+    fig_h_spike, ax_h_spike = plt.subplots()
+    
+    # change linestyle range
+    linestylerange1 = np.array(['-', '-'])
+    plotparameterrange1[1] = linestylerange1
+    
+    # plot solution at various time iterations for an explicit method on a co-located grid 
     # for the initial condition where u is zero everywhere and h is zero everywhere 
     # apart from one point at the centre where it is one
     
-    fig1_A_grid, fig2_A_grid, ax1_A_grid, ax2_A_grid = pltfns.plot_multiple_iterations(\
-        ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.A_grid_explicit, \
-        plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, plot_meshgrid = True)
+    fig_u_spike, fig_h_spike, ax_u_spike, ax_h_spike = pltfns.plot_multiple_iterations(fig_u_spike,\
+        ax_u_spike, fig_h_spike, ax_h_spike,ic.initialconditions_spike, nx_adapted, nt_adapted, \
+        number_plotted, nm.A_grid_explicit, plotparameterrange1, xmin, xmax, H = 1, g = 1, \
+        c = 0.1, plot_meshgrid = True)
+
+    # This is unphysical therefore try with a staggered grid
     
-#    ax1_A_grid.set_title("Velocity, u, calculated using the colocated explicit scheme \n\
-#and initial condition of a spike")
-#    ax2_A_grid.set_title("Height, h, calculated using the colocated explicit scheme \n\
-#and initial condition of a spike")
+    # change linestyle range
+    linestylerange2 = np.array(['-.', '-.'])
+    plotparameterrange2[1] = linestylerange2
     
-    fig1_A_grid.savefig("velocity_colocated_explicit_spike.png")
-    fig2_A_grid.savefig("height_colocated_explicit_spike.png")
+    # plot on the same figure as used for staggered explicit method (and for same initial conditions),
+    # solution at various time iterations for an explicit method on staggered grid 
     
-    plt.show()
+    fig_u_spike, fig_h_spike, ax_u_spike, ax_h_spike = pltfns.plot_multiple_iterations(fig_u_spike,\
+        ax_u_spike, fig_h_spike, ax_h_spike, ic.initialconditions_spike, nx_adapted, nt_adapted, \
+        number_plotted, nm.C_grid_explicit, plotparameterrange2, xmin, xmax, H = 1, g = 1, c = 0.1, \
+        staggered = True, plot_meshgrid = True) 
 
     
-    # plot solution at various time iterations for an implicit method on a colocated grid 
-    # for the initial condition where u is zero everywhere and h is zero everywhere 
-    # apart from one point at the centre where it is one
-    fig1_implicit, fig2_implicit, ax1_implicit, ax2_implicit = pltfns.plot_multiple_iterations(\
-            ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, \
-            nm.A_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1,\
-            plot_meshgrid = True)
-#    ax1_implicit.set_title("Velocity, u, calculated using the colocated implicit scheme \n\
-#and initial condition of a spike") 
-#    ax2_implicit.set_title("Height, h, calculated using the colocated implicit scheme \n\
-#and initial condition of a spike")
+    fig_u_spike.savefig("velocity_pike.png")
+    fig_h_spike.savefig("height_spike.png")
     
-    fig1_implicit.savefig("velocity_colocated_implicit_spike.png")
-    fig2_implicit.savefig("height_colocated_implicit_spike.png")
-    
-    plt.show()
-    
-    # Therefore instead we use a staggered grid
-    
-    # plot solution at various time iterations for an explicit method on a staggered grid 
-    # for the initial condition where u is zero everywhere and h is zero everywhere apart 
-    # from one point at the centre where it is one
-    
-    fig1_C_grid, fig2_C_grid, ax1_C_grid, ax2_C_grid = pltfns.plot_multiple_iterations(\
-        ic.initialconditions_spike, nx_adapted, nt_adapted, number_plotted, nm.C_grid_explicit, \
-        plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1, staggered = True, \
-        plot_meshgrid = True)   
-#    ax1_C_grid.set_title("Velocity, u, calculated using the staggered explicit scheme \n\
-#and initial condition of a spike")    
-#    ax2_C_grid.set_title("Height, h, calculated using the staggered explicit scheme \n\
-#and initial condition of a spike")
-
-    fig1_C_grid.savefig("velocity_staggered_explicit_spike.png")
-    fig2_C_grid.savefig("height_staggered_explicit_spike.png")
+    ax_u_spike.set_title("Velocity, u, calculated using the co-located and staggered explicit schemes \n\
+and initial condition of a spike")    
+    ax_h_spike.set_title("Height, h, calculated using the co-located and staggered explicit schemes \n\
+and initial condition of a spike")
     
     plt.show()
     
     # However a von-neumann stability analysis shows this is unstable for c > 1 therefore try 
     # the following implicit method and check whether solution is still physical
+
     
-    # plot solution at various time iterations for a implicit method on a staggered grid for 
-    # the initial condition where u is zero everywhere and h is zero everywhere apart 
+    # plot solution at various time iterations for an explicit method on a staggered grid 
+    # for the initial condition where u is zero everywhere and h is zero everywhere apart 
     # from one point at the centre where it is one
     
+    # initialize plots 
+    
+    fig1_C_grid_implicit, ax1_C_grid_implicit = plt.subplots()
+    fig2_C_grid_implicit, ax2_C_grid_implicit = plt.subplots()
+    
     fig1_C_grid_implicit, fig2_C_grid_implicit, ax1_C_grid_implicit, ax2_C_grid_implicit = \
-    pltfns.plot_multiple_iterations(ic.initialconditions_spike, nx_adapted, nt_adapted, \
-        number_plotted, nm.C_grid_implicit_method, plotparameterrange, xmin, xmax, H = 1,\
+    pltfns.plot_multiple_iterations(fig1_C_grid_implicit, ax1_C_grid_implicit, fig2_C_grid_implicit,\
+        ax2_C_grid_implicit, ic.initialconditions_spike, nx_adapted, nt_adapted, \
+        number_plotted, nm.C_grid_implicit_method, plotparameterrange1, xmin, xmax, H = 1,\
          g = 1, c = 0.1, staggered = True, plot_meshgrid = True)   
-#    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme \n\
-#and initial condition of a spike")   
-#    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme \n\
-#and initial condition of a spike")
+
     
     fig1_C_grid_implicit.savefig("velocity_staggered_implicit_spike.png")
     fig2_C_grid_implicit.savefig("height_staggered_implicit_spike.png")
+    
+    ax1_C_grid_implicit.set_title("Velocity, u, calculated using the staggered implicit scheme \n\
+and initial condition of a spike")   
+    ax2_C_grid_implicit.set_title("Height, h, calculated using the staggered implicit scheme \n\
+and initial condition of a spike")
     
     plt.show()
     
@@ -256,11 +315,12 @@ def main():
 
     axic2.legend(loc = 'best')
     axic2.set_xlabel("x")
-#    axic2.set_title("Initital Condition where h is cos(x)")
     axic2.set_xlim([xmin_1,xmax_1])
     axic2.set_ylim([-1.1, 1.1])
         
     figic2.savefig("initial_condition_cos.png")
+    axic2.set_title("Initital Condition where h is cos(x)")
+
     plt.show()
  
     print('Calculating errors...')
@@ -294,18 +354,19 @@ def main():
 
     # plot analytic solution on same figure which has results from numerical schemes
     ax1_analytic.plot(x1, u, c = 'black', linestyle = ':', label = "analytic solution")
-#    ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
-#and h is cos(x)")
     ax1_analytic.legend(loc = 'best')
 
     ax2_analytic.plot(x1, h, c = 'black', linestyle = ':', label = "analytic solution")
-#    ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
-#and h is cos(x)")
     ax2_analytic.legend(loc = 'best', fontsize = 'small')
     
     fig1_analytic.savefig("comparison_with_analytic_u.png")
     fig2_analytic.savefig("comparison_with_analytic_h.png")
     
+    ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
+and h is cos(x)")
+    ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
+#and h is cos(x)")
+
     plt.show()
     
     # This does not provide much clarity as all the solutions are very close together
@@ -344,8 +405,6 @@ def main():
     ax1_error.set_xlim([xmin_1,xmax_1])
     ax1_error.set_ylim([-umaxerror/10, umaxerror + umaxerror/10])
     ax1_error.set_xlabel("x")
-#    ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
-#where u is 0 everywhere and h is cos(x)" )
     ax1_error.legend(loc=9, fontsize = 'small')
     
     # plot error in h from 4 different methods
@@ -360,12 +419,15 @@ def main():
     ax2_error.set_xlim([xmin_1,xmax_1])
     ax2_error.set_ylim([-hmaxerror/10, hmaxerror + hmaxerror/10])
     ax2_error.set_xlabel("x")
-#    ax2_error.set_title("Squared error in height, h, for the initial condition\n\
-#where u is 0 everywhere and h is cos(x)" )
     ax2_error.legend(loc = 1, fontsize = 'small')
     
     fig1_error.savefig("error_in_u.png")
     fig2_error.savefig("error_in_h.png")
+    
+    ax1_error.set_title("Squared error in velocity, u, for the initial condition\n\
+where u is 0 everywhere and h is cos(x)")    
+    ax2_error.set_title("Squared error in height, h, for the initial condition\n\
+where u is 0 everywhere and h is cos(x)")
     
     plt.show()
     
@@ -407,11 +469,13 @@ def main():
 
     axic3.legend(loc = 'best')
     axic3.set_xlabel("x")
-#    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")
     axic3.set_xlim([min(initialxcos),max(initialxcos)])
     axic3.set_ylim([-1.5, 1.5])
         
     figic3.savefig("initial_condition_cossin.png")
+
+    axic3.set_title("Initital Condition where h is cos(x) + sin(x) and u is cos(x) - sin(x)")    
+
     plt.show()
     
     # would like to compare the errors with respect to dx and dt 
@@ -448,7 +512,7 @@ def main():
     # note the error plotted against dx and the error plotted against dt is the same 
     # because as keeping c, nt and nx constant impossible to vary dx without varying dt.
     # Hence the gradients are also the same. Therefore the results should be interpreted 
-    # as the error in u or h with respect to dt in both cases as the courant number is large
+    # as the error in u or h with respect to dt in both cases as the Courant number is large
 
 
     # second we use a small Courant number to find the order of the error with respect to dx
@@ -482,7 +546,7 @@ def main():
     # note the error plotted against dx and the error plotted against dt is the same 
     # because as keeping c, nt and nx constant impossible to vary dx without varying dt.
     # Hence the gradients are also the same. Therefore the results should be interpreted 
-    # as the error in u or h with respect to dx in both cases as the courant number is small
+    # as the error in u or h with respect to dx in both cases as the Courant number is small
 
     # the following orders agree with the taylor expansion apart from the error with
     # respect to dt for C_grid_explicit
