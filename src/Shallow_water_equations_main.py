@@ -358,7 +358,7 @@ and initial condition of a spike")
     ax1_analytic.legend(loc = 'best')
 
     ax2_analytic.plot(x1, h, c = 'black', linestyle = ':', label = "analytic solution")
-    ax2_analytic.legend(loc = 'best', fontsize = 'small')
+    ax2_analytic.legend(loc = 'best')
     
     fig1_analytic.savefig("comparison_with_analytic_u.png")
     fig2_analytic.savefig("comparison_with_analytic_h.png")

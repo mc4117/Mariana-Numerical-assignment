@@ -45,8 +45,8 @@ def main():
     plt.ylabel(r"$\omega \Delta x$")
     plt.xlim([0, pi])
     plt.ylim([0, pi])
-#    plt.title("Postive branches of dispersion relations")
     plt.savefig("dispersion_relations.png")
+    plt.title("Postive branches of dispersion relations")    
     plt.show()
     
 main()
