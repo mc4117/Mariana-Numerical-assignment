@@ -147,9 +147,9 @@ and initial condition of a cosbell curve")
     fig_u_Agrid_c.savefig('velocity_varying_courant_colocated.png')
     fig_h_Agrid_c.savefig('height_varying_courant_colocated.png')
 
-    fig_u_Agrid_c.suptitle("Velocity, u, for varying Courant number using co-located \n\
+    fig_u_Agrid_c.suptitle("Velocity, u, for varying Courant numbers using co-located \n\
 explicit and implicit schemes", fontsize = 12)
-    fig_h_Agrid_c.suptitle("Height, h, for varying Courant number using co-located\n\
+    fig_h_Agrid_c.suptitle("Height, h, for varying Courant numbers using co-located\n\
 explicit and implicit schemes", fontsize = 12)
     plt.show()
 
@@ -365,7 +365,7 @@ and initial condition of a spike")
     ax1_analytic.set_title("Velocity, u, for the initial condition where u is 0 everywhere\n\
 and h is cos(x)")
     ax2_analytic.set_title("Height, h, for the initial condition where u is 0 everywhere\n\
-#and h is cos(x)")
+and h is cos(x)")
 
     plt.show()
     
