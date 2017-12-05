@@ -81,11 +81,11 @@ def plot_multiple_iterations(fig1, ax1, fig2, ax2, initialconditions, nx, number
         ax2.scatter(x,np.zeros_like(x), c = 'black', s = 10)
     
     # set labels, limits and legends on plots
-    ax1.set_xlim([0.05,0.95])
+    ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
     ax1.legend(loc = 'best', fontsize = 'small')
 
-    ax2.set_xlim([0.15, 0.85])
+    ax2.set_xlim([xmin, xmax])
     ax2.set_xlabel("x")
     ax2.legend(loc = 'best', fontsize = 'small') 
         
@@ -138,7 +138,7 @@ explicit or implicit, but it is not. This will cause the legend to be incorrect"
         # plot u
         if staggered == True:
             ax1.plot(x + dx/2, u, c = colorrange[i], ls = linestylerange[i], \
-                     label = 'c=' + str(crange[i]))
+                     label = txt + 'c=' + str(crange[i]))
         else:
             ax1.plot(x, u, c = colorrange[i], ls = linestylerange[i], \
                      label = txt + 'c=' + str(crange[i]))
@@ -150,14 +150,18 @@ explicit or implicit, but it is not. This will cause the legend to be incorrect"
     # set labels, limits and legends on plots
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
-    ax1.set_yscale('symlog')
     ax1.legend(loc = 1, fontsize = 9.5)
+    
+    # use a symbolic log scale to better display the results
+    ax1.set_yscale('symlog')
 
 
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
-    ax2.set_yscale('symlog')
     ax2.legend(loc = 1, fontsize = 9.5)
+    
+    # use a symbolic log scale to better display the results
+    ax2.set_yscale('symlog')
         
     return fig1, ax1, fig2, ax2
 

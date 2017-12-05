@@ -65,14 +65,13 @@ def main():
 
     plotparameterrange = [colorrange_multiiterations, linestylerange]
     
-    # now plot solution at various time iterations for an explicit method on a co-located 
-    # grid for the initial condition where u is zero everywhere and h is a cosbell curve
     
     # initialize plots 
     fig1, ax1 = plt.subplots()
     fig2, ax2 = plt.subplots()
     
-    
+    # now plot solution at various time iterations for an explicit method on a co-located 
+    # grid for the initial condition where u is zero everywhere and h is a cosbell curve
     fig1, fig2, ax1, ax2 = pltfns.plot_multiple_iterations(fig1, ax1, fig2, ax2, \
             ic.initialconditions_cosbell, nx, 3*nt, 3, nm.A_grid_explicit, \
             plotparameterrange, xmin, xmax, H = 1, g = 1, c = 0.1)
@@ -138,7 +137,7 @@ and initial condition of a cosbell curve")
     crange2 = [1.5, 2, 4]
 
     # plot implicit method on co-located grid for different Courant numbers on same graph as plotted
-    # explicit method on co-located grid
+    # explicit method on co-located grid for comparison
     fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c = pltfns.plot_multiple_c(\
             fig_u_Agrid_c, ax_u_Agrid_c, fig_h_Agrid_c, ax_h_Agrid_c, ic.initialconditions_cossin,\
             nm.A_grid_implicit_method, crange2, plotparameterrange2,\
@@ -153,7 +152,7 @@ explicit and implicit schemes", fontsize = 12)
 explicit and implicit schemes", fontsize = 12)
     plt.show()
 
-    # perform same analysis for staggered grid
+    # perform same analysis for staggered grid but with initial condition u=0 and h=cos(x)
     
     # initialize plots
     fig_u_Cgrid_c, ax_u_Cgrid_c = plt.subplots()
@@ -169,7 +168,9 @@ explicit and implicit schemes", fontsize = 12)
             nx = 100, nt = 100, H = 1, g = 1)
     
     # plot implicit method on staggered grid for same range of Courant numbers used for 
-    # co-located implicit method on same graph as plotted explicit method on staggered grid
+    # co-located implicit method
+    
+    # use same graph on which plotted explicit method on staggered grid for comparison
     
     fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c = pltfns.plot_multiple_c(\
             fig_u_Cgrid_c, ax_u_Cgrid_c, fig_h_Cgrid_c, ax_h_Cgrid_c, ic.initialconditions_cos,\
@@ -186,9 +187,8 @@ explicit and implicit schemes", fontsize = 12)
     plt.show()
 
 
-
     
-    # by taking a different initial condition it is clear to see that the co-located grid 
+    # we can take yet another different initial condition to show that the co-located grid 
     # gives unphysical results for both implicit and explicit methods
     
     print('Initialising Shallow Water equations with different initial condition...')
@@ -224,7 +224,7 @@ explicit and implicit schemes", fontsize = 12)
     fig_u_spike, ax_u_spike = plt.subplots()
     fig_h_spike, ax_h_spike = plt.subplots()
     
-    # change linestyle range
+    # change linestyle range to make comparison easier
     linestylerange1 = np.array(['-', '-'])
     plotparameterrange1[1] = linestylerange1
     
@@ -239,12 +239,12 @@ explicit and implicit schemes", fontsize = 12)
 
     # This is unphysical therefore try with a staggered grid
     
-    # change linestyle range
+    # change linestyle range to make comparison easier
     linestylerange2 = np.array(['-.', '-.'])
     plotparameterrange2[1] = linestylerange2
     
-    # plot on the same figure as used for staggered explicit method (and for same initial conditions),
-    # solution at various time iterations for an explicit method on staggered grid 
+    # using the same figure as used for co-located explicit method (and for same initial conditions),
+    # plot the solution at various time iterations for an explicit method on staggered grid 
     
     fig_u_spike, fig_h_spike, ax_u_spike, ax_h_spike = pltfns.plot_multiple_iterations(fig_u_spike,\
         ax_u_spike, fig_h_spike, ax_h_spike, ic.initialconditions_spike, nx_adapted, nt_adapted, \
@@ -262,18 +262,19 @@ and initial condition of a spike")
     
     plt.show()
     
-    # However a von-neumann stability analysis shows this is unstable for c > 1 therefore try 
-    # the following implicit method and check whether solution is still physical
+    # However a von-neumann stability analysis shows the staggered explicit method
+    # is unstable for c > 1 therefore try following implicit method and check whether 
+    # solution is still physical
 
-    
-    # plot solution at various time iterations for an explicit method on a staggered grid 
-    # for the initial condition where u is zero everywhere and h is zero everywhere apart 
-    # from one point at the centre where it is one
     
     # initialize plots 
     
     fig1_C_grid_implicit, ax1_C_grid_implicit = plt.subplots()
     fig2_C_grid_implicit, ax2_C_grid_implicit = plt.subplots()
+    
+    # plot solution at various time iterations for an implicit method on a staggered grid 
+    # for the initial condition where u is zero everywhere and h is zero everywhere apart 
+    # from one point at the centre where it is one
     
     fig1_C_grid_implicit, fig2_C_grid_implicit, ax1_C_grid_implicit, ax2_C_grid_implicit = \
     pltfns.plot_multiple_iterations(fig1_C_grid_implicit, ax1_C_grid_implicit, fig2_C_grid_implicit,\
@@ -297,7 +298,7 @@ and initial condition of a spike")
     # This also serves as a check that our code for the numerical methods is working 
     # as expected.
     
-    # For the initial solutions used so far it is difficult to find the analytic solution.
+    # For the initial solutions u=0 and h=cos(x) it is difficult to find the analytic solution.
     # Therefore we use the following initial condition
     
     xmin_1 = -math.pi
