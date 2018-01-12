@@ -11,15 +11,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numerical_methods as nm
 import time
+import math
 
 
-def plot_multiple_iterations(initialconditions, nx, number_iterations, number_plotted,\
+def plot_multiple_iterations(fig1, ax1, fig2, ax2, initialconditions, nx, number_iterations, number_plotted,\
                              numerical_method, plotparameterrange, xmin = 0, xmax = 1, \
                              H = 1, g = 1, c = 0.1, staggered = False, plot_meshgrid = False):
     """This function plots the solution of the numerical method at various time iterations.
        Note this function can be used with any initial condition defined in 
        initial_conditions.py 
     Inputs:
+        fig1, ax1:          figure and axis where results of u will be plotted
+        fig2, ax2:          figure and axis where results of h will be plotted
         initial conditions: function which specifies the initial conditions for the system 
         nx:                 number of space steps
         number_iterations:  number of time steps for the final iteration plotted
@@ -41,9 +44,6 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         fig2, ax2:          figure and axis of figure for height solution
     """
     
-    # initialize plots
-    fig1, ax1 = plt.subplots()
-    fig2, ax2 = plt.subplots()
     
     # find size of space step
     dx = (xmax - xmin)/nx
@@ -64,14 +64,15 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
         # plot u
         if staggered == True:
             ax1.plot(x + dx/2, u, c = colorrange[i], \
-                 ls = linestylerange[i], label = 'u after ' + str(timerange[1+i]) + \
+                 ls = linestylerange[i], label = 'co-located after ' + str(timerange[1+i]) + \
                  ' timesteps')  
+            ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'colocated after ' \
+           + str(timerange[1+i]) + ' timesteps')
         else:
-            ax1.plot(x, u, c = colorrange[i], ls = linestylerange[i], label = 'u after ' \
-                 + str(timerange[1+i]) + ' timesteps')  
-            
-        # plot h
-        ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'h after ' \
+            ax1.plot(x, u, c = colorrange[i], ls = linestylerange[i], label = 'staggered after ' \
+                 + str(timerange[1+i]) + ' timesteps')              
+            # plot h
+            ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], label = 'staggered after ' \
            + str(timerange[1+i]) + ' timesteps')
     
     if plot_meshgrid == True:
@@ -82,24 +83,28 @@ def plot_multiple_iterations(initialconditions, nx, number_iterations, number_pl
     # set labels, limits and legends on plots
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
-    ax1.legend(loc = 'best')
+    ax1.legend(loc = 'best', fontsize = 'small')
 
     ax2.set_xlim([xmin, xmax])
     ax2.set_xlabel("x")
-    ax2.legend(loc = 'best') 
+    ax2.legend(loc = 'best', fontsize = 'small') 
         
     return fig1, fig2, ax1, ax2
 
-def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx = 100, \
-                    nt = 100, xmin = 0, xmax = 1, H = 1, g = 1, staggered = False):
+
+def plot_multiple_c(fig1, ax1, fig2, ax2, initialconditions,  numerical_method, 
+                    crange, plotparameterrange, nx = 100, nt = 100, xmin = -math.pi, 
+                    xmax = math.pi, H = 1, g = 1, staggered = False):
     """This function plots the solution of the numerical method for various different 
        Courant numbers. Note this function can be used with any initial condition 
        defined in initial_conditions.py 
-    Inputs:
+    Inputs:       
+        fig1, ax1:          figure and axis where results of u will be plotted
+        fig2, ax2:          figure and axis where results of h will be plotted
         initial conditions: function which specifies the initial conditions for the system 
         numerical_method:   function which specifies the numerical method used
         crange:             range of different courant numbers used
-        colorrange:         used to specify the colour of  the lines plotted
+        plotparameterrange: used to specify the colour and linestyle of lines plotted
         nx:                 number of space steps
         nt:                 number of time steps
         xmin:               minimum value of x on grid
@@ -112,36 +117,53 @@ def plot_multiple_c(initialconditions,  numerical_method, crange, colorrange, nx
         fig1, ax1:          figure and axis of figure for u
         fig2, ax2:          figure and axis of figure for h
     """
-    # initialize plots
-    fig1, ax1 = plt.subplots()
-    fig2, ax2 = plt.subplots()
     
     # find size of space step
     dx = (xmax - xmin)/nx
     
+    colorrange = plotparameterrange[0]
+    linestylerange = plotparameterrange[1]
+    
+    # determine whether method used is implicit or explicit
+    txt = numerical_method.__name__[7:15] + ' '
+    
+    if "explicit" not in txt and "implicit" not in txt:
+        print("Note expected characters 8 to 15 of numerical function to be the word \
+explicit or implicit, but it is not. This will cause the legend to be incorrect")
+    
     # iterate through different courant numbers and plot results
-    for i in range(len(crange[1:])):
-        u, h, x = numerical_method(initialconditions, nx, nt, xmin, xmax, H, g, c = crange[i + 1])
+    for i in range(len(crange[0:])):
+        u, h, x = numerical_method(initialconditions, nx, nt, xmin, xmax, H, g, c = crange[i])
         
         # plot u
         if staggered == True:
-            ax1.plot(x + dx/2, u, c = colorrange[i], label = 'c=' + str(crange[i+1]))
+            ax1.plot(x + dx/2, u, c = colorrange[i], ls = linestylerange[i], \
+                     label = txt + 'c=' + str(crange[i]))
         else:
-            ax1.plot(x, u, c = colorrange[i], label = 'c=' + str(crange[i+1]))
+            ax1.plot(x, u, c = colorrange[i], ls = linestylerange[i], \
+                     label = txt + 'c=' + str(crange[i]))
         
         # plot h
-        ax2.plot(x, h, c = colorrange[i], label = 'c=' + str(crange[i + 1]))
+        ax2.plot(x, h, c = colorrange[i], ls = linestylerange[i], \
+                 label = txt + 'c=' + str(crange[i]))
     
     # set labels, limits and legends on plots
     ax1.set_xlim([xmin,xmax])
     ax1.set_xlabel("x")
-    ax1.legend(loc = 'best')
+    ax1.legend(loc = 1, fontsize = 9.5)
+    
+    # use a symbolic log scale to better display the results
+    ax1.set_yscale('symlog')
+
 
     ax2.set_xlim([xmin,xmax])
     ax2.set_xlabel("x")
-    ax2.legend(loc = 'best')
+    ax2.legend(loc = 1, fontsize = 9.5)
+    
+    # use a symbolic log scale to better display the results
+    ax2.set_yscale('symlog')
         
-    return fig1, fig2, ax1, ax2
+    return fig1, ax1, fig2, ax2
 
 def compare_results(initialconditions, nx, nt, xmin = 0, xmax = 1, H = 1, g = 1, \
                     c = 0.1, timing = False):
