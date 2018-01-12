@@ -1,0 +1,23 @@
+Excellent report, excellent results.
+
+23/25
+
+Excellent descriptions of the numerical methods.
+
+For implicit methods, you never find the matrix inverse - it would be too expensive. Instead an iterative solver is used to find the solution of
+Ax = b.
+Therefore the cost will be about 6N per time-step (depending on the form of A).
+
+The "staggered semi-implicit method" is actually implicit, not semi-implicit. 
+
+The co-located implicit scheme will be the least accurate because |A|<1 for this scheme whereas |A|=1 for all the other schemes. The inaccuracy is too large to be due to "cumulative errors when inverting and multiplying the matrix" (rounding errors). 
+
+Your first two sets of initial conditions are very similar. In particular they are both very well resolved so you will not see artefacts of numerical errors. Both sets of initial conditions have only one wave number so you will not be able to see dispersion errors. 
+
+The text says that you use a Courant number of 0.5 whereas the captions of figures 4a and 4b say that you use a Courant number of 0.1. 
+
+The comparison between figures 4 and 5 is terrific. 
+
+I am confused by your large errors of the C-grid explicit scheme in figure 4. This is unlikely to be due to instability. I would suspect a bug. However your code looks fine. 
+
+Excellent set of experiments, well presented, well discussed. 

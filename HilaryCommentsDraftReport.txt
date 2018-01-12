@@ -1,0 +1,43 @@
+Excellent start. Great results and lots of insight. You need to proof read your work as some of the sentences are difficult to understand. 
+
+"Courant" should have a capital C.
+
+Rather than saying "the system is stable everywhere", say, "the scheme is unconditionally stable (ie stable for all Courant numbers)."
+
+Your staggered semi-implicit scheme is actually fully implicit. Semi-implicit means that some terms are treated implicitly and some explicitly. For example if you were solving the non-linear SWE with an advection term, you would probably treat the advection term explicitly and the fast waves explicitly. The fact that you have old and new terms on the right hand side makes it second-order accurate, but still implicit.
+
+The reason to use theta=0.5 is not simplicity, the reason is that this value of theta gives you second-order accuracy.
+
+Courant has a capital C.
+
+Combine sections 3 and 4. It is much easier to present the results immediately after describing the experiment. You should list the numerical properties that you are going to test in the introduction.
+
+Describe your experiments in sufficient detail so that someone else could reproduce your results with their code without reference to your code.
+
+You are planning to do more tests than is necessary for this assignment and your report is already very long. I would omit some of these. 
+
+Think carefully about how to display your results in order to learn the most from them. For example, before moving on to test 2, compare the results of the co-located and staggered schemes for test 1. 
+
+Note that the solutions in figure 3 are noisy. 
+
+Change the y-axis limits in figure 4 so that you can see the variations in the solutions for c=1 and c=2.
+
+Combine results of different schemes for different Courant numbers so that you can compare them more easily.
+
+Combine tests 4 and 5 and combine the solutions so that we can easily compare staggered and co-located. 
+
+On page 17 you say that you are keeping nt and nx the same when calculating the convergence with dx. You need to keep the Courant number the same and vary nx and nt together (so that you always run for the same amount of time).
+
+No need to include fig 10a and 10c. Just look at convergence with dx.
+
+On figs 10a-d, put lines proportional to dx and lines proportional to dx^2 so that we can see the convergence. 
+
+You need to say what values of nx and nt you are using for figure 10.
+
+In figure 10, perhaps plot the convergence of the C-grid semi-implicit separately so that your graphs are clearer.
+
+It is not clear why your numbers in table 2 are so low. I would expect numbers closer to 1 or 2. It could be because you are running for a very long time? You do not give this info.
+
+You need to say how you calculated one gradient from a curve with multiple points along it. Remember, somebody needs to be able to reproduce your results. 
+
+The cost of the implicit staggered scheme is surprising. I think that you could do better here. 
